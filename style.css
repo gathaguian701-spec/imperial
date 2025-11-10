@@ -1,4 +1,3 @@
-/* General styles */
 body {
   font-family: "Poppins", sans-serif;
   margin: 0;
@@ -7,7 +6,7 @@ body {
   color: #222;
 }
 
-/* Splash screen */
+/* Splash Screen */
 #splash-screen {
   position: fixed;
   top: 0; left: 0;
@@ -21,6 +20,7 @@ body {
   font-size: 1.5rem;
   animation: fadeOut 3s forwards;
   animation-delay: 3s;
+  z-index: 10;
 }
 
 @keyframes fadeOut {
@@ -30,7 +30,7 @@ body {
   }
 }
 
-/* Navigation bar */
+/* Navigation */
 nav {
   background: #004aad;
   padding: 10px;
@@ -62,11 +62,11 @@ nav {
   transform: scale(1.1);
 }
 
-/* Page sections */
+/* Pages */
 .page {
   display: none;
   padding: 20px;
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.4s ease;
 }
 
 .page.active {
@@ -78,7 +78,7 @@ nav {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Prayer requests */
+/* Prayer Section */
 #prayerForm {
   margin: 15px 0;
 }
@@ -130,4 +130,4 @@ footer {
   padding: 10px;
   background: #004aad;
   color: white;
-  }
+}
