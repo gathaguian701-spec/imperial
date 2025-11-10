@@ -1,61 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PCEA CENTER YOUTH PORTAL</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: "Poppins", Arial, sans-serif; margin:0; background:#f5f7fa; color:#222; text-align:center; }
+    /* Splash */
+    #splash-screen { position:fixed; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#004aad; color:white; z-index:9999; animation:fadeOut 3s forwards; animation-delay:3s; }
+    @keyframes fadeOut { to { opacity:0; visibility:hidden; } }
+    /* Nav */
+    nav { background:#004aad; padding:10px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+    .nav-btn { background:white; border:none; padding:10px 18px; border-radius:25px; cursor:pointer; font-weight:600; transition:all .28s ease; }
+    .nav-btn:hover { transform:scale(1.04); background:#dbe9ff; }
+    .nav-btn.active { background:#002c7f; color:white; transform:scale(1.08); }
+    /* Pages */
+    .page { display:none; padding:22px; animation:fadeIn .35s ease; max-width:900px; margin:18px auto; text-align:left; }
+    .page.active { display:block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px);} to { opacity:1; transform:none; } }
+    /* Prayer form */
+    #prayerForm { margin-top:8px; }
+    textarea { width:90%; max-width:760px; min-height:100px; border-radius:10px; padding:10px; border:1px solid#ccc; font-family:inherit; }
+    .post-btn { background:#004aad; color:#fff; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; margin-top:10px; transition:all .2s ease; }
+    .post-btn:hover { transform:scale(1.03); background:#003580; }
+    #prayerList { width:90%; max-width:760px; margin:12px auto 40px; text-align:left; }
+    #prayerList .item { background:#e8edff; padding:10px; margin-bottom:10px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
+    footer { background:#004aad; color:white; padding:12px; margin-top:20px; }
+    @media (max-width:600px){ .nav-btn{ padding:8px 12px; } textarea{ width:94%; } #prayerList{ width:94%; } }
+  </style>
 </head>
 <body>
-  <!-- Splash Screen -->
-  <div id="splash-screen">
-    <h1>PCEA CENTER YOUTH PORTAL</h1>
-    <p>Created with pride by <strong>Ian Gathagu</strong></p>
+  <!-- Splash -->
+  <div id="splash-screen" role="dialog" aria-hidden="false">
+    <h1 style="margin:0 0 8px 0;">PCEA CENTER YOUTH PORTAL</h1>
+    <div style="opacity:.95;">Created with pride by <strong>Ian Gathagu</strong></div>
   </div>
 
-  <!-- Navigation Bar -->
+  <!-- Nav -->
   <nav>
-    <button class="nav-btn active" data-page="home">🏠 Home</button>
-    <button class="nav-btn" data-page="events">📅 Events</button>
-    <button class="nav-btn" data-page="announcements">📢 Announcements</button>
-    <button class="nav-btn" data-page="prayers">🙏 Prayer Requests</button>
+    <button class="nav-btn active" data-page="home" onclick="showPage('home', this)">🏠 Home</button>
+    <button class="nav-btn" data-page="events" onclick="showPage('events', this)">📅 Events</button>
+    <button class="nav-btn" data-page="announcements" onclick="showPage('announcements', this)">📢 Announcements</button>
+    <button class="nav-btn" data-page="prayers" onclick="showPage('prayers', this)">🙏 Prayer Requests</button>
   </nav>
 
   <!-- Pages -->
-  <section id="home" class="page active">
-    <h2>Welcome to PCEA Center Youth Portal</h2>
-    <p>Stay updated with events, announcements, and prayer requests from our youth fellowship.</p>
+  <section id="home" class="page active" aria-live="polite">
+    <h2>Welcome</h2>
+    <p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate between Home, Events, Announcements, and Prayer Requests.</p>
   </section>
 
-  <section id="events" class="page">
+  <section id="events" class="page" aria-live="polite">
     <h2>Upcoming Events</h2>
     <ul>
-      <li>Youth Convention: 2nd–6th December 2025</li>
-      <li>Brigade Fun Day: 18th January 2026</li>
+      <li>Youth Rally: 16th November 2025</li>
+      <li>Presbytary Youth Convention: 2nd–6th December 2025</li>
     </ul>
   </section>
 
-  <section id="announcements" class="page">
+  <section id="announcements" class="page" aria-live="polite">
     <h2>Announcements</h2>
     <ul>
-      <li>Youth meeting immediately after the service this Sunday.</li>
-      <li>Remember to pray for the upcoming convention!</li>
+      <li>Youth Rally on 16th November 2025.</li>
+      <li>Presbytary Youth Convention from 2nd to 6th December 2025.</li>
     </ul>
   </section>
 
-  <section id="prayers" class="page">
+  <section id="prayers" class="page" aria-live="polite">
     <h2>Prayer Requests</h2>
     <form id="prayerForm">
       <textarea id="prayerText" placeholder="Type your prayer request here..." required></textarea><br />
       <button type="submit" class="post-btn">Post Anonymously</button>
     </form>
-    <div id="prayerList"></div>
+    <div id="prayerList" aria-live="polite" aria-atomic="true"></div>
   </section>
 
   <footer>
-    <p>Created with pride by <strong>Ian Gathagu</strong></p>
+    <div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
+    <div style="opacity:.9; font-size:.95rem; margin-top:6px;">Created with pride by <strong>Ian Gathagu</strong></div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    (function(){
+      const btns = Array.from(document.querySelectorAll('.nav-btn'));
+      const pages = Array.from(document.querySelectorAll('.page'));
+      const splash = document.getElementById('splash-screen');
+
+      window.showPage = function(pageId, btnElement){
+        btns.forEach(b => b.classList.remove('active'));
+        let button = btnElement || btns.find(b => b.dataset.page === pageId);
+        if(button) button.classList.add('active');
+        pages.forEach(p => p.classList.remove('active'));
+        const selected = document.getElementById(pageId);
+        if(selected) selected.classList.add('active');
+      };
+
+      btns.forEach(b => {
+        b.addEventListener('click', () => {
+          const pid = b.dataset.page;
+          showPage(pid, b);
+        });
+      });
+
+      const prayerForm = document.getElementById('prayerForm');
+      const prayerText = document.getElementById('prayerText');
+      const prayerList = document.getElementById('prayerList');
+
+      let prayers = [];
+      try { prayers = JSON.parse(localStorage.getItem('prayers_v1')||'[]'); if(!Array.isArray(prayers)) prayers=[]; } 
+      catch(e){ prayers=[]; }
+
+      function renderPrayers(){
+        prayerList.innerHTML = '';
+        [...prayers].reverse().forEach(item => {
+          const div = document.createElement('div'); div.className='item';
+          const dt = document.createElement('div'); dt.style.fontSize='.85rem'; dt.style.opacity='.85'; dt.style.marginBottom='6px';
+          dt.textContent=`Posted on ${item.date}`;
+          const p = document.createElement('div'); p.textContent=item.text; p.style.whiteSpace='pre-wrap';
+          div.appendChild(p); div.appendChild(dt); prayerList.appendChild(div);
+        });
+      }
+
+      prayerForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        const txt = (prayerText.value||'').trim();
+        if(!txt){ alert('Please write a prayer request before posting.'); return; }
+        prayers.push({text:txt, date:new Date().toLocaleString()});
+        localStorage.setItem('prayers_v1', JSON.stringify(prayers));
+        prayerText.value=''; renderPrayers();
+        showPage('prayers');
+      });
+
+      renderPrayers();
+
+      window.addEventListener('load', function(){
+        setTimeout(function(){
+          if(splash) splash.style.display='none';
+          const homeBtn = btns.find(b => b.dataset.page==='home');
+          showPage('home', homeBtn);
+        }, 3200);
+      });
+    })();
+  </script>
 </body>
-    </html>
+        </html>
