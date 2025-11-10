@@ -1,213 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PCEA Center Youth Portal</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f2f6ff;
-      color: #222;
-    }
-
-    header {
-      background: linear-gradient(135deg, #003399, #0055cc);
-      color: #fff;
-      text-align: center;
-      padding: 2em 1em;
-      border-bottom: 5px solid #001f66;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-      letter-spacing: 1px;
-    }
-    header p {
-      font-style: italic;
-      font-size: 1.1em;
-    }
-
-    nav {
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      text-align: center;
-      padding: 0.5em;
-    }
-    nav a {
-      text-decoration: none;
-      color: #003399;
-      margin: 0 15px;
-      font-weight: bold;
-    }
-    nav a:hover {
-      color: #0055cc;
-      text-decoration: underline;
-    }
-
-    main {
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    section {
-      background: white;
-      padding: 1.5em;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 2em;
-    }
-    section h2 {
-      color: #003399;
-      border-bottom: 2px solid #003399;
-      padding-bottom: 5px;
-    }
-
-    .btn {
-      background: #003399;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-    .btn:hover {
-      background: #0055cc;
-    }
-
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      resize: none;
-      font-size: 1em;
-    }
-
-    .prayer-list {
-      margin-top: 20px;
-    }
-    .prayer-item {
-      background: #f8f9ff;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-left: 4px solid #003399;
-      border-radius: 6px;
-      font-style: italic;
-    }
-
-    footer {
-      background: #001f66;
-      color: white;
-      text-align: center;
-      padding: 1em;
-      font-size: 0.9em;
-    }
-    footer small {
-      display: block;
-      color: #ccc;
-      margin-top: 5px;
-      font-size: 0.8em;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PCEA CENTER YOUTH PORTAL</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
+  <!-- Splash Screen -->
+  <div id="splash-screen">
     <h1>PCEA CENTER YOUTH PORTAL</h1>
-    <p>“Empowered to Serve, Growing in Christ”</p>
-  </header>
+    <p>Created with pride by <strong>Ian Gathagu</strong></p>
+  </div>
 
+  <!-- Navigation Bar -->
   <nav>
-    <a href="#home">Home</a>
-    <a href="#events">Events</a>
-    <a href="#announcements">Announcements</a>
-    <a href="#prayers">Prayer Requests</a>
+    <button class="nav-btn active" onclick="showPage('home', this)">🏠 Home</button>
+    <button class="nav-btn" onclick="showPage('events', this)">📅 Events</button>
+    <button class="nav-btn" onclick="showPage('announcements', this)">📢 Announcements</button>
+    <button class="nav-btn" onclick="showPage('prayers', this)">🙏 Prayer Requests</button>
   </nav>
 
-  <main>
-    <section id="home">
-      <h2>Welcome</h2>
-      <p>Welcome to the official PCEA Center Youth Portal! Here you can stay updated on events, announcements, and fellowship programs.</p>
-    </section>
+  <!-- Pages -->
+  <section id="home" class="page active">
+    <h2>Welcome to PCEA Center Youth Portal</h2>
+    <p>Stay updated with events, announcements, and prayer requests from our youth fellowship.</p>
+  </section>
 
-    <section id="events">
-      <h2>📅 Upcoming Events</h2>
-      <ul>
-        <li><strong>16th Nov 2025:</strong> Youth Rally at PCEA Chieni Church</li>
-        <li><strong>2nd–6th Dec 2025:</strong> Presbytery Youth Convention (KES 1500 per person)</li>
-      </ul>
-      <button class="btn">View More</button>
-    </section>
+  <section id="events" class="page">
+    <h2>Upcoming Events</h2>
+    <ul>
+      <li>Youth Convention: 2nd–6th December 2025</li>
+      <li>Brigade Fun Day: 18th January 2026</li>
+    </ul>
+  </section>
 
-    <section id="announcements">
-      <h2>📢 Announcements</h2>
-      <p>Members are encouraged to prepare for the upcoming Youth Convention. Payments can be made in small installments to the youth treasurer.</p>
-      <p>Check this page weekly for updates and new programs.</p>
-    </section>
+  <section id="announcements" class="page">
+    <h2>Announcements</h2>
+    <ul>
+      <li>Youth meeting immediately after the service this Sunday.</li>
+      <li>Remember to pray for the upcoming convention!</li>
+    </ul>
+  </section>
 
-    <section id="prayers">
-      <h2>🙏 Prayer Requests</h2>
-      <p>Share your prayer needs anonymously below. All posted requests are visible to everyone who visits this portal.</p>
-
-      <textarea id="prayerInput" placeholder="Write your prayer request here..."></textarea>
-      <button class="btn" onclick="addPrayer()">Post Prayer</button>
-
-      <div class="prayer-list" id="prayerList"></div>
-    </section>
-  </main>
+  <section id="prayers" class="page">
+    <h2>Prayer Requests</h2>
+    <form id="prayerForm">
+      <textarea id="prayerText" placeholder="Type your prayer request here..." required></textarea><br />
+      <button type="submit" class="post-btn">Post Anonymously</button>
+    </form>
+    <div id="prayerList"></div>
+  </section>
 
   <footer>
-    <p>© 2025 PCEA Center Youth — To God Be the Glory.</p>
-    <small>Created with pride by Ian Gathagu.</small>
+    <p>Created with pride by <strong>Ian Gathagu</strong></p>
   </footer>
 
-  <script>
-    const prayerInput = document.getElementById('prayerInput');
-    const prayerList = document.getElementById('prayerList');
-
-    // Load prayers from localStorage
-    window.onload = function() {
-      const prayers = JSON.parse(localStorage.getItem('prayers')) || [];
-      prayers.forEach(prayer => {
-        displayPrayer(prayer);
-      });
-    }
-
-    // Add new prayer
-    function addPrayer() {
-      const text = prayerInput.value.trim();
-      if (text === '') {
-        alert('Please write a prayer request before posting.');
-        return;
-      }
-
-      const prayer = {
-        text,
-        date: new Date().toLocaleString()
-      };
-
-      // Save to localStorage
-      const prayers = JSON.parse(localStorage.getItem('prayers')) || [];
-      prayers.push(prayer);
-      localStorage.setItem('prayers', JSON.stringify(prayers));
-
-      // Display on page
-      displayPrayer(prayer);
-
-      prayerInput.value = '';
-    }
-
-    // Display prayer
-    function displayPrayer(prayer) {
-      const div = document.createElement('div');
-      div.classList.add('prayer-item');
-      div.innerHTML = `<p>${prayer.text}</p><small>Posted on ${prayer.date}</small>`;
-      prayerList.prepend(div);
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
-    </html>
+      </html>
