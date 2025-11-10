@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>PCEA Youth - MPESA Payment</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align:center; padding:40px; background:#f5f7fa; }
+    h1 { color:#004aad; }
+    input, button { padding:10px 18px; margin:8px 0; border-radius:8px; border:1px solid #ccc; font-size:16px; }
+    button { background:#004aad; color:white; border:none; cursor:pointer; transition:0.2s; }
+    button:hover { background:#003580; }
+    #status { margin-top:16px; font-weight:bold; }
+  </style>
+</head>
+<body>
+  <h1>Pay Convention Charges via MPESA</h1>
+  <p>Amount: <strong>Ksh 1500</strong></p>
+  
+  <label for="phone">Enter your phone number (07XX XXX XXX):</label><br>
+  <input type="text" id="phone" placeholder="07XXXXXXXX"><br>
+
+  <button id="payBtn">Pay Now</button>
+  <div id="status"></div>
+
+  <script>
+    const payBtn = document.getElementById('payBtn');
+    const statusDiv = document.getElementById('status');
+
+    payBtn.addEventListener('click', () => {
+      const phone = document.getElementById('phone').value.trim();
+      if(!/^07\d{8}$/.test(phone)){
+        statusDiv.textContent = "Please enter a valid phone number.";
+        statusDiv.style.color = "red";
+        return;
+      }
+
+      // Simulated MPESA STK Push
+      statusDiv.style.color = "green";
+      statusDiv.textContent = "Processing MPESA payment for " + phone + " ...";
+
+      setTimeout(() => {
+        statusDiv.textContent = "Success! MPESA payment prompt sent. Please complete payment on your phone.";
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
