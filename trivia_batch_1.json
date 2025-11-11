@@ -1,152 +1,173 @@
 [
+  // ===== GENERAL KNOWLEDGE =====
   {
-    "id": 1,
-    "category": "PCEA History",
-    "question": "In which year was the Presbyterian Church of East Africa officially founded?",
-    "options": ["1891", "1900", "1920", "1932"],
-    "answer": "1891"
+    "type": "multiple",
+    "question": "Who painted the Mona Lisa?",
+    "options": ["Leonardo da Vinci", "Vincent Van Gogh", "Pablo Picasso", "Michelangelo"],
+    "answer": "Leonardo da Vinci"
   },
   {
-    "id": 2,
-    "category": "Theology",
-    "question": "Who is considered the head of the Church according to the Bible?",
-    "options": ["Peter", "Jesus Christ", "Paul", "Moses"],
-    "answer": "Jesus Christ"
+    "type": "fill",
+    "question": "The capital city of France is ____.",
+    "answer": "Paris"
   },
   {
-    "id": 3,
-    "category": "PCEA History",
-    "question": "Which missionary society helped establish PCEA in Kenya?",
-    "options": ["CMS", "LMS", "BMS", "UMC"],
-    "answer": "CMS"
+    "type": "multiple",
+    "question": "Which planet is known as the Red Planet?",
+    "options": ["Mars","Venus","Jupiter","Saturn"],
+    "answer": "Mars"
   },
   {
-    "id": 4,
-    "category": "Theology",
-    "question": "Which book in the Bible contains the Ten Commandments?",
-    "options": ["Exodus", "Genesis", "Leviticus", "Numbers"],
-    "answer": "Exodus"
+    "type": "fill",
+    "question": "Water boils at ____ degrees Celsius.",
+    "answer": "100"
   },
   {
-    "id": 5,
-    "category": "PCEA History",
-    "question": "PCEA's first church in Kenya was established in which area?",
-    "options": ["Kikuyu", "Nairobi", "Mombasa", "Kisii"],
+    "type": "multiple",
+    "question": "Which element has the chemical symbol 'O'?",
+    "options": ["Oxygen","Gold","Silver","Iron"],
+    "answer": "Oxygen"
+  },
+  {
+    "type": "multiple",
+    "question": "Which ocean is the largest in the world?",
+    "options": ["Pacific","Atlantic","Indian","Arctic"],
+    "answer": "Pacific"
+  },
+  {
+    "type": "fill",
+    "question": "The tallest mountain in the world is ____.",
+    "answer": "Mount Everest"
+  },
+  {
+    "type": "multiple",
+    "question": "Which country hosted the 2016 Summer Olympics?",
+    "options": ["Brazil","China","UK","Russia"],
+    "answer": "Brazil"
+  },
+  {
+    "type": "fill",
+    "question": "The Great Wall of ____ is visible from space.",
+    "answer": "China"
+  },
+  {
+    "type": "multiple",
+    "question": "What is the largest mammal in the world?",
+    "options": ["Blue Whale","Elephant","Giraffe","Hippopotamus"],
+    "answer": "Blue Whale"
+  },
+
+  // ===== PCEA HISTORY =====
+  {
+    "type": "fill",
+    "question": "PCEA was founded in the year ____.",
+    "answer": "1892"
+  },
+  {
+    "type": "multiple",
+    "question": "Which missionary society first established PCEA in Kenya?",
+    "options": ["Church of Scotland","London Missionary Society","Society for African Missions","Anglican Church"],
+    "answer": "Church of Scotland"
+  },
+  {
+    "type": "multiple",
+    "question": "PCEA originally focused on which region in Kenya?",
+    "options": ["Central Kenya","Coastal Kenya","Nairobi","Western Kenya"],
+    "answer": "Central Kenya"
+  },
+  {
+    "type": "fill",
+    "question": "The first PCEA church was established in ____.",
     "answer": "Kikuyu"
   },
   {
-    "id": 6,
-    "category": "Theology",
-    "question": "Which of these is a fruit of the Spirit?",
-    "options": ["Love", "Jealousy", "Greed", "Anger"],
-    "answer": "Love"
+    "type": "multiple",
+    "question": "Which PCEA leader is known for writing hymns in Kikuyu language?",
+    "options": ["Jonathan Kariara","Zachary Gikonyo","Dalson Maina","Ian Gathagu"],
+    "answer": "Jonathan Kariara"
   },
   {
-    "id": 7,
-    "category": "PCEA History",
-    "question": "What does PCEA stand for?",
-    "options": ["Presbyterian Church of East Africa", "Pentecostal Church of Eastern Africa", "Protestant Church of East Africa", "Pastoral Church of East Africa"],
-    "answer": "Presbyterian Church of East Africa"
+    "type": "fill",
+    "question": "The PCEA motto is '____ and Serve'.",
+    "answer": "Trust"
   },
   {
-    "id": 8,
-    "category": "Theology",
-    "question": "Who wrote most of the letters in the New Testament?",
-    "options": ["Peter", "Paul", "John", "James"],
-    "answer": "Paul"
+    "type": "multiple",
+    "question": "PCEA follows which church governance system?",
+    "options": ["Presbyterian","Episcopal","Congregational","Catholic"],
+    "answer": "Presbyterian"
   },
   {
-    "id": 9,
-    "category": "PCEA History",
-    "question": "Which Kenyan President officially recognized PCEA as a national church?",
-    "options": ["Jomo Kenyatta", "Daniel arap Moi", "Mwai Kibaki", "Uhuru Kenyatta"],
-    "answer": "Jomo Kenyatta"
+    "type": "fill",
+    "question": "The first PCEA Moderator was Rev. ____.",
+    "answer": "John Arthur"
   },
   {
-    "id": 10,
-    "category": "Theology",
-    "question": "What is the Great Commission?",
-    "options": [
-      "Love your neighbor",
-      "Go and make disciples of all nations",
-      "Do not steal",
-      "Pray without ceasing"
-    ],
-    "answer": "Go and make disciples of all nations"
+    "type": "multiple",
+    "question": "Which year did PCEA start its presbytery system?",
+    "options": ["1912","1892","1935","1950"],
+    "answer": "1912"
   },
   {
-    "id": 11,
-    "category": "PCEA History",
-    "question": "Which city hosts the PCEA Central Offices in Kenya?",
-    "options": ["Nairobi", "Mombasa", "Kisumu", "Nyeri"],
-    "answer": "Nairobi"
-  },
-  {
-    "id": 12,
-    "category": "Theology",
-    "question": "What does 'Trinity' mean in Christian doctrine?",
-    "options": [
-      "Father, Son, Holy Spirit as one God",
-      "Three separate gods",
-      "Jesus only",
-      "Holy Spirit only"
-    ],
-    "answer": "Father, Son, Holy Spirit as one God"
-  },
-  {
-    "id": 13,
-    "category": "PCEA History",
-    "question": "Who was the first moderator of PCEA?",
-    "options": ["Rev. John Gikonyo", "Rev. John Nelson", "Rev. Samuel Maina", "Rev. Zachary Gikonyo"],
-    "answer": "Rev. John Nelson"
-  },
-  {
-    "id": 14,
-    "category": "Theology",
-    "question": "Which sacrament is considered the first in most Protestant churches?",
-    "options": ["Baptism", "Communion", "Confirmation", "Marriage"],
-    "answer": "Baptism"
-  },
-  {
-    "id": 15,
-    "category": "PCEA History",
-    "question": "Which mission station played a key role in spreading PCEA across Kenya?",
-    "options": ["Thogoto", "Nairobi Central", "Mombasa Port", "Kisumu Beach"],
+    "type": "fill",
+    "question": "PCEA’s first theological college was established in ____.",
     "answer": "Thogoto"
   },
+
+  // ===== COMPLEX THEOLOGICAL QUESTIONS =====
   {
-    "id": 16,
-    "category": "Theology",
-    "question": "Which Old Testament prophet confronted King Ahab and Queen Jezebel?",
-    "options": ["Elijah", "Elisha", "Isaiah", "Jeremiah"],
+    "type": "multiple",
+    "question": "Which Old Testament prophet confronted King Ahab and Queen Jezebel about idolatry?",
+    "options": ["Elijah","Elisha","Isaiah","Jeremiah"],
     "answer": "Elijah"
   },
   {
-    "id": 17,
-    "category": "PCEA History",
-    "question": "What is the main theological emphasis of PCEA?",
-    "options": ["Presbyterian governance and Reformed doctrine", "Pentecostal worship", "Charismatic healing", "Evangelical revival"],
-    "answer": "Presbyterian governance and Reformed doctrine"
+    "type": "fill",
+    "question": "The book of ____ in the Bible is known for its wisdom literature and 'fear of the Lord is the beginning of wisdom'.",
+    "answer": "Proverbs"
   },
   {
-    "id": 18,
-    "category": "Theology",
-    "question": "Who was the disciple known for doubting Jesus’ resurrection until he saw Him?",
-    "options": ["Peter", "Thomas", "John", "Matthew"],
-    "answer": "Thomas"
+    "type": "multiple",
+    "question": "In the New Testament, who is considered the author of most Epistles?",
+    "options": ["Paul","Peter","John","James"],
+    "answer": "Paul"
   },
   {
-    "id": 19,
-    "category": "PCEA History",
-    "question": "Which European country primarily sent missionaries that established PCEA in Kenya?",
-    "options": ["Scotland", "Germany", "France", "Italy"],
-    "answer": "Scotland"
+    "type": "fill",
+    "question": "The Greek term 'Agape' in the Bible refers to ____ love.",
+    "answer": "unconditional"
   },
   {
-    "id": 20,
-    "category": "Theology",
-    "question": "Which prayer did Jesus teach his disciples?",
-    "options": ["Hail Mary", "Our Father", "Shema", "Glory Be"],
-    "answer": "Our Father"
+    "type": "multiple",
+    "question": "The Trinity consists of?",
+    "options": ["Father, Son, Holy Spirit","Father, Moses, Jesus","Jesus, Peter, Paul","God, Angels, Saints"],
+    "answer": "Father, Son, Holy Spirit"
+  },
+  {
+    "type": "fill",
+    "question": "The Sermon on the Mount is found in the book of ____.",
+    "answer": "Matthew"
+  },
+  {
+    "type": "multiple",
+    "question": "The phrase 'Justification by faith' is central to which Reformer?",
+    "options": ["Martin Luther","John Calvin","Ulrich Zwingli","John Knox"],
+    "answer": "Martin Luther"
+  },
+  {
+    "type": "fill",
+    "question": "In the parable of the Prodigal Son, the father represents ____.",
+    "answer": "God"
+  },
+  {
+    "type": "multiple",
+    "question": "Which council produced the Nicene Creed?",
+    "options": ["Council of Nicaea","Council of Chalcedon","Council of Trent","First Vatican Council"],
+    "answer": "Council of Nicaea"
+  },
+  {
+    "type": "fill",
+    "question": "The word 'Emmanuel' means ____.",
+    "answer": "God with us"
   }
     ]
