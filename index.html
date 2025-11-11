@@ -1,252 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PCEA CENTER YOUTH PORTAL</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      background: #f2f6ff;
-      color: #222;
-      text-align: center;
-      overflow-x: hidden;
-    }
-    #intro {
-      position: fixed;
-      width: 100%;
-      height: 100vh;
-      background: #004aad;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      animation: fadeOut 2s ease 4s forwards;
-      z-index: 10;
-    }
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
-    }
-    header {
-      background: #004aad;
-      color: white;
-      padding: 1rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      display: none;
-      animation: slideDown 1s ease-in-out;
-    }
-    @keyframes slideDown {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      background: #003b8e;
-      display: none;
-    }
-    nav button {
-      background: none;
-      border: none;
-      color: white;
-      padding: 1rem 1.5rem;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.3s;
-    }
-    nav button:hover {
-      background: #005eff;
-      transform: scale(1.05);
-    }
-    section {
-      display: none;
-      padding: 2rem;
-      animation: fadeIn 0.7s ease-in-out;
-    }
-    section.active {
-      display: block;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin: 1.5rem auto;
-      padding: 1.5rem;
-      max-width: 700px;
-      text-align: left;
-    }
-    h1, h2, h3 {
-      color: #004aad;
-    }
-    .word-box {
-      background: #e8f1ff;
-      border-left: 5px solid #004aad;
-      padding: 1rem;
-      border-radius: 10px;
-      margin: 1.5rem auto;
-      max-width: 600px;
-      font-style: italic;
-    }
-    footer {
-      background: #004aad;
-      color: white;
-      padding: 1rem;
-      font-size: 0.9rem;
-      margin-top: 2rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCEA CENTER YOUTH PORTAL</title>
+<style>
+  body {
+    margin:0;
+    font-family: 'Poppins', sans-serif;
+    background: #f2f6ff;
+    color: #222;
+    text-align: center;
+    overflow-x: hidden;
+  }
+  /* Intro Animation */
+  #intro {
+    position: fixed;
+    width:100%;
+    height:100%;
+    background:#004aad;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-size:2rem;
+    z-index:10;
+  }
+  #intro p {
+    margin-top: 20px;
+    font-size:1.2rem;
+    color:#ffecb3;
+  }
+  header {
+    background:#004aad;
+    color:white;
+    padding:1rem;
+    font-size:1.5rem;
+    font-weight:600;
+    display:none;
+  }
+  nav {
+    display:none;
+    background:#003b8e;
+  }
+  nav button {
+    background:#005eff;
+    color:white;
+    border:none;
+    margin:5px;
+    padding:12px 20px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  nav button:hover {
+    background:#003b8e;
+    transform: scale(1.05);
+  }
+  section {
+    display:none;
+    padding:2rem;
+    animation:fadeIn 0.5s;
+  }
+  section.active {
+    display:block;
+  }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(15px);} to{opacity:1;transform:translateY(0);} }
+  .card {
+    background:white;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    margin:1.5rem auto;
+    padding:1.5rem;
+    max-width:700px;
+    text-align:left;
+  }
+  .word-box {
+    background:#e8f1ff;
+    border-left:5px solid #004aad;
+    padding:1rem;
+    border-radius:10px;
+    margin:1.5rem auto;
+    max-width:600px;
+    font-style:italic;
+  }
+  footer {
+    background:#004aad;
+    color:white;
+    padding:1rem;
+    font-size:0.9rem;
+    margin-top:2rem;
+  }
+</style>
 </head>
 <body>
-  <div id="intro">
-    <div id="intro-text">PCEA CENTER YOUTH PORTAL</div>
+
+<div id="intro">
+  <div>PCEA CENTER YOUTH PORTAL</div>
+  <p>CREATED WITH PRIDE BY IAN GATHAGU</p>
+</div>
+
+<header>PCEA CENTER YOUTH PORTAL</header>
+
+<nav>
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('events')">Events</button>
+  <button onclick="showPage('announcements')">Announcements</button>
+  <button onclick="showPage('prayers')">Prayer Requests</button>
+  <button onclick="showPage('leaders')">Leaders</button>
+</nav>
+
+<section id="home" class="page active">
+  <div class="card">
+    <h2>Welcome to PCEA Center Youth Portal 🙌</h2>
+    <p>
+      A space for fellowship, inspiration, and updates for all youth members.  
+      Stay connected, grow in faith, and enjoy the energy of our youth community!
+    </p>
   </div>
+  <div class="word-box">
+    <h3>Word of the Day 📖</h3>
+    <p id="verse"></p>
+  </div>
+</section>
 
-  <header>
-    PCEA CENTER YOUTH PORTAL
-  </header>
+<section id="events" class="page">
+  <div class="card">
+    <h2>Upcoming Youth Events ⚡</h2>
+    <h3>Youth Rally – 16th November</h3>
+    <p>
+      A day of worship, games, and fellowship at PCEA Chieni Church.  
+      Fun activities, spiritual growth, and connecting with fellow youth!
+    </p>
+    <br>
+    <h3>Presbytery Youth Convention – 2nd to 6th December</h3>
+    <p>
+      5 days of Bible teachings, workshops, and evening worship.  
+      Bring a notebook. Charges: <strong>Ksh 1500</strong> (full or instalments to Treasurer).
+    </p>
+  </div>
+</section>
 
-  <nav>
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('events')">Events</button>
-    <button onclick="showPage('announcements')">Announcements</button>
-    <button onclick="showPage('prayers')">Prayer Requests</button>
-    <button onclick="showPage('leaders')">Leaders</button>
-  </nav>
+<section id="announcements" class="page">
+  <div class="card">
+    <h2>Announcements 📢</h2>
+    <ul>
+      <li>📅 Youth Rally – 16th November at PCEA Chieni Church.</li>
+      <li>🕊️ Presbytery Youth Convention – 2nd to 6th December. Carry a notebook.</li>
+      <li>💰 Payment: Ksh 1500 to Treasurer, full or instalments.</li>
+    </ul>
+  </div>
+</section>
 
-  <section id="home" class="page active">
-    <div class="card">
-      <h2>Welcome to PCEA Center Youth Portal 🙏</h2>
-      <p>
-        This is our digital home for announcements, events, and prayer requests.  
-        Together, we serve, grow, and shine in Christ. Stay updated and stay connected!
-      </p>
-    </div>
-    <div class="word-box">
-      <h3>Word of the Day 📖</h3>
-      <p id="verse"></p>
-    </div>
-  </section>
+<section id="prayers" class="page">
+  <div class="card">
+    <h2>Prayer Requests 🙏</h2>
+    <textarea id="request" rows="4" placeholder="Type your prayer request..." style="width:100%;padding:10px;border-radius:10px;"></textarea><br><br>
+    <button onclick="submitPrayer()">Post Request</button>
+    <div id="prayerList" style="margin-top:20px;text-align:left;"></div>
+  </div>
+</section>
 
-  <section id="events" class="page">
-    <div class="card">
-      <h2>Upcoming Youth Events</h2>
-      <h3>Youth Rally – 16th November</h3>
-      <p>
-        The Youth Rally will be held at <strong>PCEA Chieni Church</strong>.  
-        A time for worship, fellowship, and youth empowerment through the Word of God and activities that bring us together as one body in Christ.
-      </p>
-      <br>
-      <h3>Presbytery Youth Convention – 2nd to 6th December</h3>
-      <p>
-        A week of spiritual growth, worship, and teachings across the Presbytery.  
-        All youths are expected to carry a <strong>notebook</strong>.  
-        Charges: <strong>Ksh 1500</strong> (payable in full or in instalments to the Treasurer).  
-      </p>
-    </div>
-  </section>
+<section id="leaders" class="page">
+  <div class="card">
+    <h2>Youth Leaders 👥</h2>
+    <ul>
+      <li><strong>Chairperson:</strong> Zachary Gikonyo</li>
+      <li><strong>Vice Chairperson:</strong> Dalson Maina</li>
+      <li><strong>Secretary:</strong> Ian Gathagu</li>
+      <li><strong>Vice Secretary:</strong> Lydia Wamuyu</li>
+      <li><strong>Treasurer:</strong> Winnie Maundu</li>
+    </ul>
+    <h3>Secretary’s Message</h3>
+    <p>
+      Greetings beloved members 🙏. As your Secretary, I’m grateful for our unity and faith.  
+      This portal helps us share, learn, and grow spiritually.  
+      <br><br>
+      <em>“Let no one despise your youth, but be an example in word, conduct, love, spirit, faith, and purity.” – 1 Timothy 4:12</em>
+    </p>
+    <p><strong>– Ian Gathagu</strong></p>
+  </div>
+</section>
 
-  <section id="announcements" class="page">
-    <div class="card">
-      <h2>Announcements 📢</h2>
-      <ul>
-        <li>📅 <strong>Youth Rally</strong> on 16th November at PCEA Chieni Church.</li>
-        <li>🕊️ <strong>Presbytery Youth Convention</strong> from 2nd – 6th December. Carry a notebook and prepare spiritually.</li>
-        <li>💰 Remember to clear your <strong>Ksh 1500</strong> payment in full or instalments to the Treasurer.</li>
-      </ul>
-    </div>
-  </section>
+<footer>
+  Created with pride by <strong>Ian Gathagu</strong>
+</footer>
 
-  <section id="prayers" class="page">
-    <div class="card">
-      <h2>Prayer Requests 🙏</h2>
-      <p>Post your prayer requests anonymously. Let’s stand in faith together.</p>
-      <form id="prayerForm">
-        <textarea id="request" rows="4" placeholder="Type your prayer request here..." style="width:100%;padding:10px;border-radius:10px;border:1px solid #ccc;"></textarea><br><br>
-        <button type="button" onclick="submitPrayer()" style="background:#004aad;color:white;padding:10px 20px;border:none;border-radius:8px;">Post Request</button>
-      </form>
-      <div id="prayerList" style="margin-top:20px;text-align:left;"></div>
-    </div>
-  </section>
+<script>
+  // Intro animation
+  setTimeout(() => {
+    document.getElementById('intro').style.display = 'none';
+    document.querySelector('header').style.display = 'block';
+    document.querySelector('nav').style.display = 'flex';
+    document.getElementById('home').classList.add('active');
+  }, 4000);
 
-  <section id="leaders" class="page">
-    <div class="card">
-      <h2>Youth Leaders 👥</h2>
-      <ul>
-        <li><strong>Chairperson:</strong> Zachary Gikonyo</li>
-        <li><strong>Vice Chairperson:</strong> Dalson Maina</li>
-        <li><strong>Secretary:</strong> Ian Gathagu</li>
-        <li><strong>Vice Secretary:</strong> Lydia Wamuyu</li>
-        <li><strong>Treasurer:</strong> Winnie Maundu</li>
-      </ul>
-      <h3 style="margin-top:1em;">Secretary’s Message</h3>
-      <p>
-        Greetings, beloved members of PCEA Center Youth 🙏.  
-        As your Secretary, I’m humbled and grateful for the unity, energy, and faith that define our fellowship.  
-        This portal is a symbol of our growth — a space where every youth can stay informed, share, and be inspired.  
-        Let’s continue to build each other spiritually, socially, and creatively as one body in Christ.  
-        <br><br>
-        <em>“Let no one despise your youth, but be an example to the believers in word, in conduct, in love, in spirit, in faith, in purity.” — 1 Timothy 4:12</em>
-      </p>
-      <p><strong>– Ian Gathagu, Secretary</strong></p>
-    </div>
-  </section>
+  // Page switching
+  const pages = document.querySelectorAll('.page');
+  function showPage(id){
+    pages.forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
 
-  <footer>
-    Created with pride by <strong>Ian Gathagu</strong>
-  </footer>
-
-  <script>
-    const pages = document.querySelectorAll('.page');
-    function showPage(pageId) {
-      pages.forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
+  // Prayer posting
+  function submitPrayer(){
+    const text = document.getElementById('request').value.trim();
+    if(text!==''){
+      const div = document.createElement('div');
+      div.textContent = "🙏 " + text;
+      div.style.background = "#eaf0ff";
+      div.style.padding = "10px";
+      div.style.marginTop = "10px";
+      div.style.borderRadius = "10px";
+      document.getElementById('prayerList').prepend(div);
+      document.getElementById('request').value='';
     }
+  }
 
-    function submitPrayer() {
-      const text = document.getElementById('request').value.trim();
-      if (text !== '') {
-        const div = document.createElement('div');
-        div.textContent = "🙏 " + text;
-        div.style.background = "#eaf0ff";
-        div.style.padding = "10px";
-        div.style.marginTop = "10px";
-        div.style.borderRadius = "10px";
-        document.getElementById('prayerList').prepend(div);
-        document.getElementById('request').value = '';
-      }
-    }
+  // Word of the Day
+  const verses = [
+    "Philippians 4:13 — I can do all things through Christ who strengthens me.",
+    "Jeremiah 29:11 — For I know the plans I have for you, declares the Lord.",
+    "Psalm 23:1 — The Lord is my shepherd; I shall not want.",
+    "1 Timothy 4:12 — Let no one despise your youth.",
+    "Romans 8:28 — All things work together for good to those who love God."
+  ];
+  document.getElementById('verse').textContent = verses[Math.floor(Math.random()*verses.length)];
+</script>
 
-    const verses = [
-      "Philippians 4:13 — I can do all things through Christ who strengthens me.",
-      "Jeremiah 29:11 — For I know the plans I have for you, declares the Lord.",
-      "Psalm 23:1 — The Lord is my shepherd; I shall not want.",
-      "1 Timothy 4:12 — Let no one despise your youth.",
-      "Romans 8:28 — All things work together for good to those who love God."
-    ];
-    document.getElementById('verse').textContent = verses[Math.floor(Math.random() * verses.length)];
-
-    // Intro animation
-    setTimeout(() => {
-      document.getElementById('intro-text').textContent = "Created with Pride by Ian Gathagu";
-    }, 2000);
-    setTimeout(() => {
-      document.getElementById('intro').style.display = "none";
-      document.querySelector('header').style.display = "block";
-      document.querySelector('nav').style.display = "flex";
-      document.getElementById('home').classList.add('active');
-    }, 5000);
-  </script>
 </body>
-              </html>
+</html>
