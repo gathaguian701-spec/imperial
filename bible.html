@@ -1,108 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bible - PCEA Center Youth Portal</title>
-  <style>
-    body {
-      background-color: #0b1c2c;
-      color: #ffffff;
-      font-family: "Poppins", sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #00c3ff;
-    }
-    select, button {
-      padding: 10px;
-      margin: 5px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-      background: #00c3ff;
-      color: #fff;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    select:hover, button:hover {
-      background: #0078a0;
-    }
-    #verses {
-      margin-top: 20px;
-      background: #102a40;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: left;
-      line-height: 1.7;
-      box-shadow: 0 0 10px rgba(0, 195, 255, 0.3);
-    }
-    a {
-      color: #00c3ff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PCEA CENTER YOUTH - Full Bible</title>
+<style>
+body { font-family: "Poppins", Arial, sans-serif; margin:0; padding:0; background:#f5f7fa; color:#222; }
+header { background:#004aad; color:white; padding:12px; text-align:center; }
+main { max-width:900px; margin:12px auto; padding:12px; }
+label { font-weight:bold; margin-right:8px; }
+select { padding:6px 10px; margin-right:12px; }
+#verses { margin-top:12px; }
+p { margin:4px 0; }
+</style>
 </head>
 <body>
-  <h1>📖 Holy Bible</h1>
-  <p>Select a Book and Chapter to Read:</p>
-  
-  <select id="book"></select>
-  <select id="chapter"></select>
-  <button onclick="loadBible()">Read</button>
-  
-  <div id="verses"></div>
 
-  <br>
-  <a href="index.html">🏠 Back to Home</a>
-  
-  <script>
-    const bookSelect = document.getElementById('book');
-    const chapterSelect = document.getElementById('chapter');
-    const versesDiv = document.getElementById('verses');
-    
-    const books = [
-      "Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth",
-      "1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah",
-      "Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah",
-      "Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum",
-      "Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts",
-      "Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians",
-      "1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews",
-      "James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"
-    ];
-    
-    books.forEach(book => {
-      const option = document.createElement('option');
-      option.textContent = book;
-      option.value = book;
-      bookSelect.appendChild(option);
+<header>
+<h1>PCEA CENTER YOUTH - Full Bible</h1>
+<p>Created with pride by <strong>Ian Gathagu</strong></p>
+</header>
+
+<main>
+<div>
+<label for="bookSelect">Book:</label>
+<select id="bookSelect"></select>
+<label for="chapterSelect">Chapter:</label>
+<select id="chapterSelect"></select>
+</div>
+<div id="verses"></div>
+</main>
+
+<script>
+let bibleData = {};
+
+// Load the full Bible JSON
+fetch('bible.json')
+  .then(res => res.json())
+  .then(data => {
+    bibleData = data;
+    const bookSelect = document.getElementById('bookSelect');
+    Object.keys(bibleData).forEach(book => {
+      const opt = document.createElement('option');
+      opt.value = book;
+      opt.textContent = book;
+      bookSelect.appendChild(opt);
     });
-    
-    for (let i = 1; i <= 150; i++) {
-      const option = document.createElement('option');
-      option.textContent = i;
-      option.value = i;
-      chapterSelect.appendChild(option);
-    }
-    
-    async function loadBible() {
-      const book = bookSelect.value;
-      const chapter = chapterSelect.value;
-      versesDiv.innerHTML = "⏳ Loading...";
-      try {
-        const response = await fetch(`https://bible-api.com/${book}%20${chapter}`);
-        const data = await response.json();
-        versesDiv.innerHTML = `<h2>${data.reference}</h2>` + 
-          data.verses.map(v => `<p><strong>${v.verse}.</strong> ${v.text}</p>`).join("");
-      } catch (error) {
-        versesDiv.innerHTML = "⚠️ Could not load Bible verses. Please check your connection.";
-      }
-    }
-  </script>
+    populateChapters(bookSelect.value);
+  })
+  .catch(err => {
+    document.getElementById('verses').innerText = "Unable to load Bible.";
+    console.error(err);
+  });
+
+const bookSelect = document.getElementById('bookSelect');
+const chapterSelect = document.getElementById('chapterSelect');
+const versesDiv = document.getElementById('verses');
+
+bookSelect.onchange = () => populateChapters(bookSelect.value);
+chapterSelect.onchange = () => showVerses(bookSelect.value, chapterSelect.value);
+
+function populateChapters(book) {
+  chapterSelect.innerHTML = '';
+  const chapters = Object.keys(bibleData[book]);
+  chapters.forEach(chap => {
+    const opt = document.createElement('option');
+    opt.value = chap;
+    opt.textContent = chap;
+    chapterSelect.appendChild(opt);
+  });
+  showVerses(book, chapters[0]);
+}
+
+function showVerses(book, chapter) {
+  versesDiv.innerHTML = '';
+  const verses = bibleData[book][chapter];
+  Object.keys(verses).forEach(vNum => {
+    const p = document.createElement('p');
+    p.innerHTML = `<strong>${vNum}</strong>: ${verses[vNum]}`;
+    versesDiv.appendChild(p);
+  });
+}
+</script>
+
 </body>
   </html>
