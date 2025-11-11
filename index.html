@@ -54,18 +54,22 @@ function showPage(page){
   const content = document.getElementById('content');
   if(page==='home'){
     content.innerHTML=`
-      <div class='card'>
+      <div class='card' style='margin-bottom:10px;'>
         <h2>Welcome to PCEA Center Youth Portal</h2>
         <p>This is the official digital space for our fellowship — a place to connect, share updates, submit prayer requests, and grow together in Christ.</p>
         <h3>Word of the Day</h3>
         <p><em>"The Lord is my light and my salvation; whom shall I fear?" - Psalm 27:1</em></p>
       </div>
-      <div class='card countdown-section'>
-        <h2>⏳ Next Event Countdown</h2>
-        <p id='event-title'>Youth Rally at PCEA Chieni Church</p>
-        <div id='countdown-rally' class='countdown'></div>
-        <p id='event-title2' style='margin-top:20px;'>Presbytery Youth Convention</p>
-        <div id='countdown-convention' class='countdown'></div>
+
+      <div class='card' style='display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;'>
+        <div style='flex:1; min-width:250px;'>
+          <h3>⏳ Youth Rally Countdown</h3>
+          <div id='countdown-rally' class='countdown'></div>
+        </div>
+        <div style='flex:1; min-width:250px;'>
+          <h3>⏳ Presbytery Convention Countdown</h3>
+          <div id='countdown-convention' class='countdown'></div>
+        </div>
       </div>
     `;
     startCountdown("countdown-rally","November 16, 2025 09:00:00");
