@@ -1,0 +1,173 @@
+[
+  // ===== GENERAL KNOWLEDGE =====
+  {
+    "type": "multiple",
+    "question": "Who painted the Mona Lisa?",
+    "options": ["Leonardo da Vinci", "Vincent Van Gogh", "Pablo Picasso", "Michelangelo"],
+    "answer": "Leonardo da Vinci"
+  },
+  {
+    "type": "fill",
+    "question": "The capital city of France is ____.",
+    "answer": "Paris"
+  },
+  {
+    "type": "multiple",
+    "question": "Which planet is known as the Red Planet?",
+    "options": ["Mars","Venus","Jupiter","Saturn"],
+    "answer": "Mars"
+  },
+  {
+    "type": "fill",
+    "question": "Water boils at ____ degrees Celsius.",
+    "answer": "100"
+  },
+  {
+    "type": "multiple",
+    "question": "Which element has the chemical symbol 'O'?",
+    "options": ["Oxygen","Gold","Silver","Iron"],
+    "answer": "Oxygen"
+  },
+  {
+    "type": "multiple",
+    "question": "Which ocean is the largest in the world?",
+    "options": ["Pacific","Atlantic","Indian","Arctic"],
+    "answer": "Pacific"
+  },
+  {
+    "type": "fill",
+    "question": "The tallest mountain in the world is ____.",
+    "answer": "Mount Everest"
+  },
+  {
+    "type": "multiple",
+    "question": "Which country hosted the 2016 Summer Olympics?",
+    "options": ["Brazil","China","UK","Russia"],
+    "answer": "Brazil"
+  },
+  {
+    "type": "fill",
+    "question": "The Great Wall of ____ is visible from space.",
+    "answer": "China"
+  },
+  {
+    "type": "multiple",
+    "question": "What is the largest mammal in the world?",
+    "options": ["Blue Whale","Elephant","Giraffe","Hippopotamus"],
+    "answer": "Blue Whale"
+  },
+
+  // ===== PCEA HISTORY =====
+  {
+    "type": "fill",
+    "question": "PCEA was founded in the year ____.",
+    "answer": "1892"
+  },
+  {
+    "type": "multiple",
+    "question": "Which missionary society first established PCEA in Kenya?",
+    "options": ["Church of Scotland","London Missionary Society","Society for African Missions","Anglican Church"],
+    "answer": "Church of Scotland"
+  },
+  {
+    "type": "multiple",
+    "question": "PCEA originally focused on which region in Kenya?",
+    "options": ["Central Kenya","Coastal Kenya","Nairobi","Western Kenya"],
+    "answer": "Central Kenya"
+  },
+  {
+    "type": "fill",
+    "question": "The first PCEA church was established in ____.",
+    "answer": "Kikuyu"
+  },
+  {
+    "type": "multiple",
+    "question": "Which PCEA leader is known for writing hymns in Kikuyu language?",
+    "options": ["Jonathan Kariara","Zachary Gikonyo","Dalson Maina","Ian Gathagu"],
+    "answer": "Jonathan Kariara"
+  },
+  {
+    "type": "fill",
+    "question": "The PCEA motto is '____ and Serve'.",
+    "answer": "Trust"
+  },
+  {
+    "type": "multiple",
+    "question": "PCEA follows which church governance system?",
+    "options": ["Presbyterian","Episcopal","Congregational","Catholic"],
+    "answer": "Presbyterian"
+  },
+  {
+    "type": "fill",
+    "question": "The first PCEA Moderator was Rev. ____.",
+    "answer": "John Arthur"
+  },
+  {
+    "type": "multiple",
+    "question": "Which year did PCEA start its presbytery system?",
+    "options": ["1912","1892","1935","1950"],
+    "answer": "1912"
+  },
+  {
+    "type": "fill",
+    "question": "PCEA’s first theological college was established in ____.",
+    "answer": "Thogoto"
+  },
+
+  // ===== COMPLEX THEOLOGICAL QUESTIONS =====
+  {
+    "type": "multiple",
+    "question": "Which Old Testament prophet confronted King Ahab and Queen Jezebel about idolatry?",
+    "options": ["Elijah","Elisha","Isaiah","Jeremiah"],
+    "answer": "Elijah"
+  },
+  {
+    "type": "fill",
+    "question": "The book of ____ in the Bible is known for its wisdom literature and 'fear of the Lord is the beginning of wisdom'.",
+    "answer": "Proverbs"
+  },
+  {
+    "type": "multiple",
+    "question": "In the New Testament, who is considered the author of most Epistles?",
+    "options": ["Paul","Peter","John","James"],
+    "answer": "Paul"
+  },
+  {
+    "type": "fill",
+    "question": "The Greek term 'Agape' in the Bible refers to ____ love.",
+    "answer": "unconditional"
+  },
+  {
+    "type": "multiple",
+    "question": "The Trinity consists of?",
+    "options": ["Father, Son, Holy Spirit","Father, Moses, Jesus","Jesus, Peter, Paul","God, Angels, Saints"],
+    "answer": "Father, Son, Holy Spirit"
+  },
+  {
+    "type": "fill",
+    "question": "The Sermon on the Mount is found in the book of ____.",
+    "answer": "Matthew"
+  },
+  {
+    "type": "multiple",
+    "question": "The phrase 'Justification by faith' is central to which Reformer?",
+    "options": ["Martin Luther","John Calvin","Ulrich Zwingli","John Knox"],
+    "answer": "Martin Luther"
+  },
+  {
+    "type": "fill",
+    "question": "In the parable of the Prodigal Son, the father represents ____.",
+    "answer": "God"
+  },
+  {
+    "type": "multiple",
+    "question": "Which council produced the Nicene Creed?",
+    "options": ["Council of Nicaea","Council of Chalcedon","Council of Trent","First Vatican Council"],
+    "answer": "Council of Nicaea"
+  },
+  {
+    "type": "fill",
+    "question": "The word 'Emmanuel' means ____.",
+    "answer": "God with us"
+  }
+]
