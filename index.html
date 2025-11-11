@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PCEA CENTER YOUTH PORTAL</title>
 <style>
 body{font-family:"Poppins",Arial,sans-serif;margin:0;background:#f5f7fa;color:#222;text-align:center;}
@@ -25,6 +25,7 @@ footer{background:#004aad;color:white;padding:12px;margin-top:20px;font-size:.9r
 .countdown{background:#dbe9ff;padding:10px 12px;border-radius:8px;flex:1;min-width:140px;}
 a.whatsapp-link{color:#25D366;font-weight:bold;text-decoration:none;}
 a.whatsapp-link:hover{text-decoration:underline;}
+#confetti{pointer-events:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;}
 </style>
 </head>
 <body>
@@ -43,17 +44,19 @@ a.whatsapp-link:hover{text-decoration:underline;}
 <button class="nav-btn" data-page="prayers" onclick="showPage('prayers',this)">🙏 Prayer Requests</button>
 <button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
 <button class="nav-btn" data-page="trivia" onclick="showPage('trivia',this)">🎯 Trivia</button>
+<button class="nav-btn" data-page="bible" onclick="showPage('bible',this)">📖 Bible</button>
 </nav>
 
 <!-- Home -->
 <section id="home" class="page active" aria-live="polite">
 <h2>Welcome</h2>
 <div class="countdown-container">
-  <div class="countdown" id="rallyCountdown"><strong>Youth Rally:</strong><br>Loading...</div>
-  <div class="countdown" id="conventionCountdown"><strong>Presbytery Youth Convention:</strong><br>Loading...</div>
+  <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
+  <div class="countdown" id="conventionCountdown" data-label="Presbytery Youth Convention"></div>
 </div>
-<p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate through Home, Events, Announcements, Prayer Requests, Leaders, and Trivia.</p>
+<p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate through Home, Events, Announcements, Prayer Requests, Leaders, Trivia, and Bible.</p>
 <p><strong>Word of the Day:</strong> <span id="wordOfDay">Loading...</span></p>
+<p><strong>Bible Verse of the Day:</strong> <span id="verseOfDay">Loading...</span></p>
 <p>Stay updated via our WhatsApp channel: 
 <a href="https://whatsapp.com/channel/0029VbAreot60eBWPwDZTl1p" target="_blank" class="whatsapp-link">PCEA CENTER YOUTH FELLOWSHIP 🙏</a></p>
 </section>
@@ -104,7 +107,19 @@ a.whatsapp-link:hover{text-decoration:underline;}
 <h2>Trivia Challenge</h2>
 <div id="triviaQuestion"></div>
 <div id="triviaOptions" style="margin-top:8px;"></div>
+<div id="triviaFeedback" style="margin-top:8px;font-size:1.2rem;"></div>
 <button id="nextQuestion" class="post-btn">Next Question</button>
+<div id="confetti"></div>
+</section>
+
+<!-- Bible -->
+<section id="bible" class="page" aria-live="polite">
+<h2>Holy Bible</h2>
+<label for="bookSelect">Book:</label>
+<select id="bookSelect"></select>
+<label for="chapterSelect">Chapter:</label>
+<select id="chapterSelect"></select>
+<div id="verses" style="margin-top:12px;text-align:left;"></div>
 </section>
 
 <footer>
@@ -114,10 +129,10 @@ a.whatsapp-link:hover{text-decoration:underline;}
 
 <script>
 (function(){
+// Navigation
 const btns=Array.from(document.querySelectorAll('.nav-btn'));
 const pages=Array.from(document.querySelectorAll('.page'));
 const splash=document.getElementById('splash-screen');
-
 window.showPage=function(pageId,btnElement){
   btns.forEach(b=>b.classList.remove('active'));
   let button=btnElement||btns.find(b=>b.dataset.page===pageId);
@@ -126,11 +141,9 @@ window.showPage=function(pageId,btnElement){
   const selected=document.getElementById(pageId);
   if(selected)selected.classList.add('active');
 };
-
-// Nav click
 btns.forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page,b)));
 
-// Prayer Form
+// Prayer Requests
 const prayerForm=document.getElementById('prayerForm');
 const prayerText=document.getElementById('prayerText');
 const prayerList=document.getElementById('prayerList');
@@ -147,13 +160,20 @@ window.addEventListener('load',function(){setTimeout(()=>{if(splash)splash.style
 const words=['Faith','Love','Hope','Grace','Peace','Joy','Service','Prayer','Truth','Wisdom'];
 document.getElementById('wordOfDay').textContent=words[Math.floor(Math.random()*words.length)];
 
-// Countdown Timers
+// Countdown
 function countdown(targetId,dateStr){
   const el=document.getElementById(targetId);
   const target=new Date(dateStr).getTime();
-  setInterval(()=>{const now=new Date().getTime();let dist=target-now;if(dist<0){el.innerHTML='Event Started!';return;}
-  let d=Math.floor(dist/(1000*60*60*24)),h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),m=Math.floor((dist%(1000*60*60))/(1000*60)),s=Math.floor((dist%(1000*60))/1000);
-  el.innerHTML=`<strong>${el.dataset.label||''}</strong><br>${d}d ${h}h ${m}m ${s}s`;},1000);
+  setInterval(()=>{
+    const now=new Date().getTime();
+    let dist=target-now;
+    if(dist<0){el.innerHTML='Event Started!';return;}
+    let d=Math.floor(dist/(1000*60*60*24)),
+        h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
+        m=Math.floor((dist%(1000*60*60))/(1000*60)),
+        s=Math.floor((dist%(1000*60))/1000);
+    el.innerHTML=`<strong>${el.dataset.label}</strong><br>${d}d ${h}h ${m}m ${s}s`;
+  },1000);
 }
 countdown('rallyCountdown','2025-11-16T00:00:00');
 countdown('conventionCountdown','2025-12-02T00:00:00');
@@ -161,11 +181,78 @@ countdown('conventionCountdown','2025-12-02T00:00:00');
 // Trivia
 let triviaData=[],currentQuestion=0;
 fetch('trivia_batch_1.json').then(r=>r.json()).then(data=>{triviaData=data;showTriviaQuestion();});
-function showTriviaQuestion(){if(triviaData.length===0)return;const q=triviaData[currentQuestion%triviaData.length];document.getElementById('triviaQuestion').innerHTML=`<strong>${q.question}</strong>`;const optionsDiv=document.getElementById('triviaOptions');optionsDiv.innerHTML='';q.options.forEach(opt=>{const btn=document.createElement('button');btn.textContent=opt;btn.className='nav-btn';btn.onclick=()=>alert(opt===q.answer?'✅ Correct!':`❌ Wrong! Correct: ${q.answer}`);optionsDiv.appendChild(btn);});}
+function showTriviaQuestion(){
+  if(triviaData.length===0)return;
+  const q=triviaData[currentQuestion%triviaData.length];
+  document.getElementById('triviaQuestion').innerHTML=`<strong>${q.question}</strong>`;
+  const optionsDiv=document.getElementById('triviaOptions');
+  optionsDiv.innerHTML='';
+  const feedbackDiv=document.getElementById('triviaFeedback');
+  feedbackDiv.innerHTML='';
+  q.options.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.textContent=opt;
+    btn.className='nav-btn';
+    btn.onclick=()=>{
+      feedbackDiv.innerHTML='';
+      const confettiContainer=document.getElementById('confetti');
+      confettiContainer.innerHTML='';
+      if(opt===q.answer){
+        feedbackDiv.innerHTML='🎉 Correct!';
+        for(let i=0;i<100;i++){
+          const ribbon=document.createElement('div');
+          ribbon.style.position='absolute';
+          ribbon.style.width='10px';
+          ribbon.style.height='30px';
+          ribbon.style.backgroundColor=`hsl(${Math.random()*360},70%,60%)`;
+          ribbon.style.left=Math.random()*100+'vw';
+          ribbon.style.top='-30px';
+          ribbon.style.transform=`rotate(${Math.random()*360}deg)`;
+          ribbon.style.opacity=Math.random()+0.5;
+          ribbon.style.animation=`fall ${2+Math.random()*3}s linear forwards`;
+          confettiContainer.appendChild(ribbon);
+        }
+      } else { feedbackDiv.innerHTML=`😢 Wrong! Correct: ${q.answer}`; }
+    };
+    optionsDiv.appendChild(btn);
+  });
+}
 document.getElementById('nextQuestion').onclick=()=>{currentQuestion++;showTriviaQuestion();};
+// Confetti animation
+const style=document.createElement('style');
+style.innerHTML=`@keyframes fall{to{transform:translateY(100vh) rotate(360deg);opacity:0;}}`;
+document.head.appendChild(style);
 
+// Bible
+let bibleData={};
+fetch('bible.json').then(r=>r.json()).then(data=>{
+  bibleData=data;
+  const bookSelect=document.getElementById('bookSelect');
+  Object.keys(bibleData).forEach(book=>{const opt=document.createElement('option');opt.value=book;opt.textContent=book;bookSelect.appendChild(opt);});
+  populateChapters(bookSelect.value);
+});
+const bookSelect=document.getElementById('bookSelect');
+const chapterSelect=document.getElementById('chapterSelect');
+const versesDiv=document.getElementById('verses');
+bookSelect.onchange=()=>populateChapters(bookSelect.value);
+chapterSelect.onchange=()=>showVerses(bookSelect.value,chapterSelect.value);
+function populateChapters(book){
+  chapterSelect.innerHTML='';
+  const chapters=Object.keys(bibleData[book]);
+  chapters.forEach(chap=>{const opt=document.createElement('option');opt.value=chap;opt.textContent=chap;chapterSelect.appendChild(opt);});
+  showVerses(book,chapters[0]);
+}
+function showVerses(book,chapter){
+  versesDiv.innerHTML='';
+  const verses=bibleData[book][chapter];
+  Object.keys(verses).forEach(vNum=>{const p=document.createElement('p');p.innerHTML=`<strong>${vNum}</strong>: ${verses[vNum]}`;versesDiv.appendChild(p);});
+}
+
+// Verse of the Day
+fetch('https://beta.ourmanna.com/api/v1/get/?format=json').then(r=>r.json()).then(data=>{
+  document.getElementById('verseOfDay').textContent=`"${data.verse.details.text}" — ${data.verse.details.reference}`;
+});
 })();
 </script>
-
 </body>
   </html>
