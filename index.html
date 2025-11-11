@@ -55,6 +55,7 @@ a.whatsapp-link:hover{text-decoration:underline;}
 </div>
 <p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate through Home, Events, Announcements, Prayer Requests, Leaders, and Trivia.</p>
 <p><strong>Word of the Day:</strong> <span id="wordOfDay">Loading...</span></p>
+<p><strong>Bible Verse of the Day:</strong> <span id="verseOfDay">Loading...</span></p>
 <p>Stay updated via our WhatsApp channel: 
 <a href="https://whatsapp.com/channel/0029VbAreot60eBWPwDZTl1p" target="_blank" class="whatsapp-link">PCEA CENTER YOUTH FELLOWSHIP 🙏</a></p>
 </section>
@@ -117,17 +118,16 @@ a.whatsapp-link:hover{text-decoration:underline;}
 
 <script>
 (function(){
-// Navigation
-const btns=Array.from(document.querySelectorAll('.nav-btn'));
-const pages=Array.from(document.querySelectorAll('.page'));
-const splash=document.getElementById('splash-screen');
+const btns = Array.from(document.querySelectorAll('.nav-btn'));
+const pages = Array.from(document.querySelectorAll('.page'));
+const splash = document.getElementById('splash-screen');
 window.showPage=function(pageId,btnElement){
   btns.forEach(b=>b.classList.remove('active'));
   let button=btnElement||btns.find(b=>b.dataset.page===pageId);
-  if(button)button.classList.add('active');
+  if(button) button.classList.add('active');
   pages.forEach(p=>p.classList.remove('active'));
   const selected=document.getElementById(pageId);
-  if(selected)selected.classList.add('active');
+  if(selected) selected.classList.add('active');
 };
 btns.forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page,b)));
 
@@ -136,9 +136,25 @@ const prayerForm=document.getElementById('prayerForm');
 const prayerText=document.getElementById('prayerText');
 const prayerList=document.getElementById('prayerList');
 let prayers=[];
-try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]'); if(!Array.isArray(prayers))prayers=[];}catch(e){prayers=[];}
-function renderPrayers(){prayerList.innerHTML='';[...prayers].reverse().forEach(item=>{const div=document.createElement('div');div.className='item';const dt=document.createElement('div');dt.style.fontSize='.85rem';dt.style.opacity='.85';dt.style.marginBottom='6px';dt.textContent=`Posted on ${item.date}`;const p=document.createElement('div');p.textContent=item.text;p.style.whiteSpace='pre-wrap';div.appendChild(p);div.appendChild(dt);prayerList.appendChild(div);});}
-prayerForm.addEventListener('submit',function(e){e.preventDefault();const txt=(prayerText.value||'').trim();if(!txt){alert('Please write a prayer request before posting.');return;}prayers.push({text:txt,date:new Date().toLocaleString()});localStorage.setItem('prayers_v1',JSON.stringify(prayers));prayerText.value='';renderPrayers();showPage('prayers');});
+try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]');if(!Array.isArray(prayers))prayers=[];}catch(e){prayers=[];}
+function renderPrayers(){
+  prayerList.innerHTML='';
+  [...prayers].reverse().forEach(item=>{
+    const div=document.createElement('div'); div.className='item';
+    const dt=document.createElement('div'); dt.style.fontSize='.85rem'; dt.style.opacity='.85'; dt.style.marginBottom='6px';
+    dt.textContent=`Posted on ${item.date}`;
+    const p=document.createElement('div'); p.textContent=item.text; p.style.whiteSpace='pre-wrap';
+    div.appendChild(p); div.appendChild(dt); prayerList.appendChild(div);
+  });
+}
+prayerForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  const txt=(prayerText.value||'').trim();
+  if(!txt){alert('Please write a prayer request before posting.');return;}
+  prayers.push({text:txt,date:new Date().toLocaleString()});
+  localStorage.setItem('prayers_v1',JSON.stringify(prayers));
+  prayerText.value=''; renderPrayers(); showPage('prayers');
+});
 renderPrayers();
 
 // Splash
@@ -166,52 +182,85 @@ function countdown(targetId,dateStr){
 countdown('rallyCountdown','2025-11-16T00:00:00');
 countdown('conventionCountdown','2025-12-02T00:00:00');
 
-// Trivia
-let triviaData=[],currentQuestion=0;
-fetch('trivia_batch_1.json').then(r=>r.json()).then(data=>{triviaData=data;showTriviaQuestion();});
-function showTriviaQuestion(){
-  if(triviaData.length===0)return;
-  const q=triviaData[currentQuestion%triviaData.length];
-  document.getElementById('triviaQuestion').innerHTML=`<strong>${q.question}</strong>`;
-  const optionsDiv=document.getElementById('triviaOptions');
-  optionsDiv.innerHTML='';
-  const feedbackDiv=document.getElementById('triviaFeedback');
-  feedbackDiv.innerHTML='';
-  q.options.forEach(opt=>{
-    const btn=document.createElement('button');
-    btn.textContent=opt;
-    btn.className='nav-btn';
-    btn.onclick=()=>{
-      feedbackDiv.innerHTML='';
-      const confettiContainer=document.getElementById('confetti');
-      confettiContainer.innerHTML='';
-      if(opt===q.answer){
-        feedbackDiv.innerHTML='🎉 Correct!';
-        for(let i=0;i<100;i++){
-          const ribbon=document.createElement('div');
-          ribbon.style.position='absolute';
-          ribbon.style.width='10px';
-          ribbon.style.height='30px';
-          ribbon.style.backgroundColor=`hsl(${Math.random()*360},70%,60%)`;
-          ribbon.style.left=Math.random()*100+'vw';
-          ribbon.style.top='-30px';
-          ribbon.style.transform=`rotate(${Math.random()*360}deg)`;
-          ribbon.style.opacity=Math.random()+0.5;
-          ribbon.style.animation=`fall ${2+Math.random()*3}s linear forwards`;
-          confettiContainer.appendChild(ribbon);
-        }
-      } else { feedbackDiv.innerHTML=`😢 Wrong! Correct: ${q.answer}`; }
-    };
-    optionsDiv.appendChild(btn);
-  });
+// Trivia system
+let triviaData = [];
+let askedQuestions = new Set();
+let currentQuestion = null;
+
+fetch('trivia_full.json').then(res=>res.json()).then(data=>{
+  triviaData = data;
+  showNextTrivia();
+}).catch(err=>console.error('Error loading trivia:',err));
+
+function getRandomQuestion(){
+  if(askedQuestions.size >= triviaData.length) askedQuestions.clear();
+  let qIndex;
+  do{qIndex = Math.floor(Math.random()*triviaData.length);}while(askedQuestions.has(qIndex));
+  askedQuestions.add(qIndex);
+  return triviaData[qIndex];
 }
-document.getElementById('nextQuestion').onclick=()=>{currentQuestion++;showTriviaQuestion();};
+
+function showNextTrivia(){
+  if(triviaData.length===0) return;
+  currentQuestion = getRandomQuestion();
+  const qDiv = document.getElementById('triviaQuestion');
+  const optionsDiv = document.getElementById('triviaOptions');
+  const feedbackDiv = document.getElementById('triviaFeedback');
+  const confettiContainer = document.getElementById('confetti');
+  feedbackDiv.innerHTML=''; confettiContainer.innerHTML=''; optionsDiv.innerHTML='';
+
+  if(currentQuestion.type==='mcq'){
+    qDiv.innerHTML=`<strong>${currentQuestion.question}</strong>`;
+    currentQuestion.options.forEach(opt=>{
+      const btn=document.createElement('button');
+      btn.textContent=opt; btn.className='nav-btn';
+      btn.onclick=()=>checkTriviaAnswer(opt);
+      optionsDiv.appendChild(btn);
+    });
+  } else if(currentQuestion.type==='fill'){
+    qDiv.innerHTML=`<strong>${currentQuestion.question.replace('___','_____')}</strong>`;
+    const input = document.createElement('input'); input.type='text'; input.placeholder='Type your answer here...';
+    const btn = document.createElement('button'); btn.textContent='Submit'; btn.className='post-btn';
+    btn.onclick=()=>checkTriviaAnswer(input.value);
+    optionsDiv.appendChild(input); optionsDiv.appendChild(btn);
+  }
+}
+
+function checkTriviaAnswer(answer){
+  const feedbackDiv=document.getElementById('triviaFeedback');
+  const confettiContainer=document.getElementById('confetti');
+  confettiContainer.innerHTML='';
+  if(answer.trim().toLowerCase()===currentQuestion.answer.trim().toLowerCase()){
+    feedbackDiv.innerHTML='🎉 Correct!';
+    for(let i=0;i<100;i++){
+      const ribbon=document.createElement('div');
+      ribbon.style.position='absolute'; ribbon.style.width='10px'; ribbon.style.height='30px';
+      ribbon.style.backgroundColor=`hsl(${Math.random()*360},70%,60%)`;
+      ribbon.style.left=Math.random()*100+'vw'; ribbon.style.top='-30px';
+      ribbon.style.transform=`rotate(${Math.random()*360}deg)`;
+      ribbon.style.opacity=Math.random()+0.5;
+      ribbon.style.animation=`fall ${2+Math.random()*3}s linear forwards`;
+      confettiContainer.appendChild(ribbon);
+    }
+  } else {
+    feedbackDiv.innerHTML=`😢 Wrong! Correct: ${currentQuestion.answer}`;
+  }
+}
+
+document.getElementById('nextQuestion').onclick = showNextTrivia;
 
 // Confetti animation
-const style=document.createElement('style');
+const style = document.createElement('style');
 style.innerHTML=`@keyframes fall{to{transform:translateY(100vh) rotate(360deg);opacity:0;}}`;
 document.head.appendChild(style);
+
+// Verse of the Day
+fetch('https://beta.ourmanna.com/api/v1/get/?format=json')
+  .then(r=>r.json())
+  .then(data=>{
+    document.getElementById('verseOfDay').textContent=`"${data.verse.details.text}" — ${data.verse.details.reference}`;
+  });
 })();
 </script>
 </body>
-                                                                                    </html>
+  </html>
