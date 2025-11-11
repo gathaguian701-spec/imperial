@@ -44,7 +44,6 @@ a.whatsapp-link:hover{text-decoration:underline;}
 <button class="nav-btn" data-page="prayers" onclick="showPage('prayers',this)">🙏 Prayer Requests</button>
 <button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
 <button class="nav-btn" data-page="trivia" onclick="showPage('trivia',this)">🎯 Trivia</button>
-<button class="nav-btn" data-page="bible" onclick="showPage('bible',this)">📖 Bible</button>
 </nav>
 
 <!-- Home -->
@@ -54,9 +53,8 @@ a.whatsapp-link:hover{text-decoration:underline;}
   <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
   <div class="countdown" id="conventionCountdown" data-label="Presbytery Youth Convention"></div>
 </div>
-<p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate through Home, Events, Announcements, Prayer Requests, Leaders, Trivia, and Bible.</p>
+<p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate through Home, Events, Announcements, Prayer Requests, Leaders, and Trivia.</p>
 <p><strong>Word of the Day:</strong> <span id="wordOfDay">Loading...</span></p>
-<p><strong>Bible Verse of the Day:</strong> <span id="verseOfDay">Loading...</span></p>
 <p>Stay updated via our WhatsApp channel: 
 <a href="https://whatsapp.com/channel/0029VbAreot60eBWPwDZTl1p" target="_blank" class="whatsapp-link">PCEA CENTER YOUTH FELLOWSHIP 🙏</a></p>
 </section>
@@ -110,16 +108,6 @@ a.whatsapp-link:hover{text-decoration:underline;}
 <div id="triviaFeedback" style="margin-top:8px;font-size:1.2rem;"></div>
 <button id="nextQuestion" class="post-btn">Next Question</button>
 <div id="confetti"></div>
-</section>
-
-<!-- Bible -->
-<section id="bible" class="page" aria-live="polite">
-<h2>Holy Bible</h2>
-<label for="bookSelect">Book:</label>
-<select id="bookSelect"></select>
-<label for="chapterSelect">Chapter:</label>
-<select id="chapterSelect"></select>
-<div id="verses" style="margin-top:12px;text-align:left;"></div>
 </section>
 
 <footer>
@@ -218,41 +206,12 @@ function showTriviaQuestion(){
   });
 }
 document.getElementById('nextQuestion').onclick=()=>{currentQuestion++;showTriviaQuestion();};
+
 // Confetti animation
 const style=document.createElement('style');
 style.innerHTML=`@keyframes fall{to{transform:translateY(100vh) rotate(360deg);opacity:0;}}`;
 document.head.appendChild(style);
-
-// Bible
-let bibleData={};
-fetch('bible.json').then(r=>r.json()).then(data=>{
-  bibleData=data;
-  const bookSelect=document.getElementById('bookSelect');
-  Object.keys(bibleData).forEach(book=>{const opt=document.createElement('option');opt.value=book;opt.textContent=book;bookSelect.appendChild(opt);});
-  populateChapters(bookSelect.value);
-});
-const bookSelect=document.getElementById('bookSelect');
-const chapterSelect=document.getElementById('chapterSelect');
-const versesDiv=document.getElementById('verses');
-bookSelect.onchange=()=>populateChapters(bookSelect.value);
-chapterSelect.onchange=()=>showVerses(bookSelect.value,chapterSelect.value);
-function populateChapters(book){
-  chapterSelect.innerHTML='';
-  const chapters=Object.keys(bibleData[book]);
-  chapters.forEach(chap=>{const opt=document.createElement('option');opt.value=chap;opt.textContent=chap;chapterSelect.appendChild(opt);});
-  showVerses(book,chapters[0]);
-}
-function showVerses(book,chapter){
-  versesDiv.innerHTML='';
-  const verses=bibleData[book][chapter];
-  Object.keys(verses).forEach(vNum=>{const p=document.createElement('p');p.innerHTML=`<strong>${vNum}</strong>: ${verses[vNum]}`;versesDiv.appendChild(p);});
-}
-
-// Verse of the Day
-fetch('https://beta.ourmanna.com/api/v1/get/?format=json').then(r=>r.json()).then(data=>{
-  document.getElementById('verseOfDay').textContent=`"${data.verse.details.text}" — ${data.verse.details.reference}`;
-});
 })();
 </script>
 </body>
-  </html>
+                                                                                    </html>
