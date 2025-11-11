@@ -1,149 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PCEA Center Youth Portal</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PCEA CENTER YOUTH PORTAL</title>
 <style>
-  body {margin:0;font-family:'Poppins',sans-serif;background:#0b1c2c;color:#fff;text-align:center;overflow-x:hidden;}
-  #intro {position:fixed;width:100%;height:100%;background:#0b1c2c;color:#00c3ff;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:1.5em;animation:fadeOut 3s ease 4s forwards;}
-  @keyframes fadeOut{to{opacity:0;visibility:hidden;}}
-  .container {display:none;padding:20px;}
-  button {background:#00c3ff;color:white;border:none;padding:12px 20px;margin:8px;border-radius:10px;cursor:pointer;font-size:16px;transition:transform 0.2s ease, background 0.3s ease;}
-  button:hover{background:#007a9c;transform:scale(1.05);}
-  h1{color:#00c3ff;}
-  .card{background:#102a40;border-radius:12px;padding:20px;margin:20px auto;max-width:700px;text-align:left;box-shadow:0 0 15px rgba(0,195,255,0.2);}
-  footer{margin-top:30px;font-size:14px;color:#aaa;}
-  .countdown{font-weight:bold;color:#ffd700;background:rgba(255,255,255,0.1);display:inline-block;padding:10px 15px;border-radius:10px;margin-top:8px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-  textarea{width:100%;border-radius:8px;padding:10px;border:none;margin-top:8px;}
-  .post-btn{background:#00c3ff;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;margin-top:10px;transition:all .2s ease;}
-  .post-btn:hover{transform:scale(1.03);background:#007a9c;}
+body{font-family:"Poppins",Arial,sans-serif;margin:0;background:#f5f7fa;color:#222;text-align:center;}
+#splash-screen{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#004aad;color:white;z-index:9999;animation:fadeOut 3s forwards;animation-delay:3s;}
+@keyframes fadeOut{to{opacity:0;visibility:hidden;}}
+nav{background:#004aad;padding:10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.nav-btn{background:white;border:none;padding:10px 18px;border-radius:25px;cursor:pointer;font-weight:600;transition:all .28s ease;}
+.nav-btn:hover{transform:scale(1.04);background:#dbe9ff;}
+.nav-btn.active{background:#002c7f;color:white;transform:scale(1.08);}
+.page{display:none;padding:16px;animation:fadeIn .35s ease;max-width:800px;margin:12px auto;text-align:left;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+textarea{width:90%;max-width:760px;min-height:100px;border-radius:10px;padding:10px;border:1px solid#ccc;font-family:inherit;}
+.post-btn{background:#004aad;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;margin-top:10px;transition:all .2s ease;}
+.post-btn:hover{transform:scale(1.03);background:#003580;}
+#prayerList{width:90%;max-width:760px;margin:12px auto 40px;text-align:left;}
+#prayerList .item{background:#e8edff;padding:10px;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.05);}
+footer{background:#004aad;color:white;padding:12px;margin-top:20px;font-size:.9rem;}
+.countdown-container{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.countdown{background:#dbe9ff;padding:10px 12px;border-radius:8px;flex:1;min-width:140px;}
+a.whatsapp-link{color:#25D366;font-weight:bold;text-decoration:none;}
+a.whatsapp-link:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
 
-<div id="intro">
-  <div>PCEA CENTER YOUTH PORTAL</div>
-  <div style="margin-top:10px;">CREATED WITH PRIDE BY IAN GATHAGU</div>
+<!-- Splash -->
+<div id="splash-screen" role="dialog" aria-hidden="false">
+<h1 style="margin:0 0 8px 0;">PCEA CENTER YOUTH PORTAL</h1>
+<div style="opacity:.95;">Created with pride by <strong>Ian Gathagu</strong></div>
 </div>
 
-<div id="main" class="container">
-  <h1>🏠 Home</h1>
-  <div class="buttons">
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('events')">Events</button>
-    <button onclick="showPage('announcements')">Announcements</button>
-    <button onclick="showPage('prayers')">Prayer Requests</button>
-    <button onclick="showPage('leaders')">Leaders</button>
-    <button onclick="showPage('bible')">Bible</button>
-  </div>
-  <div id="content"></div>
-  <footer>To God be the Glory 🙏</footer>
+<!-- Navigation -->
+<nav>
+<button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
+<button class="nav-btn" data-page="events" onclick="showPage('events',this)">📅 Events</button>
+<button class="nav-btn" data-page="announcements" onclick="showPage('announcements',this)">📢 Announcements</button>
+<button class="nav-btn" data-page="prayers" onclick="showPage('prayers',this)">🙏 Prayer Requests</button>
+<button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
+<button class="nav-btn" data-page="trivia" onclick="showPage('trivia',this)">🎯 Trivia</button>
+</nav>
+
+<!-- Home -->
+<section id="home" class="page active" aria-live="polite">
+<h2>Welcome</h2>
+<div class="countdown-container">
+  <div class="countdown" id="rallyCountdown"><strong>Youth Rally:</strong><br>Loading...</div>
+  <div class="countdown" id="conventionCountdown"><strong>Presbytery Youth Convention:</strong><br>Loading...</div>
 </div>
+<p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate through Home, Events, Announcements, Prayer Requests, Leaders, and Trivia.</p>
+<p><strong>Word of the Day:</strong> <span id="wordOfDay">Loading...</span></p>
+<p>Stay updated via our WhatsApp channel: 
+<a href="https://whatsapp.com/channel/0029VbAreot60eBWPwDZTl1p" target="_blank" class="whatsapp-link">PCEA CENTER YOUTH FELLOWSHIP 🙏</a></p>
+</section>
+
+<!-- Events -->
+<section id="events" class="page" aria-live="polite">
+<h2>Upcoming Events</h2>
+<ul>
+<li><strong>Youth Rally – 16th Nov 2025:</strong> Worship, fellowship, games, and teaching at PCEA Chieni Church.</li>
+<li><strong>Presbytery Youth Convention – 2nd–6th Dec 2025:</strong> 5-day Bible studies, workshops, leadership training. Bring a book. Charges Ksh1500 (full or instalments).</li>
+</ul>
+</section>
+
+<!-- Announcements -->
+<section id="announcements" class="page" aria-live="polite">
+<h2>Announcements</h2>
+<ul>
+<li>Youth Rally – 16th Nov 2025: Don’t miss worship, teaching, and fellowship at PCEA Chieni Church.</li>
+<li>Presbytery Youth Convention – 2nd–6th Dec 2025: Bible study, workshops, evening praise & worship. Bring a book. Charges Ksh1500 (full or instalments).</li>
+</ul>
+</section>
+
+<!-- Prayer Requests -->
+<section id="prayers" class="page" aria-live="polite">
+<h2>Prayer Requests</h2>
+<form id="prayerForm">
+<textarea id="prayerText" placeholder="Type your prayer request here..." required></textarea><br>
+<button type="submit" class="post-btn">Post Anonymously</button>
+</form>
+<div id="prayerList" aria-live="polite" aria-atomic="true"></div>
+</section>
+
+<!-- Leaders -->
+<section id="leaders" class="page" aria-live="polite">
+<h2>Leaders</h2>
+<ul>
+<li><strong>Chairperson:</strong> Zachary Gikonyo</li>
+<li><strong>Vice Chairperson:</strong> Dalson Maina</li>
+<li><strong>Secretary:</strong> Ian Gathagu</li>
+<li><strong>Vice Secretary:</strong> Lydia Wamuyu</li>
+<li><strong>Treasurer:</strong> Winnie Maundu</li>
+</ul>
+<p><em>Message from Secretary:</em> Welcome youth! Let’s grow together spiritually and socially in PCEA fellowship.</p>
+</section>
+
+<!-- Trivia -->
+<section id="trivia" class="page" aria-live="polite">
+<h2>Trivia Challenge</h2>
+<div id="triviaQuestion"></div>
+<div id="triviaOptions" style="margin-top:8px;"></div>
+<button id="nextQuestion" class="post-btn">Next Question</button>
+</section>
+
+<footer>
+<div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
+<div style="opacity:.9; font-size:.95rem; margin-top:6px;">Created with pride by <strong>Ian Gathagu</strong></div>
+</footer>
 
 <script>
-window.onload = () => {
-  setTimeout(() => {
-    document.getElementById('intro').style.display='none';
-    document.getElementById('main').style.display='block';
-    showPage('home');
-  }, 5000);
+(function(){
+const btns=Array.from(document.querySelectorAll('.nav-btn'));
+const pages=Array.from(document.querySelectorAll('.page'));
+const splash=document.getElementById('splash-screen');
+
+window.showPage=function(pageId,btnElement){
+  btns.forEach(b=>b.classList.remove('active'));
+  let button=btnElement||btns.find(b=>b.dataset.page===pageId);
+  if(button)button.classList.add('active');
+  pages.forEach(p=>p.classList.remove('active'));
+  const selected=document.getElementById(pageId);
+  if(selected)selected.classList.add('active');
 };
 
-function showPage(page){
-  const content = document.getElementById('content');
-  if(page==='home'){
-    content.innerHTML=`
-      <div class='card' style='margin-bottom:10px;'>
-        <h2>Welcome to PCEA Center Youth Portal</h2>
-        <p>This is the official digital space for our fellowship — a place to connect, share updates, submit prayer requests, and grow together in Christ.</p>
-        <h3>Word of the Day</h3>
-        <p><em>"The Lord is my light and my salvation; whom shall I fear?" - Psalm 27:1</em></p>
-      </div>
+// Nav click
+btns.forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page,b)));
 
-      <div class='card' style='display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;'>
-        <div style='flex:1; min-width:250px;'>
-          <h3>⏳ Youth Rally Countdown</h3>
-          <div id='countdown-rally' class='countdown'></div>
-        </div>
-        <div style='flex:1; min-width:250px;'>
-          <h3>⏳ Presbytery Convention Countdown</h3>
-          <div id='countdown-convention' class='countdown'></div>
-        </div>
-      </div>
-    `;
-    startCountdown("countdown-rally","November 16, 2025 09:00:00");
-    startCountdown("countdown-convention","December 2, 2025 09:00:00");
-  }
-  else if(page==='events'){
-    content.innerHTML=`
-      <div class='card'>
-        <h2>📅 Upcoming Events</h2>
-        <ul>
-          <li><strong>Youth Rally:</strong> 16th November 2025 at PCEA Chieni Church — worship, fellowship, games.</li>
-          <li><strong>Presbytery Youth Convention:</strong> 2nd–6th December 2025 — bring a book. Charges: Ksh 1500 (full or installments to Treasurer).</li>
-        </ul>
-      </div>`;
-  }
-  else if(page==='announcements'){
-    content.innerHTML=`
-      <div class='card'>
-        <h2>📢 Announcements</h2>
-        <p>Prepare spiritually and physically for the upcoming Youth Rally and Presbytery Youth Convention. Keep praying for one another and support your leaders in organizing these events.</p>
-      </div>`;
-  }
-  else if(page==='prayers'){
-    content.innerHTML=`
-      <div class='card'>
-        <h2>🙏 Prayer Requests</h2>
-        <textarea id='request' rows='4' placeholder='Write your prayer request here...'></textarea>
-        <br><button class='post-btn' onclick='postPrayer()'>Post Anonymously</button>
-        <div id='posted'></div>
-      </div>`;
-  }
-  else if(page==='leaders'){
-    content.innerHTML=`
-      <div class='card'>
-        <h2>👥 Our Leaders</h2>
-        <ul>
-          <li><strong>Chairperson:</strong> Zachary Gikonyo</li>
-          <li><strong>Vice Chairperson:</strong> Dalson Maina</li>
-          <li><strong>Secretary:</strong> Ian Gathagu</li>
-          <li><strong>Vice Secretary:</strong> Lydia Wamuyu</li>
-          <li><strong>Treasurer:</strong> Winnie Maundu</li>
-        </ul>
-      </div>`;
-  }
-  else if(page==='bible'){
-    content.innerHTML=`<iframe src="bible.html?v=2" width="100%" height="600" style="border:none;border-radius:10px;box-shadow:0 0 10px rgba(0,195,255,0.2);"></iframe>`;
-  }
-}
+// Prayer Form
+const prayerForm=document.getElementById('prayerForm');
+const prayerText=document.getElementById('prayerText');
+const prayerList=document.getElementById('prayerList');
+let prayers=[];
+try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]'); if(!Array.isArray(prayers))prayers=[];}catch(e){prayers=[];}
+function renderPrayers(){prayerList.innerHTML='';[...prayers].reverse().forEach(item=>{const div=document.createElement('div');div.className='item';const dt=document.createElement('div');dt.style.fontSize='.85rem';dt.style.opacity='.85';dt.style.marginBottom='6px';dt.textContent=`Posted on ${item.date}`;const p=document.createElement('div');p.textContent=item.text;p.style.whiteSpace='pre-wrap';div.appendChild(p);div.appendChild(dt);prayerList.appendChild(div);});}
+prayerForm.addEventListener('submit',function(e){e.preventDefault();const txt=(prayerText.value||'').trim();if(!txt){alert('Please write a prayer request before posting.');return;}prayers.push({text:txt,date:new Date().toLocaleString()});localStorage.setItem('prayers_v1',JSON.stringify(prayers));prayerText.value='';renderPrayers();showPage('prayers');});
+renderPrayers();
 
-function postPrayer(){
-  const request = document.getElementById('request').value.trim();
-  const posted = document.getElementById('posted');
-  if(!request){ posted.innerHTML="<p style='color:red;'>Please write something first.</p>"; return; }
-  posted.innerHTML += `<p>🕊️ ${request}</p>`;
-  document.getElementById('request').value='';
-}
+// Splash
+window.addEventListener('load',function(){setTimeout(()=>{if(splash)splash.style.display='none';showPage('home',btns.find(b=>b.dataset.page==='home'));},3200);});
 
-function startCountdown(id,dateString){
-  const el = document.getElementById(id);
-  const target = new Date(dateString).getTime();
-  function updateCountdown(){
-    const now = new Date().getTime();
-    const diff = target - now;
-    if(diff<=0){ el.innerHTML="🎉 The event is happening now!"; return; }
-    const days=Math.floor(diff/(1000*60*60*24));
-    const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const mins=Math.floor((diff%(1000*60*60))/(1000*60));
-    const secs=Math.floor((diff%(1000*60))/1000);
-    el.innerHTML=`${days}d ${hours}h ${mins}m ${secs}s`;
-  }
-  updateCountdown();
-  setInterval(updateCountdown,1000);
+// Word of the Day
+const words=['Faith','Love','Hope','Grace','Peace','Joy','Service','Prayer','Truth','Wisdom'];
+document.getElementById('wordOfDay').textContent=words[Math.floor(Math.random()*words.length)];
+
+// Countdown Timers
+function countdown(targetId,dateStr){
+  const el=document.getElementById(targetId);
+  const target=new Date(dateStr).getTime();
+  setInterval(()=>{const now=new Date().getTime();let dist=target-now;if(dist<0){el.innerHTML='Event Started!';return;}
+  let d=Math.floor(dist/(1000*60*60*24)),h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),m=Math.floor((dist%(1000*60*60))/(1000*60)),s=Math.floor((dist%(1000*60))/1000);
+  el.innerHTML=`<strong>${el.dataset.label||''}</strong><br>${d}d ${h}h ${m}m ${s}s`;},1000);
 }
+countdown('rallyCountdown','2025-11-16T00:00:00');
+countdown('conventionCountdown','2025-12-02T00:00:00');
+
+// Trivia
+let triviaData=[],currentQuestion=0;
+fetch('trivia_batch_1.json').then(r=>r.json()).then(data=>{triviaData=data;showTriviaQuestion();});
+function showTriviaQuestion(){if(triviaData.length===0)return;const q=triviaData[currentQuestion%triviaData.length];document.getElementById('triviaQuestion').innerHTML=`<strong>${q.question}</strong>`;const optionsDiv=document.getElementById('triviaOptions');optionsDiv.innerHTML='';q.options.forEach(opt=>{const btn=document.createElement('button');btn.textContent=opt;btn.className='nav-btn';btn.onclick=()=>alert(opt===q.answer?'✅ Correct!':`❌ Wrong! Correct: ${q.answer}`);optionsDiv.appendChild(btn);});}
+document.getElementById('nextQuestion').onclick=()=>{currentQuestion++;showTriviaQuestion();};
+
+})();
 </script>
 
 </body>
-</html>
+  </html>
