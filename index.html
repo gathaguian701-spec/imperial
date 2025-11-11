@@ -1,137 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PCEA CENTER YOUTH PORTAL</title>
-<style>
-body { font-family:"Poppins",Arial,sans-serif; margin:0; background:#f5f7fa; color:#222; text-align:center; }
-#splash-screen { position:fixed; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#004aad; color:white; z-index:9999; animation:fadeOut 3s forwards; animation-delay:3s; }
-@keyframes fadeOut { to { opacity:0; visibility:hidden; } }
-nav { background:#004aad; padding:8px; display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
-.nav-btn { background:white; border:none; padding:8px 16px; border-radius:22px; cursor:pointer; font-weight:600; font-size:.95rem; transition:all .25s ease; }
-.nav-btn:hover { transform:scale(1.03); background:#dbe9ff; }
-.nav-btn.active { background:#002c7f; color:white; transform:scale(1.06); }
-.page { display:none; padding:16px; animation:fadeIn .35s ease; max-width:760px; margin:14px auto; text-align:left; font-size:.95rem; }
-.page.active { display:block; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(6px);} to { opacity:1; transform:none; } }
-#prayerForm { margin-top:6px; }
-textarea { width:90%; max-width:700px; min-height:80px; border-radius:8px; padding:8px; border:1px solid#ccc; font-family:inherit; font-size:.9rem; }
-.post-btn { background:#004aad; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-top:6px; transition:all .2s ease; font-size:.9rem; }
-.post-btn:hover { transform:scale(1.02); background:#003580; }
-#prayerList { width:90%; max-width:700px; margin:10px auto 30px; text-align:left; font-size:.9rem; }
-#prayerList .item { background:#e8edff; padding:8px; margin-bottom:8px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
-footer { background:#004aad; color:white; padding:10px; margin-top:16px; font-size:.9rem; }
-.verse-box { background:#e8edff; padding:10px; border-radius:8px; margin-top:10px; border-left:4px solid #004aad; font-style:italic; font-size:.9rem; }
-@media (max-width:600px){ .nav-btn{ padding:6px 10px; font-size:.85rem; } textarea{ width:94%; } #prayerList{ width:94%; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCEA Center Youth Portal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #0b1c2c;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    #intro {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-color: #0b1c2c;
+      color: #00c3ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5em;
+      animation: fadeOut 3s ease 4s forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    .container {
+      display: none;
+      padding: 20px;
+    }
+
+    button {
+      background: #00c3ff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin: 8px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    button:hover {
+      background: #007a9c;
+      transform: scale(1.05);
+    }
+
+    h1 {
+      color: #00c3ff;
+    }
+
+    .card {
+      background: #102a40;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 700px;
+      text-align: left;
+      box-shadow: 0 0 15px rgba(0, 195, 255, 0.2);
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
-<div id="splash-screen">
-  <h1 style="margin:0 0 6px 0;font-size:1.8rem;">PCEA CENTER YOUTH PORTAL</h1>
-  <div style="opacity:.95;font-size:1rem;">Created with pride by <strong>Ian Gathagu</strong></div>
-</div>
 
-<nav>
-  <button class="nav-btn active" data-page="home" onclick="showPage('home', this)">🏠 Home</button>
-  <button class="nav-btn" data-page="events" onclick="showPage('events', this)">📅 Events</button>
-  <button class="nav-btn" data-page="announcements" onclick="showPage('announcements', this)">📢 Announcements</button>
-  <button class="nav-btn" data-page="prayers" onclick="showPage('prayers', this)">🙏 Prayer Requests</button>
-  <button class="nav-btn" data-page="leaders" onclick="showPage('leaders', this)">👥 Leaders</button>
-</nav>
-
-<section id="home" class="page active">
-  <h2 style="font-size:1.3rem;">Welcome</h2>
-  <p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate between Home, Events, Announcements, Prayer Requests, and Leaders.</p>
-  <p>Stay updated by joining our WhatsApp channel: 
-    <a href="https://whatsapp.com/channel/0029VbAreot60eBWPwDZTl1p" target="_blank" class="whatsapp-link">PCEA CENTER YOUTH FELLOWSHIP 🙏</a>
-  </p>
-  <div class="verse-box">
-    <h3 style="font-size:1rem;">Word of the Day 📖</h3>
-    <p id="verseText"></p>
+  <div id="intro">
+    <div>PCEA CENTER YOUTH PORTAL</div>
+    <div style="margin-top:10px;">CREATED WITH PRIDE BY IAN GATHAGU</div>
   </div>
-</section>
 
-<section id="events" class="page">
-  <h2 style="font-size:1.2rem;">Upcoming Events</h2>
-  <ul>
-    <li><strong>Youth Rally – 16th Nov 2025</strong><br>A day-long gathering at PCEA Chieni Church. Worship, fellowship, games, and teachings.</li>
-    <li><strong>Presbytery Youth Convention – 2nd–6th Dec 2025</strong><br>5-day convention with Bible study, workshops, and evening worship. Bring a book. Charges: <strong>Ksh 1500</strong>, full or instalments.</li>
-  </ul>
-</section>
+  <div id="main" class="container">
+    <h1>🏠 Home</h1>
+    <div class="buttons">
+      <button onclick="showPage('home')">Home</button>
+      <button onclick="showPage('events')">Events</button>
+      <button onclick="showPage('announcements')">Announcements</button>
+      <button onclick="showPage('prayers')">Prayer Requests</button>
+      <button onclick="showPage('leaders')">Leaders</button>
+      <button onclick="showPage('bible')">Bible</button>
+    </div>
 
-<section id="announcements" class="page">
-  <h2 style="font-size:1.2rem;">Announcements</h2>
-  <ul>
-    <li><strong>Youth Rally – 16th Nov:</strong> Full day of worship and fellowship. Connect with peers and grow spiritually.</li>
-    <li><strong>Presbytery Youth Convention – 2nd–6th Dec:</strong> Youth gather for Bible study, workshops, evening praise & worship. Bring a book. Charges Ksh 1500 to treasurer.</li>
-  </ul>
-</section>
+    <div id="content"></div>
 
-<section id="prayers" class="page">
-  <h2 style="font-size:1.2rem;">Prayer Requests</h2>
-  <form id="prayerForm">
-    <textarea id="prayerText" placeholder="Type your prayer request..." required></textarea><br>
-    <button type="submit" class="post-btn">Post Anonymously</button>
-  </form>
-  <div id="prayerList"></div>
-</section>
+    <footer>To God be the Glory 🙏</footer>
+  </div>
 
-<section id="leaders" class="page">
-  <h2 style="font-size:1.2rem;">Youth Leaders</h2>
-  <ul>
-    <li><strong>Chairperson:</strong> Zachary Gikonyo</li>
-    <li><strong>Vice Chairperson:</strong> Dalson Maina</li>
-    <li><strong>Secretary:</strong> Ian Gathagu</li>
-    <li><strong>Vice Secretary:</strong> Lydia Wamuyu</li>
-    <li><strong>Treasurer:</strong> Winnie Maundu</li>
-  </ul>
-  <h3>Secretary’s Message</h3>
-  <p>Greetings beloved members 🙏. This portal helps us stay connected and spiritually uplifted.<br><em>“Let no one despise your youth, but be an example in word, conduct, love, spirit, faith, and purity.” – 1 Timothy 4:12</em></p>
-  <p><strong>– Ian Gathagu</strong></p>
-</section>
+  <script>
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('intro').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
+        showPage('home');
+      }, 5000);
+    };
 
-<footer>
-  <div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
-  <div style="opacity:.9; font-size:.85rem; margin-top:4px;">Created with pride by <strong>Ian Gathagu</strong></div>
-</footer>
+    function showPage(page) {
+      const content = document.getElementById('content');
+      if (page === 'home') {
+        content.innerHTML = `
+          <div class='card'>
+            <h2>Welcome to PCEA Center Youth Portal</h2>
+            <p>This is the official digital space for our fellowship — a place to connect, share updates, submit prayer requests, and grow together in Christ.</p>
+            <h3>Word of the Day</h3>
+            <p><em>"The Lord is my light and my salvation; whom shall I fear?" - Psalm 27:1</em></p>
+          </div>`;
+      }
+      else if (page === 'events') {
+        content.innerHTML = `
+          <div class='card'>
+            <h2>📅 Upcoming Events</h2>
+            <ul>
+              <li><strong>Youth Rally:</strong> 16th November 2025 at PCEA Chieni Church.</li>
+              <li><strong>Presbytery Youth Convention:</strong> 2nd–6th December 2025. Members are expected to carry a book for sessions. Charges: Ksh 1500 (can be paid in full or installments to the Treasurer).</li>
+            </ul>
+          </div>`;
+      }
+      else if (page === 'announcements') {
+        content.innerHTML = `
+          <div class='card'>
+            <h2>📢 Announcements</h2>
+            <p>Let's all prepare spiritually and physically for the upcoming Youth Rally and the Presbytery Youth Convention. Keep praying for one another and support your leaders in organizing these events.</p>
+          </div>`;
+      }
+      else if (page === 'prayers') {
+        content.innerHTML = `
+          <div class='card'>
+            <h2>🙏 Prayer Requests</h2>
+            <textarea id='request' rows='4' placeholder='Write your prayer request here...' style='width:100%;border-radius:8px;padding:10px;'></textarea>
+            <br><button onclick='postPrayer()'>Post Anonymously</button>
+            <div id='posted'></div>
+          </div>`;
+      }
+      else if (page === 'leaders') {
+        content.innerHTML = `
+          <div class='card'>
+            <h2>👥 Our Leaders</h2>
+            <ul>
+              <li><strong>Chairperson:</strong> Zachary Gikonyo</li>
+              <li><strong>Vice Chairperson:</strong> Dalson Maina</li>
+              <li><strong>Secretary:</strong> Ian Gathagu</li>
+              <li><strong>Vice Secretary:</strong> Lydia Wamuyu</li>
+              <li><strong>Treasurer:</strong> Winnie Maundu</li>
+            </ul>
+            <p><em>"Let all you do be done in love." – 1 Corinthians 16:14</em></p>
+          </div>`;
+      }
+      else if (page === 'bible') {
+        content.innerHTML = `
+          <iframe src="bible.html" width="100%" height="600" style="border:none;border-radius:10px;box-shadow:0 0 10px rgba(0,195,255,0.2);"></iframe>`;
+      }
+    }
 
-<script>
-(function(){
-  const btns = Array.from(document.querySelectorAll('.nav-btn'));
-  const pages = Array.from(document.querySelectorAll('.page'));
-  const splash = document.getElementById('splash-screen');
-  const verseEl = document.getElementById('verseText');
-  const verses = [
-    "Philippians 4:13 — I can do all things through Christ who strengthens me.",
-    "Jeremiah 29:11 — For I know the plans I have for you, declares the Lord.",
-    "Psalm 23:1 — The Lord is my shepherd; I shall not want.",
-    "1 Timothy 4:12 — Let no one despise your youth.",
-    "Romans 8:28 — All things work together for good to those who love God."
-  ];
-  verseEl.textContent = verses[Math.floor(Math.random()*verses.length)];
-
-  window.showPage = function(pageId, btnElement){
-    btns.forEach(b => b.classList.remove('active'));
-    let button = btnElement || btns.find(b => b.dataset.page===pageId);
-    if(button) button.classList.add('active');
-    pages.forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-  };
-
-  btns.forEach(b => b.addEventListener('click', () => showPage(b.dataset.page, b)));
-
-  const prayerForm=document.getElementById('prayerForm');
-  const prayerText=document.getElementById('prayerText');
-  const prayerList=document.getElementById('prayerList');
-  let prayers=[];
-  try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]'); if(!Array.isArray(prayers)) prayers=[];}catch(e){prayers=[];}
-  function renderPrayers(){prayerList.innerHTML=''; [...prayers].reverse().forEach(item=>{const div=document.createElement('div'); div.className='item'; const dt=document.createElement('div'); dt.style.fontSize='.8rem'; dt.style.opacity='.8'; dt.style.marginBottom='4px'; dt.textContent=`Posted on ${item.date}`; const p=document.createElement('div'); p.textContent=item.text; p.style.whiteSpace='pre-wrap'; div.appendChild(p); div.appendChild(dt); prayerList.appendChild(div);});}
-  prayerForm.addEventListener('submit',function(e){e.preventDefault(); const txt=(prayerText.value||'').trim(); if(!txt){alert('Please write a prayer request before posting.'); return;} prayers.push({text:txt,date:new Date().toLocaleString()}); localStorage.setItem('prayers_v1',JSON.stringify(prayers)); prayerText.value=''; renderPrayers(); showPage('prayers'); });
-  renderPrayers();
-
-  window.addEventListener('load', function(){ setTimeout(()=>{if(splash) splash.style.display='none'; showPage('home', btns.find(b=>b.dataset.page==='home')); }, 3200); });
-})();
-</script>
+    function postPrayer() {
+      const request = document.getElementById('request').value.trim();
+      const posted = document.getElementById('posted');
+      if (!request) {
+        posted.innerHTML = "<p style='color:red;'>Please write something first.</p>";
+        return;
+      }
+      posted.innerHTML += `<p>🕊️ ${request}</p>`;
+      document.getElementById('request').value = '';
+    }
+  </script>
 </body>
 </html>
