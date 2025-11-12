@@ -1,23 +1,24 @@
-# PCEA Center Youth - Backend (Simple Express)
+# PCEA CENTER YOUTHHUB — Backend (Template)
 
-## What this is
-A tiny Express backend that stores prayers, events, announcements and leaders in a local `data.json` file. Suitable as a lightweight backend for the GitHub Pages portal (portal calls this API).
+This repository contains a **Node.js / Express** backend template for PCEA CENTER YOUTHHUB (portal v1.1.6). It provides REST endpoints for:
 
-## Endpoints
-- `GET /api/prayers` — list prayers
-- `POST /api/prayers` — add prayer `{ "text": "..." }`
-- `GET /api/events` — list events
-- `POST /api/events` — add event `{ "title": "...", "description": "...", "date": "..." }`
-- `GET /api/announcements` — list announcements
-- `POST /api/announcements` — add announcement `{ "title": "...", "body": "..." }`
-- `GET /api/leaders` — get leaders array
-- `PUT /api/leaders` — replace leaders `{ "leaders": [ {role,name}, ... ] }`
+- Prayers (anonymous/public)
+- Trivia questions (levels & categories)
+- Youth forum (posts & replies)
+- Gallery uploads (local storage or S3)
+- Payments (M-Pesa placeholders & webhook)
+- AI proxy (OpenAI server-side proxy for Ethan)
 
-## Run locally
+> This template is meant as a starting point. Do **not** expose the `OPENAI_API_KEY` or M-Pesa secrets in client-side code.
+
+## Quick start (local / dev)
+
+Requirements:
+- Node 18+
+- Docker (optional, recommended)
+- MongoDB (local or via Docker)
+
+1. Copy `.env.example` -> `.env` and fill values (especially `OPENAI_API_KEY` if you want Ethan AI).
+2. Install dependencies:
 ```bash
-git clone <repo>
-cd <repo>
 npm install
-# create data.json (optional) or use the included one
-npm start
-# server listens on PORT (default 5000)
