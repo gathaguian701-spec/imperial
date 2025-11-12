@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PCEA CENTER YOUTH PORTAL v1.1.5</title>
+<title>PCEA CENTER YOUTHHUB</title>
 <style>
 body{font-family:"Poppins",Arial,sans-serif;margin:0;padding:0;text-align:center;transition:all .3s;}
 body.light{background:#f5f7fa;color:#222;}
@@ -23,12 +23,13 @@ textarea, input{width:90%;max-width:760px;padding:10px;border-radius:8px;border:
 .countdown{background:#dbe9ff;padding:10px 12px;border-radius:8px;flex:1;min-width:140px;}
 #confetti{pointer-events:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;}
 .ai-chat-box{border:1px solid #ccc;padding:10px;border-radius:10px;max-height:300px;overflow-y:auto;background:#fefefe;margin-bottom:10px;}
+.music-control{position:fixed;bottom:20px;right:20px;background:#004aad;color:white;border:none;padding:10px;border-radius:50%;cursor:pointer;}
 </style>
 </head>
 <body class="light">
 
 <header>
-<h1>PCEA CENTER YOUTH PORTAL v1.1.5</h1>
+<h1>PCEA CENTER YOUTHHUB</h1>
 <p>Created with pride by <strong>Ian Gathagu</strong></p>
 </header>
 
@@ -52,7 +53,7 @@ textarea, input{width:90%;max-width:760px;padding:10px;border-radius:8px;border:
   <div class="countdown" id="christmasCountdown" data-label="Christmas"></div>
   <div class="countdown" id="newYearCountdown" data-label="New Year"></div>
 </div>
-<p>Welcome to the official PCEA Center Youth Portal.</p>
+<p>Welcome to the official PCEA Center YouthHub. A home for faith, fellowship, and fun.</p>
 </section>
 
 <!-- Events -->
@@ -68,7 +69,7 @@ textarea, input{width:90%;max-width:760px;padding:10px;border-radius:8px;border:
 <section id="announcements" class="page">
 <h2>Announcements</h2>
 <ul>
-<li>Check upcoming events and participate actively.</li>
+<li>Stay active in fellowship and prayer. To God be the Glory!</li>
 </ul>
 </section>
 
@@ -115,8 +116,13 @@ textarea, input{width:90%;max-width:760px;padding:10px;border-radius:8px;border:
 </section>
 
 <footer>
-<div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
+<div>© 2025 PCEA Center YouthHub — To God Be the Glory.</div>
+<div style="margin-top:8px;font-size:0.9em;">Version 1.1.6</div>
 </footer>
+
+<!-- Heavenly Keys Background Music -->
+<audio id="bgMusic" src="https://files.catbox.moe/0eh4z9.mp3" loop autoplay></audio>
+<button class="music-control" onclick="toggleMusic()">🎵</button>
 
 <script>
 // === Navigation ===
@@ -129,10 +135,18 @@ function showPage(id,btnEl){
   document.getElementById(id).classList.add('active');
 }
 
-// === Theme ===
+// === Theme Toggle ===
 function toggleTheme(){
   document.body.classList.toggle('dark');
   document.body.classList.toggle('light');
+}
+
+// === Music Control ===
+let music = document.getElementById("bgMusic");
+let isPlaying = true;
+function toggleMusic(){
+  if(isPlaying){music.pause();} else{music.play();}
+  isPlaying = !isPlaying;
 }
 
 // === Countdown ===
@@ -155,38 +169,27 @@ startCountdown('conventionCountdown','2025-12-02T00:00:00');
 startCountdown('christmasCountdown','2025-12-25T00:00:00');
 startCountdown('newYearCountdown','2026-01-01T00:00:00');
 
-// === Trivia Data ===
-let triviaData = {
-  level1:[
-    {question:"PCEA was founded in ____.", options:["1912","1920","1905","1930"], answer:"1912"},
-    {question:"The first book of the Bible is ____.", options:["Genesis","Exodus","Leviticus","Numbers"], answer:"Genesis"}
-  ],
-  level2:[
-    {question:"Jesus performed his first miracle at ____.", options:["Cana","Jerusalem","Bethlehem","Nazareth"], answer:"Cana"},
-    {question:"The Great Commission is in ____.", options:["Matthew 28","John 3","Luke 2","Acts 10"], answer:"Matthew 28"}
-  ]
-};
+// === Trivia ===
+let triviaData={level1:[{question:"PCEA was founded in ____.",options:["1912","1920","1905","1930"],answer:"1912"},{question:"The first book of the Bible is ____.",options:["Genesis","Exodus","Leviticus","Numbers"],answer:"Genesis"}]};
 let currentLevel=1,questionIndex=0,triviaScore=Number(localStorage.getItem('triviaScore')||0);
 document.getElementById('triviaScore').textContent=triviaScore;
-let currentQuestionSet = triviaData[`level${currentLevel}`];
+let currentQuestionSet=triviaData[`level${currentLevel}`];
 let triviaTimerInterval;
 
-// === Trivia Functions ===
 function showTrivia(){
   if(questionIndex>=currentQuestionSet.length){
-    if(triviaScore>=15 && currentLevel<2){ // Max level 2 for demo
+    if(triviaScore>=15 && currentLevel<2){
       currentLevel++;
-      alert('CONGRATULATIONS 👏 Level Up!');
+      alert('CONGRATULATIONS 👏');
       questionIndex=0;
-      currentQuestionSet = triviaData[`level${currentLevel}`];
-    }else{return;}
+    } else return;
   }
   const q=currentQuestionSet[questionIndex];
   document.getElementById('triviaQuestion').textContent=q.question;
   const optionsDiv=document.getElementById('triviaOptions');
   optionsDiv.innerHTML='';
   document.getElementById('triviaFeedback').textContent='';
-  let timer = 10;
+  let timer=10;
   document.getElementById('triviaTimer').textContent=timer;
   clearInterval(triviaTimerInterval);
   triviaTimerInterval=setInterval(()=>{
@@ -248,9 +251,9 @@ function renderPrayers(){
 renderPrayers();
 
 // === Ethan AI ===
-let chatHistory = [];
+let chatHistory=[];
 try{chatHistory=JSON.parse(localStorage.getItem('ethanAI_v1')||'[]');}catch(e){chatHistory=[];}
-const aiChat = document.getElementById('aiChat');
+const aiChat=document.getElementById('aiChat');
 function renderAIChat(){
   aiChat.innerHTML='';
   chatHistory.forEach(msg=>{
@@ -259,21 +262,21 @@ function renderAIChat(){
     div.innerHTML=`<strong>${msg.sender}:</strong> ${msg.text}`;
     aiChat.appendChild(div);
   });
-  aiChat.scrollTop = aiChat.scrollHeight;
+  aiChat.scrollTop=aiChat.scrollHeight;
 }
 function sendAIMessage(){
   const input=document.getElementById('aiInput');
   const text=input.value.trim();
-  if(!text) return;
+  if(!text)return;
   chatHistory.push({sender:'You',text});
   localStorage.setItem('ethanAI_v1',JSON.stringify(chatHistory));
   renderAIChat();
   input.value='';
   setTimeout(()=>{
     let reply='I can answer Bible, PCEA history, trivia hints or give motivation.';
-    if(text.toLowerCase().includes('bible')) reply='Ask me any Bible verse or story!';
-    if(text.toLowerCase().includes('pcea')) reply='PCEA was founded in 1912 with many youth fellowships.';
-    if(text.toLowerCase().includes('trivia')) reply='Hints: Each correct answer gives 2 points.';
+    if(text.toLowerCase().includes('bible'))reply='Ask me any Bible verse or story!';
+    if(text.toLowerCase().includes('pcea'))reply='PCEA was founded in 1912 with youth fellowships.';
+    if(text.toLowerCase().includes('trivia'))reply='Trivia gives 2 points per correct answer!';
     chatHistory.push({sender:'Ethan',text:reply});
     localStorage.setItem('ethanAI_v1',JSON.stringify(chatHistory));
     renderAIChat();
@@ -282,4 +285,4 @@ function sendAIMessage(){
 renderAIChat();
 </script>
 </body>
-  </html>
+                                                                </html>
