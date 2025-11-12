@@ -1,416 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PCEA CENTER YOUTHHUB v1.1.6</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PCEA CENTER YOUTH PORTAL v1.1.5</title>
 <style>
-  :root{
-    --bg1:#0f172a; --bg2:#0ea5e9; --card:#ffffffcc; --muted:#666;
-    --primary:#004aad; --accent:#25D366;
-  }
-  html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;overflow-y:auto;}
-  body{color:#111;background:linear-gradient(120deg,var(--bg1),#0b3a66);transition:background .4s,color .3s;}
-  body.light{background:linear-gradient(120deg,#dbeafe,#e6f0ff);color:#111;}
-  /* animated gradient */
-  .bg-anim{position:fixed;inset:0;z-index:-1;background:linear-gradient(120deg,#0b3a66,#0f172a);background-size:400% 400%;animation:grad 12s ease infinite;}
-  @keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-  header{padding:14px 12px;color:white;text-align:center;background:transparent;}
-  header h1{margin:0;font-size:1.35rem;letter-spacing:0.6px;}
-  header p{margin:6px 0 0 0;font-size:.95rem;opacity:.95}
-  nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px;}
-  .nav-btn{background:rgba(255,255,255,0.95);border:none;padding:8px 14px;border-radius:20px;font-weight:600;cursor:pointer;transition:transform .18s,background .18s;}
-  .nav-btn:hover{transform:translateY(-3px)}
-  .nav-btn.active{background:var(--primary);color:#fff}
-  main{max-width:1100px;margin:14px auto;padding:12px}
-  .container{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 30px rgba(2,6,23,0.25);color:inherit}
-  .row{display:flex;gap:12px;flex-wrap:wrap}
-  .col{flex:1;min-width:240px}
-  h2{margin:0 0 8px 0}
-  .countdown{background:#eef7ff;padding:10px;border-radius:8px;margin-bottom:10px}
-  /* gallery */
-  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:8px}
-  .thumb{position:relative;border-radius:8px;overflow:hidden;background:#f3f4f6;display:flex;align-items:center;justify-content:center;height:120px}
-  .thumb img, .thumb video{width:100%;height:100%;object-fit:cover;display:block}
-  .muted{color:var(--muted);font-size:.95rem}
-  /* donation */
-  .donation{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .copy-btn{background:var(--primary);color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
-  /* forum */
-  .post{border-radius:8px;padding:10px;background:#fff8; margin-bottom:8px}
-  /* AI */
-  .ai-chat{max-height:320px;overflow:auto;padding:8px;background:#fff;margin-bottom:8px;border-radius:8px}
-  .ai-msg{margin:6px 0}
-  .ai-msg.you{ text-align:right}
-  .badge{display:inline-block;background:var(--primary);color:#fff;padding:4px 8px;border-radius:8px;font-weight:600}
-  footer{padding:12px;text-align:center;color:#fff;margin-top:16px}
-  .footer-sub{font-size:.9rem;opacity:.95;margin-top:6px}
-  /* small screens */
-  @media (max-width:640px){ .row{flex-direction:column} .nav-btn{padding:8px 10px} .container{padding:10px} }
+body{font-family:"Poppins",Arial,sans-serif;margin:0;padding:0;text-align:center;transition:all .3s;}
+body.light{background:#f5f7fa;color:#222;}
+body.dark{background:#111;color:#f0f0f0;}
+header,footer,nav{transition:all .3s;}
+header,footer{background:#004aad;color:white;padding:12px;}
+nav{background:#004aad;padding:10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.nav-btn{background:white;border:none;padding:10px 18px;border-radius:25px;cursor:pointer;font-weight:600;transition:all .28s ease;}
+.nav-btn:hover{transform:scale(1.04);background:#dbe9ff;}
+.nav-btn.active{background:#002c7f;color:white;transform:scale(1.08);}
+.page{display:none;padding:16px;max-width:900px;margin:12px auto;text-align:left;}
+.page.active{display:block;}
+textarea, input{width:90%;max-width:760px;padding:10px;border-radius:8px;border:1px solid #ccc;font-family:inherit;}
+.post-btn{background:#004aad;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;margin-top:10px;transition:all .2s ease;}
+.post-btn:hover{transform:scale(1.03);background:#003580;}
+.countdown-container{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.countdown{background:#dbe9ff;padding:10px 12px;border-radius:8px;flex:1;min-width:140px;}
+#confetti{pointer-events:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;}
+.ai-chat-box{border:1px solid #ccc;padding:10px;border-radius:10px;max-height:300px;overflow-y:auto;background:#fefefe;margin-bottom:10px;}
 </style>
 </head>
 <body class="light">
-  <div class="bg-anim" aria-hidden="true"></div>
 
-  <header>
-    <h1>PCEA CENTER YOUTHHUB</h1>
-    <p>Created with pride by <strong>Ian Gathagu</strong></p>
-  </header>
+<header>
+<h1>PCEA CENTER YOUTH PORTAL v1.1.5</h1>
+<p>Created with pride by <strong>Ian Gathagu</strong></p>
+</header>
 
-  <nav>
-    <button class="nav-btn active" data-page="home">Home</button>
-    <button class="nav-btn" data-page="devotional">Daily Devotional</button>
-    <button class="nav-btn" data-page="gallery">Youth Gallery</button>
-    <button class="nav-btn" data-page="donate">Donate / Tithe</button>
-    <button class="nav-btn" data-page="forum">Youth Forum</button>
-    <button class="nav-btn" data-page="ethan">Ethan AI</button>
-    <button class="nav-btn" id="themeToggle">Toggle Theme</button>
-  </nav>
+<nav>
+<button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
+<button class="nav-btn" data-page="events" onclick="showPage('events',this)">📅 Events</button>
+<button class="nav-btn" data-page="announcements" onclick="showPage('announcements',this)">📢 Announcements</button>
+<button class="nav-btn" data-page="prayers" onclick="showPage('prayers',this)">🙏 Prayer Requests</button>
+<button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
+<button class="nav-btn" data-page="trivia" onclick="showPage('trivia',this)">🎯 Trivia</button>
+<button class="nav-btn" data-page="ethanAI" onclick="showPage('ethanAI',this)">🤖 Ethan AI</button>
+<button class="nav-btn" onclick="toggleTheme()">🌓 Theme</button>
+</nav>
 
-  <main>
-    <!-- HOME -->
-    <section id="home" class="page container" aria-live="polite">
-      <div class="row">
-        <div class="col">
-          <h2>Welcome to PCEA CENTER YOUTHHUB</h2>
-          <p class="muted">Your hub for devotionals, events, gallery, giving and youth discussions.</p>
-          <div class="countdown" id="eventsBlock">
-            <strong>Upcoming:</strong>
-            <div id="rally">Youth Rally — <span id="rallyCountdown">loading...</span></div>
-            <div id="presby">Presbytery Convention — <span id="presbyCountdown">loading...</span></div>
-            <div id="christmas">Christmas — <span id="christmasCountdown">loading...</span></div>
-            <div id="newyear">New Year's Day — <span id="newyearCountdown">loading...</span></div>
-          </div>
-          <p><span class="badge">Word</span> of the Day: <strong id="wordOfDay">...</strong></p>
-          <p><span class="badge">Verse</span> of the Day: <em id="verseOfDay">loading...</em></p>
-        </div>
+<!-- Home -->
+<section id="home" class="page active" aria-live="polite">
+<h2>Welcome</h2>
+<div class="countdown-container">
+  <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
+  <div class="countdown" id="conventionCountdown" data-label="Presbytery Convention"></div>
+  <div class="countdown" id="christmasCountdown" data-label="Christmas"></div>
+  <div class="countdown" id="newYearCountdown" data-label="New Year"></div>
+</div>
+<p>Welcome to the official PCEA Center Youth Portal.</p>
+</section>
 
-        <div class="col">
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <div style="flex:1">
-              <h3 style="margin:0">Quick Actions</h3>
-              <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
-                <button class="nav-btn" data-page="gallery">Open Gallery</button>
-                <button class="nav-btn" data-page="forum">Open Forum</button>
-                <button class="nav-btn" data-page="ethan">Ask Ethan</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- Events -->
+<section id="events" class="page">
+<h2>Upcoming Events</h2>
+<ul>
+<li>Youth Rally – 16th Nov 2025</li>
+<li>Presbytery Youth Convention – 2nd–6th Dec 2025</li>
+</ul>
+</section>
 
-    <!-- DEVOTIONAL -->
-    <section id="devotional" class="page container" style="display:none">
-      <h2>Daily Devotional</h2>
-      <div id="devContainer">
-        <h3 id="devTitle">Loading...</h3>
-        <p id="devVerse" class="muted"></p>
-        <p id="devText"></p>
-        <div style="margin-top:10px;display:flex;gap:8px">
-          <button class="post-btn" id="prevDev">Previous</button>
-          <button class="post-btn" id="nextDev">Next</button>
-          <button class="post-btn" id="shareDev">Copy Devotional</button>
-        </div>
-      </div>
-    </section>
+<!-- Announcements -->
+<section id="announcements" class="page">
+<h2>Announcements</h2>
+<ul>
+<li>Check upcoming events and participate actively.</li>
+</ul>
+</section>
 
-    <!-- GALLERY -->
-    <section id="gallery" class="page container" style="display:none">
-      <h2>Youth Gallery</h2>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-        <input id="fileInput" type="file" accept="image/*,video/*" />
-        <button class="post-btn" id="uploadBtn">Upload</button>
-        <button class="post-btn" id="clearGallery">Clear Gallery</button>
-      </div>
-      <div id="galleryGrid" class="gallery-grid"></div>
-      <p class="muted">Uploads are stored locally in your browser (small size). For full app experience use a backend later.</p>
-    </section>
+<!-- Prayer Requests -->
+<section id="prayers" class="page">
+<h2>Prayer Requests</h2>
+<form id="prayerForm">
+<textarea id="prayerText" placeholder="Type your prayer request..." required></textarea><br>
+<button type="submit" class="post-btn">Post Anonymously</button>
+</form>
+<div id="prayerList"></div>
+</section>
 
-    <!-- DONATE -->
-    <section id="donate" class="page container" style="display:none">
-      <h2>Donate / Tithe</h2>
-      <p class="muted">Use the PayBill or Till to send contributions. Copy the details then use your M-Pesa app.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <div style="flex:1">
-          <strong>M-Pesa PayBill:</strong> <div class="muted">123456 (PCEA Center Youth)</div>
-          <strong>Till Number:</strong> <div class="muted">987654</div>
-        </div>
-        <div>
-          <button class="copy-btn" data-copy="PayBill 123456">Copy PayBill</button>
-          <button class="copy-btn" data-copy="Till 987654">Copy Till</button>
-        </div>
-      </div>
-      <div style="margin-top:12px" id="donateConfirm"></div>
-      <p class="muted" style="margin-top:12px">Note: This portal shows PayBill/Till details. Real STK push / payment API integration requires server-side credentials — we can add that when you want.</p>
-    </section>
+<!-- Leaders -->
+<section id="leaders" class="page">
+<h2>Leaders</h2>
+<ul>
+<li><strong>Zachary Gikonyo:</strong> <a href="https://wa.me/254742892647" target="_blank">WhatsApp</a></li>
+<li><strong>Dalson Maina:</strong> <a href="https://wa.me/254714003648" target="_blank">WhatsApp</a></li>
+<li><strong>Ian Gathagu:</strong> <a href="https://wa.me/254718357417" target="_blank">WhatsApp</a></li>
+<li><strong>Lydia Wamuyu:</strong> <a href="https://wa.me/254110867929" target="_blank">WhatsApp</a></li>
+<li><strong>Winnie Maundu:</strong> <a href="https://wa.me/254713285534" target="_blank">WhatsApp</a></li>
+</ul>
+</section>
 
-    <!-- FORUM -->
-    <section id="forum" class="page container" style="display:none">
-      <h2>Youth Chat Forum</h2>
-      <form id="forumForm" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-        <input id="forumName" placeholder="Your name (optional)" />
-        <input id="forumTitle" placeholder="Title" />
-        <input id="forumMsg" placeholder="Message" style="flex:1" />
-        <button class="post-btn" type="submit">Post</button>
-      </form>
-      <div id="forumList"></div>
-    </section>
+<!-- Trivia -->
+<section id="trivia" class="page">
+<h2>Trivia Challenge</h2>
+<div>Time left: <span id="triviaTimer">10</span>s</div>
+<div id="triviaQuestion"></div>
+<div id="triviaOptions" style="margin-top:8px;"></div>
+<div id="triviaFeedback" style="margin-top:8px;font-size:1.2rem;"></div>
+<button id="nextQuestion" class="post-btn">Next Question</button>
+<div id="confetti"></div>
+<div>Score: <span id="triviaScore">0</span></div>
+</section>
 
-    <!-- ETHAN AI -->
-    <section id="ethan" class="page container" style="display:none">
-      <h2>Ethan — Virtual Youth Assistant 🤖</h2>
-      <div class="ai-chat" id="aiChat"></div>
+<!-- Ethan AI -->
+<section id="ethanAI" class="page">
+<h2>Ethan AI 🤖</h2>
+<div id="aiChat" class="ai-chat-box"></div>
+<input type="text" id="aiInput" placeholder="Ask Ethan AI..." />
+<button class="post-btn" onclick="sendAIMessage()">Send</button>
+</section>
 
-      <div style="display:flex;gap:8px;align-items:center">
-        <input id="aiInput" placeholder="Ask Ethan (Bible, PCEA history, explain verse, hint for trivia)"/>
-        <button class="post-btn" id="sendAI">Send</button>
-        <button class="post-btn" id="speakAI">🎤 Speak</button>
-        <button class="post-btn" id="clearAI">Clear Chat</button>
-      </div>
-
-      <div style="margin-top:8px;display:flex;gap:8px">
-        <button class="post-btn" id="saveTranscript">Save Transcript</button>
-        <button class="post-btn" id="viewTranscripts">View Transcripts</button>
-      </div>
-
-      <div id="transcripts" style="margin-top:10px;display:none"></div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div>© <span id="yearNow"></span> PCEA CENTER YOUTHHUB — To God Be the Glory.</div>
-    <div class="footer-sub">Created with pride by <strong>Ian Gathagu</strong></div>
-    <div class="footer-sub" style="margin-top:6px;font-weight:700">v1.1.6</div>
-  </footer>
+<footer>
+<div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
+</footer>
 
 <script>
-/* -----------------------------
-   Navigation handling
-   ----------------------------- */
-const navButtons = document.querySelectorAll('.nav-btn[data-page]');
-navButtons.forEach(btn=>{
-  btn.addEventListener('click',()=> {
-    navButtons.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    showPage(btn.dataset.page);
-  });
-});
-function showPage(pageId){
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  const el = document.getElementById(pageId);
-  if(el) el.style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+// === Navigation ===
+const btns = Array.from(document.querySelectorAll('.nav-btn'));
+const pages = Array.from(document.querySelectorAll('.page'));
+function showPage(id,btnEl){
+  btns.forEach(b=>b.classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+  pages.forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-/* -----------------------------
-   Date & footer
-   ----------------------------- */
-document.getElementById('yearNow').textContent = new Date().getFullYear();
-
-/* -----------------------------
-   Theme toggle
-   ----------------------------- */
-const themeToggle = document.getElementById('themeToggle');
-function applyTheme(name){
-  if(name==='dark') document.body.classList.add('dark'), document.body.classList.remove('light');
-  else document.body.classList.add('light'), document.body.classList.remove('dark');
-  localStorage.setItem('youthhub_theme', name);
+// === Theme ===
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  document.body.classList.toggle('light');
 }
-themeToggle.addEventListener('click',()=>{
-  const cur = document.body.classList.contains('dark') ? 'dark' : 'light';
-  applyTheme(cur==='dark' ? 'light' : 'dark');
-});
-const savedTheme = localStorage.getItem('youthhub_theme') || 'light';
-applyTheme(savedTheme);
 
-/* -----------------------------
-   Word & Verse of the day + Devotionals
-   ----------------------------- */
-const WORDS = ['Faith','Love','Hope','Grace','Peace','Joy','Service','Prayer','Truth','Wisdom'];
-document.getElementById('wordOfDay').textContent = WORDS[new Date().getDate() % WORDS.length] || 'Faith';
-
-// Simple list of devotionals (can be expanded)
-const DEVOTIONALS = [
-  {title:"Trust in God's Timing", verse:"Ecclesiastes 3:1", text:"There is a season for everything. Trust God with the timing of your life. Pray and remain faithful."},
-  {title:"Walk in Love", verse:"1 Corinthians 13:4-7", text:"Love is patient and kind. Serve others and let your actions show Christ's love."},
-  {title:"Be Strong and Courageous", verse:"Joshua 1:9", text:"Do not fear. God goes before you. Be courageous in following His calling."},
-  {title:"Seek First the Kingdom", verse:"Matthew 6:33", text:"Prioritize God's kingdom and trust Him with your needs."},
-  {title:"Pray Without Ceasing", verse:"1 Thessalonians 5:17", text:"Keep a continual conversation with God throughout your day."}
-];
-let devIndex = new Date().getDate() % DEVOTIONALS.length;
-function renderDev(index){
-  const d = DEVOTIONALS[index];
-  document.getElementById('devTitle').textContent = d.title;
-  document.getElementById('devVerse').textContent = d.verse;
-  document.getElementById('devText').textContent = d.text;
+// === Countdown ===
+function startCountdown(id,dateStr){
+  const el = document.getElementById(id);
+  const target = new Date(dateStr).getTime();
+  setInterval(()=>{
+    const now = new Date().getTime();
+    let dist = target - now;
+    if(dist<0){el.innerHTML='Event Started!';return;}
+    let d=Math.floor(dist/(1000*60*60*24)),
+        h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
+        m=Math.floor((dist%(1000*60*60))/(1000*60)),
+        s=Math.floor((dist%(1000*60))/1000);
+    el.innerHTML=`<strong>${el.dataset.label}</strong><br>${d}d ${h}h ${m}m ${s}s`;
+  },1000);
 }
-renderDev(devIndex);
-document.getElementById('prevDev').addEventListener('click',()=>{devIndex = (devIndex-1+DEVOTIONALS.length)%DEVOTIONALS.length; renderDev(devIndex);});
-document.getElementById('nextDev').addEventListener('click',()=>{devIndex = (devIndex+1)%DEVOTIONALS.length; renderDev(devIndex);});
-document.getElementById('shareDev').addEventListener('click',()=>{navigator.clipboard.writeText(`${DEVOTIONALS[devIndex].title}\n${DEVOTIONALS[devIndex].verse}\n\n${DEVOTIONALS[devIndex].text}`); alert('Devotional copied to clipboard');});
-
-/* Verse of the day (using the devotional verse) */
-document.getElementById('verseOfDay').textContent = DEVOTIONALS[devIndex].verse;
-
-/* -----------------------------
-   Countdown timers for events
-   ----------------------------- */
-function startCountdown(elId, targetStr){
-  const el = document.getElementById(elId);
-  const target = new Date(targetStr).getTime();
-  function tick(){
-    const now = Date.now();
-    let d = target - now;
-    if(d <= 0){ el.textContent = 'Started!'; return; }
-    const days = Math.floor(d / (1000*60*60*24));
-    d -= days*(1000*60*60*24);
-    const hours = Math.floor(d / (1000*60*60));
-    d -= hours*(1000*60*60);
-    const mins = Math.floor(d / (1000*60));
-    d -= mins*(1000*60);
-    const secs = Math.floor(d/1000);
-    el.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
-  }
-  tick(); setInterval(tick,1000);
-}
-startCountdown('rallyCountdown','2025-11-16T06:00:00'); // example times
-startCountdown('presbyCountdown','2025-12-02T06:00:00'); // if visible
-// for ids used earlier:
-startCountdown('presbyCountdown','2025-12-02T06:00:00');
+startCountdown('rallyCountdown','2025-11-16T00:00:00');
+startCountdown('conventionCountdown','2025-12-02T00:00:00');
 startCountdown('christmasCountdown','2025-12-25T00:00:00');
-startCountdown('newyearCountdown','2026-01-01T00:00:00');
-/* populate matching text ids if different */
-document.getElementById('presby').querySelector ? null : null;
+startCountdown('newYearCountdown','2026-01-01T00:00:00');
 
-/* Because earlier text used presbyCountdown vs presby, set elements if missing gracefully */
-if(!document.getElementById('presbyCountdown')){
-  const el = document.createElement('span'); el.id='presbyCountdown'; document.getElementById('presby').appendChild(el);
-  startCountdown('presbyCountdown','2025-12-02T06:00:00');
-}
+// === Trivia Data ===
+let triviaData = {
+  level1:[
+    {question:"PCEA was founded in ____.", options:["1912","1920","1905","1930"], answer:"1912"},
+    {question:"The first book of the Bible is ____.", options:["Genesis","Exodus","Leviticus","Numbers"], answer:"Genesis"}
+  ],
+  level2:[
+    {question:"Jesus performed his first miracle at ____.", options:["Cana","Jerusalem","Bethlehem","Nazareth"], answer:"Cana"},
+    {question:"The Great Commission is in ____.", options:["Matthew 28","John 3","Luke 2","Acts 10"], answer:"Matthew 28"}
+  ]
+};
+let currentLevel=1,questionIndex=0,triviaScore=Number(localStorage.getItem('triviaScore')||0);
+document.getElementById('triviaScore').textContent=triviaScore;
+let currentQuestionSet = triviaData[`level${currentLevel}`];
+let triviaTimerInterval;
 
-/* -----------------------------
-   Gallery: upload & local storage
-   ----------------------------- */
-const fileInput = document.getElementById('fileInput');
-const uploadBtn = document.getElementById('uploadBtn');
-const galleryGrid = document.getElementById('galleryGrid');
-let gallery = JSON.parse(localStorage.getItem('youthhub_gallery_v1')||'[]');
-
-function renderGallery(){
-  galleryGrid.innerHTML = '';
-  if(!gallery.length) galleryGrid.innerHTML = '<div class="muted">No uploads yet</div>';
-  gallery.forEach((item, i)=>{
-    const div = document.createElement('div'); div.className='thumb';
-    if(item.type.startsWith('image/')){
-      const img = document.createElement('img'); img.src = item.data; img.alt = item.name; div.appendChild(img);
-    } else if(item.type.startsWith('video/')){
-      const vid = document.createElement('video'); vid.src=item.data; vid.controls=true; div.appendChild(vid);
+// === Trivia Functions ===
+function showTrivia(){
+  if(questionIndex>=currentQuestionSet.length){
+    if(triviaScore>=15 && currentLevel<2){ // Max level 2 for demo
+      currentLevel++;
+      alert('CONGRATULATIONS 👏 Level Up!');
+      questionIndex=0;
+      currentQuestionSet = triviaData[`level${currentLevel}`];
+    }else{return;}
+  }
+  const q=currentQuestionSet[questionIndex];
+  document.getElementById('triviaQuestion').textContent=q.question;
+  const optionsDiv=document.getElementById('triviaOptions');
+  optionsDiv.innerHTML='';
+  document.getElementById('triviaFeedback').textContent='';
+  let timer = 10;
+  document.getElementById('triviaTimer').textContent=timer;
+  clearInterval(triviaTimerInterval);
+  triviaTimerInterval=setInterval(()=>{
+    timer--;
+    document.getElementById('triviaTimer').textContent=timer;
+    if(timer<=0){
+      clearInterval(triviaTimerInterval);
+      document.getElementById('triviaFeedback').textContent='😢 Time up!';
+      questionIndex++;
+      setTimeout(showTrivia,1000);
     }
-    // long press to remove
-    div.title = 'Click to view, long click to remove';
-    div.addEventListener('click',()=>window.open(item.data, '_blank'));
-    div.addEventListener('contextmenu', (ev)=>{ ev.preventDefault(); if(confirm('Remove this item?')){ gallery.splice(i,1); localStorage.setItem('youthhub_gallery_v1', JSON.stringify(gallery)); renderGallery(); }});
-    galleryGrid.appendChild(div);
+  },1000);
+  q.options.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.textContent=opt;
+    btn.className='nav-btn';
+    btn.onclick=()=>{
+      clearInterval(triviaTimerInterval);
+      if(opt===q.answer){
+        triviaScore+=2;
+        localStorage.setItem('triviaScore',triviaScore);
+        document.getElementById('triviaScore').textContent=triviaScore;
+        document.getElementById('triviaFeedback').textContent='🎉 Correct!';
+      }else{
+        document.getElementById('triviaFeedback').textContent=`😢 Wrong! Correct: ${q.answer}`;
+      }
+      questionIndex++;
+      setTimeout(showTrivia,1000);
+    };
+    optionsDiv.appendChild(btn);
   });
 }
-renderGallery();
+document.getElementById('nextQuestion').onclick=showTrivia;
+showTrivia();
 
-uploadBtn.addEventListener('click', async ()=>{
-  const f = fileInput.files[0];
-  if(!f){ alert('Pick a file first'); return; }
-  // limit size to avoid huge localStorage usage
-  if(f.size > 2_000_000){ if(!confirm('File is large and may not save in browser storage. Continue?')) return; }
-  const reader = new FileReader();
-  reader.onload = ()=> {
-    gallery.unshift({name:f.name,type:f.type,data:reader.result,date:new Date().toLocaleString()});
-    localStorage.setItem('youthhub_gallery_v1', JSON.stringify(gallery));
-    renderGallery();
-    fileInput.value='';
-  };
-  reader.readAsDataURL(f);
-});
-
-document.getElementById('clearGallery').addEventListener('click', ()=> {
-  if(confirm('Clear all gallery items from this browser?')){ gallery=[]; localStorage.removeItem('youthhub_gallery_v1'); renderGallery(); }
-});
-
-/* -----------------------------
-   Donation copy buttons
-   ----------------------------- */
-document.querySelectorAll('.copy-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=> {
-    navigator.clipboard.writeText(btn.dataset.copy).then(()=> {
-      document.getElementById('donateConfirm').textContent = `Copied: ${btn.dataset.copy}`;
-      setTimeout(()=>document.getElementById('donateConfirm').textContent='',2500);
-    });
-  });
-});
-
-/* -----------------------------
-   Forum (local posts)
-   ----------------------------- */
-let forum = JSON.parse(localStorage.getItem('youthhub_forum_v1')||'[]');
-const forumList = document.getElementById('forumList');
-function renderForum(){
-  forumList.innerHTML = '';
-  if(!forum.length) forumList.innerHTML = '<div class="muted">No posts yet.</div>';
-  forum.slice().reverse().forEach(p=>{
-    const d = document.createElement('div'); d.className='post';
-    d.innerHTML = `<strong>${p.title || 'No title'}</strong> <div class="muted">by ${p.name||'Anonymous'} • ${p.date}</div><div style="margin-top:6px">${p.msg}</div>`;
-    forumList.appendChild(d);
-  });
-}
-renderForum();
-document.getElementById('forumForm').addEventListener('submit', (e)=>{
+// === Prayer Requests ===
+let prayers=[];
+try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]');}catch(e){prayers=[];}
+const prayerForm=document.getElementById('prayerForm');
+prayerForm.addEventListener('submit',e=>{
   e.preventDefault();
-  const name = document.getElementById('forumName').value.trim();
-  const title = document.getElementById('forumTitle').value.trim();
-  const msg = document.getElementById('forumMsg').value.trim();
-  if(!msg){ alert('Please type a message'); return; }
-  forum.push({name, title, msg, date:new Date().toLocaleString()});
-  localStorage.setItem('youthhub_forum_v1', JSON.stringify(forum));
-  document.getElementById('forumName').value=''; document.getElementById('forumTitle').value=''; document.getElementById('forumMsg').value='';
-  renderForum();
+  const txt=document.getElementById('prayerText').value.trim();
+  if(!txt) return;
+  prayers.push({text:txt,date:new Date().toLocaleString()});
+  localStorage.setItem('prayers_v1',JSON.stringify(prayers));
+  document.getElementById('prayerText').value='';
+  renderPrayers();
 });
-
-/* -----------------------------
-   Ethan AI - mock + voice features
-   ----------------------------- */
-let aiHistory = JSON.parse(localStorage.getItem('ethan_chat_v1')||'[]');
-const aiChatDiv = document.getElementById('aiChat');
-function renderAI(){ aiChatDiv.innerHTML=''; aiHistory.forEach(m=>{
-  const wrap = document.createElement('div'); wrap.className='ai-msg ' + (m.sender==='You' ? 'you' : 'ethan');
-  wrap.innerHTML = `<div style="display:inline-block;padding:8px;border-radius:10px;background:${m.sender==='You' ? '#e6f0ff' : '#fff8'};max-width:85%"><strong>${m.sender}:</strong> ${m.text}</div>`;
-  aiChatDiv.appendChild(wrap);
-}); aiChatDiv.scrollTop = aiChatDiv.scrollHeight; }
-renderAI();
-
-const aiInput = document.getElementById('aiInput');
-document.getElementById('sendAI').addEventListener('click', ()=> handleUserAI(aiInput.value));
-aiInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') handleUserAI(aiInput.value); });
-
-function handleUserAI(text){
-  text = (text||'').trim();
-  if(!text) return;
-  aiHistory.push({sender:'You', text, time:new Date().toISOString()});
-  localStorage.setItem('ethan_chat_v1', JSON.stringify(aiHistory));
-  renderAI();
-  aiInput.value='';
-  // Mock AI reply (expandable)
-  window.setTimeout(()=>{
-    const reply = ethanReply(text);
-    aiHistory.push({sender:'Ethan', text:reply, time:new Date().toISOString()});
-    localStorage.setItem('ethan_chat_v1', JSON.stringify(aiHistory));
-    renderAI();
-    // speak reply
-    speakText(reply);
-  }, 600);
+function renderPrayers(){
+  const list=document.getElementById('prayerList');
+  list.innerHTML='';
+  prayers.slice().reverse().forEach(p=>{
+    const div=document.createElement('div');
+    div.style.margin='4px 0';
+    div.innerHTML=`${p.text} <br><small>${p.date}</small>`;
+    list.appendChild(div);
+  });
 }
+renderPrayers();
 
-// Simple rule-based Ethan (you can plug real API later)
-function ethanReply(input){
-  const q = input.toLowerCase();
-  if(q.includes('explain') || q.includes('meaning') || q.includes('what does')){
-    return "Ethan: Short explanation — read the verse slowly, note the co
+// === Ethan AI ===
+let chatHistory = [];
+try{chatHistory=JSON.parse(localStorage.getItem('ethanAI_v1')||'[]');}catch(e){chatHistory=[];}
+const aiChat = document.getElementById('aiChat');
+function renderAIChat(){
+  aiChat.innerHTML='';
+  chatHistory.forEach(msg=>{
+    const div=document.createElement('div');
+    div.style.margin='4px 0';
+    div.innerHTML=`<strong>${msg.sender}:</strong> ${msg.text}`;
+    aiChat.appendChild(div);
+  });
+  aiChat.scrollTop = aiChat.scrollHeight;
+}
+function sendAIMessage(){
+  const input=document.getElementById('aiInput');
+  const text=input.value.trim();
+  if(!text) return;
+  chatHistory.push({sender:'You',text});
+  localStorage.setItem('ethanAI_v1',JSON.stringify(chatHistory));
+  renderAIChat();
+  input.value='';
+  setTimeout(()=>{
+    let reply='I can answer Bible, PCEA history, trivia hints or give motivation.';
+    if(text.toLowerCase().includes('bible')) reply='Ask me any Bible verse or story!';
+    if(text.toLowerCase().includes('pcea')) reply='PCEA was founded in 1912 with many youth fellowships.';
+    if(text.toLowerCase().includes('trivia')) reply='Hints: Each correct answer gives 2 points.';
+    chatHistory.push({sender:'Ethan',text:reply});
+    localStorage.setItem('ethanAI_v1',JSON.stringify(chatHistory));
+    renderAIChat();
+  },500);
+}
+renderAIChat();
+</script>
+</body>
+    </html>
