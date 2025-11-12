@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PCEA CENTER YOUTHHUB</title>
+<style>
+  body{margin:0;font-family:"Poppins",Arial,sans-serif;background:#004aad;color:white;text-align:center;}
+  #splash-screen{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#004aad;color:white;z-index:9999;animation:fadeOut 4s forwards;animation-delay:3s;}
+  @keyframes fadeOut{to{opacity:0;visibility:hidden;}}
+  nav{background:#002c7f;padding:12px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+  .nav-btn{background:white;color:#004aad;border:none;padding:10px 20px;border-radius:25px;cursor:pointer;font-weight:600;transition:all .28s ease;}
+  .nav-btn:hover{transform:scale(1.05);background:#dbe9ff;}
+  .nav-btn.active{background:#001f4d;color:white;transform:scale(1.08);}
+  .page{display:none;padding:16px;max-width:900px;margin:12px auto;text-align:left;}
+  .page.active{display:block;}
+  .countdown-container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:12px 0;}
+  .countdown{background:#dbe9ff;color:#004aad;padding:12px;border-radius:8px;flex:1;min-width:140px;}
+  button.leader-btn{margin:6px;padding:10px 16px;border-radius:12px;border:none;cursor:pointer;background:#001f4d;color:white;}
+  button.leader-btn:hover{background:#003580;}
+  footer{background:#002c7f;color:white;padding:12px;margin-top:20px;font-size:.9rem;}
+  audio{margin-top:12px;width:80%;}
+</style>
+</head>
+<body>
+
+<!-- Splash -->
+<div id="splash-screen">
+  <h1 style="margin:0 0 8px 0;">PCEA CENTER YOUTHHUB</h1>
+  <div style="opacity:.95;">Created with pride by <strong>Ian Gathagu</strong></div>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
+  <button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
+  <button class="nav-btn" data-page="events" onclick="showPage('events',this)">📅 Events</button>
+  <button class="nav-btn" data-page="announcements" onclick="showPage('announcements',this)">📢 Announcements</button>
+</nav>
+
+<!-- Pages -->
+<section id="home" class="page active">
+  <h2>Welcome to PCEA Center YouthHub</h2>
+  <div class="countdown-container">
+    <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
+    <div class="countdown" id="conventionCountdown" data-label="Presbytery Convention"></div>
+    <div class="countdown" id="christmasCountdown" data-label="Christmas"></div>
+    <div class="countdown" id="newYearCountdown" data-label="New Year"></div>
+  </div>
+  <h3>Verse of the Day</h3>
+  <p id="verseOfDay">Loading verse...</p>
+  <audio id="bgMusic" controls autoplay loop>
+    <source src="heavenly_keys.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+</section>
+
+<section id="leaders" class="page">
+  <h2>Leaders</h2>
+  <div>
+    <button class="leader-btn" onclick="showLeader('Zachary Gikonyo','Chairperson','+254742892647')">Zachary's Office</button>
+    <button class="leader-btn" onclick="showLeader('Dalson Maina','Vice Chairperson','+254714003648')">Dalson's Office</button>
+    <button class="leader-btn" onclick="showLeader('Ian Gathagu','Secretary','+254718357417')">Ian's Office</button>
+    <button class="leader-btn" onclick="showLeader('Lydia Wamuyu','Vice Secretary','+254110867929')">Lydia's Office</button>
+    <button class="leader-btn" onclick="showLeader('Winnie Maundu','Treasurer','+254713285534')">Winnie's Office</button>
+  </div>
+  <div id="leaderInfo" style="margin-top:12px;background:#001f4d;padding:12px;border-radius:8px;"></div>
+</section>
+
+<section id="events" class="page">
+  <h2>Upcoming Events</h2>
+  <ul>
+    <li>Youth Rally – 16th Nov 2025: Worship, fellowship, games, teaching.</li>
+    <li>Presbytery Youth Convention – 2nd–6th Dec 2025: Bible study, workshops, leadership training. Charges Ksh1500.</li>
+  </ul>
+</section>
+
+<section id="announcements" class="page">
+  <h2>Announcements</h2>
+  <ul>
+    <li>Youth Rally – 16th Nov 2025: Don’t miss worship, teaching, fellowship.</li>
+    <li>Presbytery Youth Convention – 2nd–6th Dec 2025: Bible study, workshops, evening praise & worship. Charges Ksh1500.</li>
+  </ul>
+</section>
+
+<footer>
+  <div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
+  <div style="opacity:.9; font-size:.95rem; margin-top:6px;">Created with pride by <strong>Ian Gathagu</strong></div>
+  <div>Version 1.2.0</div>
+</footer>
+
+<script>
+// Navigation
+const btns=Array.from(document.querySelectorAll('.nav-btn'));
+const pages=Array.from(document.querySelectorAll('.page'));
+function showPage(pageId,btn){
+  btns.forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  pages.forEach(p=>p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+// Splash fade
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('splash-screen').style.display='none';},3500);
+});
+
+// Countdown function
+function countdown(targetId,dateStr){
+  const el=document.getElementById(targetId);
+  const target=new Date(dateStr).getTime();
+  setInterval(()=>{
+    const now=new Date().getTime();
+    let dist=target-now;
+    if(dist<0){el.innerHTML='Event Started!';return;}
+    let d=Math.floor(dist/(1000*60*60*24)),
+        h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
+        m=Math.floor((dist%(1000*60*60))/(1000*60)),
+        s=Math.floor((dist%(1000*60))/1000);
+    el.innerHTML=`<strong>${el.dataset.label}</strong><br>${d}d ${h}h ${m}m ${s}s`;
+  },1000);
+}
+
+// Initialize countdowns
+countdown('rallyCountdown','2025-11-16T00:00:00');
+countdown('conventionCountdown','2025-12-02T00:00:00');
+countdown('christmasCountdown','2025-12-25T00:00:00');
+countdown('newYearCountdown','2026-01-01T00:00:00');
+
+// Leaders info
+function showLeader(name,position,whatsapp){
+  document.getElementById('leaderInfo').innerHTML=`
+    <strong>${name}</strong> — ${position}<br>
+    <a href="https://wa.me/${whatsapp.replace(/\D/g,'')}" target="_blank" style="color:#25D366;font-weight:bold;">Message on WhatsApp</a>
+  `;
+}
+
+// Verse of the Day (placeholder)
+const verses=[
+  "John 3:16 - For God so loved the world, that he gave his only Son...",
+  "Psalm 23:1 - The Lord is my shepherd; I shall not want...",
+  "Romans 8:28 - And we know that in all things God works for the good...",
+  "Philippians 4:13 - I can do all things through Christ who strengthens me..."
+];
+function getVerseOfDay(){
+  const dayIndex=(new Date()).getDate()%verses.length;
+  document.getElementById('verseOfDay').textContent=verses[dayIndex];
+}
+getVerseOfDay();
+</script>
+</body>
+    </html>
