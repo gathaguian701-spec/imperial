@@ -414,5 +414,223 @@ function sendAIMessage(){
 }
 renderAIChat();
 </script>
+</body><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PCEA CENTER YOUTH PORTAL v1.1.4</title>
+<style>
+body{font-family:"Poppins",Arial,sans-serif;margin:0;background:#f5f7fa;color:#222;text-align:center;transition:all 0.3s;}
+body.dark{background:#121212;color:#eee;}
+header,footer{background:#004aad;color:white;padding:12px;text-align:center;}
+nav{background:#004aad;padding:10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.nav-btn{background:white;border:none;padding:10px 18px;border-radius:25px;cursor:pointer;font-weight:600;transition:all .28s ease;}
+.nav-btn:hover{transform:scale(1.04);background:#dbe9ff;}
+.nav-btn.active{background:#002c7f;color:white;transform:scale(1.08);}
+.page{display:none;padding:16px;animation:fadeIn .35s ease;max-width:900px;margin:12px auto;text-align:left;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+textarea{width:90%;max-width:760px;min-height:100px;border-radius:10px;padding:10px;border:1px solid#ccc;font-family:inherit;}
+.post-btn{background:#004aad;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;margin-top:10px;transition:all .2s ease;}
+.post-btn:hover{transform:scale(1.03);background:#003580;}
+.countdown-container{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.countdown{background:#dbe9ff;padding:10px 12px;border-radius:8px;flex:1;min-width:140px;}
+#triviaCountdown{margin:10px 0;font-weight:bold;}
+#confetti{pointer-events:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;}
+#congratsPopup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);color:white;font-size:2rem;justify-content:center;align-items:center;z-index:9999;}
+.scoreboard{margin-top:12px;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<div id="splash-screen">
+<h1 style="margin:0 0 8px 0;">PCEA CENTER YOUTH PORTAL</h1>
+<div style="opacity:.95;">Created with pride by <strong>Ian Gathagu</strong></div>
+</div>
+
+<nav>
+<button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
+<button class="nav-btn" data-page="events" onclick="showPage('events',this)">📅 Events</button>
+<button class="nav-btn" data-page="announcements" onclick="showPage('announcements',this)">📢 Announcements</button>
+<button class="nav-btn" data-page="prayers" onclick="showPage('prayers',this)">🙏 Prayer Requests</button>
+<button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
+<button class="nav-btn" data-page="trivia" onclick="showPage('trivia',this)">🎯 Trivia</button>
+<button class="nav-btn" onclick="toggleTheme()">🌓 Theme</button>
+</nav>
+
+<div id="congratsPopup">CONGRATULATIONS 👏</div>
+
+<section id="home" class="page active">
+<h2>Welcome</h2>
+<div class="countdown-container">
+  <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
+  <div class="countdown" id="conventionCountdown" data-label="Presbytery Youth Convention"></div>
+  <div class="countdown" id="christmasCountdown" data-label="Christmas"></div>
+  <div class="countdown" id="newYearCountdown" data-label="New Year"></div>
+</div>
+<p>Word of the Day: <strong id="wordOfDay">Loading...</strong></p>
+<p>Bible Verse of the Day: <strong id="verseOfDay">Loading...</strong></p>
+<p>Stay updated via WhatsApp: <a href="https://whatsapp.com/channel/0029VbAreot60eBWPwDZTl1p" target="_blank">PCEA CENTER YOUTH FELLOWSHIP 🙏</a></p>
+</section>
+
+<section id="events" class="page">
+<h2>Upcoming Events</h2>
+<ul>
+<li><strong>Youth Rally – 16th Nov 2025</strong></li>
+<li><strong>Presbytery Youth Convention – 2nd–6th Dec 2025</strong></li>
+<li><strong>Christmas – 25th Dec 2025</strong></li>
+<li><strong>New Year – 1st Jan 2026</strong></li>
+</ul>
+</section>
+
+<section id="announcements" class="page">
+<h2>Announcements</h2>
+<ul>
+<li>Youth Rally, Presbytery Convention, Christmas, New Year events updates.</li>
+</ul>
+</section>
+
+<section id="prayers" class="page">
+<h2>Prayer Requests</h2>
+<form id="prayerForm">
+<textarea id="prayerText" placeholder="Type your prayer request..." required></textarea><br>
+<button type="submit" class="post-btn">Post Anonymously</button>
+</form>
+<div id="prayerList"></div>
+</section>
+
+<section id="leaders" class="page">
+<h2>Leaders</h2>
+<ul>
+<li><strong>Chairperson:</strong> <a href="https://wa.me/254742892647" target="_blank">Zachary Gikonyo</a></li>
+<li><strong>Vice Chairperson:</strong> <a href="https://wa.me/254714003648" target="_blank">Dalson Maina</a></li>
+<li><strong>Secretary:</strong> <a href="https://wa.me/254718357417" target="_blank">Ian Gathagu</a></li>
+<li><strong>Vice Secretary:</strong> <a href="https://wa.me/254110867929" target="_blank">Lydia Wamuyu</a></li>
+<li><strong>Treasurer:</strong> <a href="https://wa.me/254713285534" target="_blank">Winnie Maundu</a></li>
+</ul>
+</section>
+
+<section id="trivia" class="page">
+<h2>Trivia Challenge</h2>
+<div id="triviaQuestion"></div>
+<div id="triviaOptions"></div>
+<div id="triviaCountdown">Time: 10s</div>
+<div id="triviaFeedback"></div>
+<div class="scoreboard">Score: <span id="triviaScore">0</span></div>
+<button id="nextQuestion" class="post-btn">Next Question</button>
+<div id="confetti"></div>
+</section>
+
+<footer>
+<div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
+<div>Created with pride by <strong>Ian Gathagu</strong></div>
+</footer>
+
+<script>
+(function(){
+// Splash
+const splash=document.getElementById('splash-screen');
+window.addEventListener('load',()=>{setTimeout(()=>{splash.style.display='none';},3200);});
+
+// Navigation
+const btns=Array.from(document.querySelectorAll('.nav-btn'));
+const pages=Array.from(document.querySelectorAll('.page'));
+window.showPage=(pageId,btnEl)=>{btns.forEach(b=>b.classList.remove('active')); if(btnEl)btnEl.classList.add('active'); pages.forEach(p=>p.classList.remove('active')); document.getElementById(pageId).classList.add('active');};
+
+// Dark/Light Theme
+function toggleTheme(){document.body.classList.toggle('dark');}
+
+// Word of the Day
+const words=['Faith','Love','Hope','Grace','Peace','Joy','Service','Prayer','Truth','Wisdom'];
+document.getElementById('wordOfDay').textContent=words[Math.floor(Math.random()*words.length)];
+
+// Countdown function
+function startCountdown(elId,dateStr,label){
+  const el=document.getElementById(elId);
+  const target=new Date(dateStr).getTime();
+  setInterval(()=>{
+    const now=new Date().getTime();
+    let dist=target-now;
+    if(dist<0){el.innerHTML=`${label}: Started!`;return;}
+    let d=Math.floor(dist/(1000*60*60*24)),
+        h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
+        m=Math.floor((dist%(1000*60*60))/(1000*60)),
+        s=Math.floor((dist%(1000*60))/1000);
+    el.innerHTML=`<strong>${label}</strong><br>${d}d ${h}h ${m}m ${s}s`;
+  },1000);
+}
+startCountdown('rallyCountdown','2025-11-16T00:00:00','Youth Rally');
+startCountdown('conventionCountdown','2025-12-02T00:00:00','Presbytery Youth Convention');
+startCountdown('christmasCountdown','2025-12-25T00:00:00','Christmas');
+startCountdown('newYearCountdown','2026-01-01T00:00:00','New Year');
+
+// Prayer Requests
+const prayerForm=document.getElementById('prayerForm');
+const prayerText=document.getElementById('prayerText');
+const prayerList=document.getElementById('prayerList');
+let prayers=[];
+try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]'); if(!Array.isArray(prayers))prayers=[];}catch(e){prayers=[];}
+function renderPrayers(){prayerList.innerHTML='';[...prayers].reverse().forEach(item=>{const div=document.createElement('div');div.textContent=item.text;prayerList.appendChild(div);});}
+prayerForm.addEventListener('submit',function(e){e.preventDefault();const txt=(prayerText.value||'').trim();if(!txt){alert('Please write a prayer request');return;}prayers.push({text:txt});localStorage.setItem('prayers_v1',JSON.stringify(prayers));prayerText.value='';renderPrayers();});
+renderPrayers();
+
+// Trivia (sample questions)
+let triviaData=[
+{level:1,question:"Who led the Israelites out of Egypt?",options:["Moses","Abraham","David","Samuel"],answer:"Moses"},
+{level:1,question:"The first book of the Bible is ____.",options:["Exodus","Genesis","Leviticus","Numbers"],answer:"Genesis"},
+{level:1,question:"What is the meaning of 'Emmanuel'?",options:["God is with us","Faith","Hope","Love"],answer:"God is with us"},
+// Add more questions, levels 1-5
+];
+let currentLevel=1,currentQIndex=0,score=parseInt(localStorage.getItem('triviaScore')||'0'),triviaTimer;
+document.getElementById('triviaScore').textContent=score;
+
+function showTriviaQuestion(){
+  clearInterval(triviaTimer);
+  document.getElementById('triviaCountdown').textContent='Time: 10s';
+  const levelQs=triviaData.filter(q=>q.level===currentLevel);
+  if(currentQIndex>=levelQs.length){
+    if(score>=15){
+      document.getElementById('congratsPopup').style.display='flex';
+      setTimeout(()=>{document.getElementById('congratsPopup').style.display='none';currentLevel++;currentQIndex=0;showTriviaQuestion();},1000);
+    } else { alert('Level failed. Try again.'); currentQIndex=0; showTriviaQuestion(); }
+    return;
+  }
+  const q=levelQs[currentQIndex];
+  document.getElementById('triviaQuestion').innerHTML=`<strong>${q.question}</strong>`;
+  const optionsDiv=document.getElementById('triviaOptions');
+  optionsDiv.innerHTML='';
+  const feedbackDiv=document.getElementById('triviaFeedback'); feedbackDiv.textContent='';
+  q.options.forEach(opt=>{
+    const btn=document.createElement('button'); btn.textContent=opt; btn.className='nav-btn'; 
+    btn.onclick=()=>{
+      clearInterval(triviaTimer);
+      if(opt===q.answer){score+=2;localStorage.setItem('triviaScore',score);document.getElementById('triviaScore').textContent=score;feedbackDiv.textContent='🎉 Correct!';}
+      else{feedbackDiv.textContent=`😢 Wrong! Correct: ${q.answer}`;}
+      currentQIndex++;
+      setTimeout(showTriviaQuestion,1000);
+    };
+    optionsDiv.appendChild(btn);
+  });
+  // Start 10s timer
+  let time=10;
+  triviaTimer=setInterval(()=>{
+    time--;
+    document.getElementById('triviaCountdown').textContent=`Time: ${time}s`;
+    if(time<=0){clearInterval(triviaTimer);feedbackDiv.textContent=`⏱ Time's up! Correct: ${q.answer}`;currentQIndex++;setTimeout(showTriviaQuestion,1000);}
+  },1000);
+}
+
+document.getElementById('nextQuestion').onclick=()=>{showTriviaQuestion();};
+
+showTriviaQuestion();
+
+// Word of the Day & Verse of the Day
+fetch('https://beta.ourmanna.com/api/v1/get/?format=json').then(r=>r.json()).then(data=>{
+  document.getElementById('verseOfDay').textContent=`"${data.verse.details.text}" — ${data.verse.details.reference}`;
+});
+})();
+</script>
 </body>
+  </html>
                                                   </html>
