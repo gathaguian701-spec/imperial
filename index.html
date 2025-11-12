@@ -3,47 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PCEA CENTER YOUTH PORTAL v1.1.3</title>
+<title>PCEA CENTER YOUTH PORTAL v1.1.5</title>
 <style>
-body{font-family:"Poppins",Arial,sans-serif;margin:0;background:#f5f7fa;color:#222;text-align:center;transition:background .3s,color .3s;}
-body.dark{background:#121212;color:#f5f5f5;}
-#splash-screen{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#004aad;color:white;z-index:9999;animation:fadeOut 3s forwards;animation-delay:3s;}
-@keyframes fadeOut{to{opacity:0;visibility:hidden;}}
+body{font-family:"Poppins",Arial,sans-serif;margin:0;padding:0;text-align:center;transition:all .3s;}
+body.light{background:#f5f7fa;color:#222;}
+body.dark{background:#111;color:#f0f0f0;}
+header,footer,nav{transition:all .3s;}
+header,footer{background:#004aad;color:white;padding:12px;}
 nav{background:#004aad;padding:10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
 .nav-btn{background:white;border:none;padding:10px 18px;border-radius:25px;cursor:pointer;font-weight:600;transition:all .28s ease;}
 .nav-btn:hover{transform:scale(1.04);background:#dbe9ff;}
 .nav-btn.active{background:#002c7f;color:white;transform:scale(1.08);}
-.page{display:none;padding:16px;animation:fadeIn .35s ease;max-width:800px;margin:12px auto;text-align:left;}
+.page{display:none;padding:16px;max-width:900px;margin:12px auto;text-align:left;}
 .page.active{display:block;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-textarea{width:90%;max-width:760px;min-height:100px;border-radius:10px;padding:10px;border:1px solid#ccc;font-family:inherit;}
+textarea, input{width:90%;max-width:760px;padding:10px;border-radius:8px;border:1px solid #ccc;font-family:inherit;}
 .post-btn{background:#004aad;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;margin-top:10px;transition:all .2s ease;}
 .post-btn:hover{transform:scale(1.03);background:#003580;}
-#prayerList{width:90%;max-width:760px;margin:12px auto 40px;text-align:left;}
-#prayerList .item{background:#e8edff;padding:10px;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.05);}
-footer{background:#004aad;color:white;padding:12px;margin-top:20px;font-size:.9rem;}
 .countdown-container{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0;}
 .countdown{background:#dbe9ff;padding:10px 12px;border-radius:8px;flex:1;min-width:140px;}
-a.whatsapp-link{color:#25D366;font-weight:bold;text-decoration:none;}
-a.whatsapp-link:hover{text-decoration:underline;}
 #confetti{pointer-events:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;}
-#themeToggle{margin-left:10px;padding:6px 10px;border-radius:8px;cursor:pointer;background:#fff;color:#004aad;border:none;font-weight:600;transition:all .2s;}
-#themeToggle:hover{background:#dbe9ff;}
-#congratsPopup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:gold;color:#000;padding:20px 40px;font-size:2rem;font-weight:bold;border-radius:12px;display:none;z-index:10000;}
+.ai-chat-box{border:1px solid #ccc;padding:10px;border-radius:10px;max-height:300px;overflow-y:auto;background:#fefefe;margin-bottom:10px;}
 </style>
 </head>
-<body>
+<body class="light">
 
-<!-- Splash -->
-<div id="splash-screen" role="dialog" aria-hidden="false">
-<h1 style="margin:0 0 8px 0;">PCEA CENTER YOUTH PORTAL</h1>
-<div style="opacity:.95;">Created with pride by <strong>Ian Gathagu</strong></div>
-</div>
+<header>
+<h1>PCEA CENTER YOUTH PORTAL v1.1.5</h1>
+<p>Created with pride by <strong>Ian Gathagu</strong></p>
+</header>
 
-<!-- Congrats popup -->
-<div id="congratsPopup">CONGRATULATIONS 👏</div>
-
-<!-- Navigation -->
 <nav>
 <button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
 <button class="nav-btn" data-page="events" onclick="showPage('events',this)">📅 Events</button>
@@ -51,7 +39,8 @@ a.whatsapp-link:hover{text-decoration:underline;}
 <button class="nav-btn" data-page="prayers" onclick="showPage('prayers',this)">🙏 Prayer Requests</button>
 <button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
 <button class="nav-btn" data-page="trivia" onclick="showPage('trivia',this)">🎯 Trivia</button>
-<button id="themeToggle">🌙 Dark/Light</button>
+<button class="nav-btn" data-page="ethanAI" onclick="showPage('ethanAI',this)">🤖 Ethan AI</button>
+<button class="nav-btn" onclick="toggleTheme()">🌓 Theme</button>
 </nav>
 
 <!-- Home -->
@@ -59,197 +48,238 @@ a.whatsapp-link:hover{text-decoration:underline;}
 <h2>Welcome</h2>
 <div class="countdown-container">
   <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
-  <div class="countdown" id="conventionCountdown" data-label="Presbytery Youth Convention"></div>
+  <div class="countdown" id="conventionCountdown" data-label="Presbytery Convention"></div>
+  <div class="countdown" id="christmasCountdown" data-label="Christmas"></div>
+  <div class="countdown" id="newYearCountdown" data-label="New Year"></div>
 </div>
-<p>Welcome to the official PCEA Center Youth Portal. Use the menu above to navigate through Home, Events, Announcements, Prayer Requests, Leaders, and Trivia.</p>
-<p><strong>Word of the Day:</strong> <span id="wordOfDay">Loading...</span></p>
-<p>Stay updated via our WhatsApp channel: 
-<a href="https://whatsapp.com/channel/0029VbAreot60eBWPwDZTl1p" target="_blank" class="whatsapp-link">PCEA CENTER YOUTH FELLOWSHIP 🙏</a></p>
+<p>Welcome to the official PCEA Center Youth Portal.</p>
 </section>
 
 <!-- Events -->
-<section id="events" class="page" aria-live="polite">
+<section id="events" class="page">
 <h2>Upcoming Events</h2>
 <ul>
-<li><strong>Youth Rally – 16th Nov 2025:</strong> Worship, fellowship, games, and teaching at PCEA Chieni Church.</li>
-<li><strong>Presbytery Youth Convention – 2nd–6th Dec 2025:</strong> 5-day Bible studies, workshops, leadership training. Bring a book. Charges Ksh1500 (full or instalments).</li>
+<li>Youth Rally – 16th Nov 2025</li>
+<li>Presbytery Youth Convention – 2nd–6th Dec 2025</li>
 </ul>
 </section>
 
 <!-- Announcements -->
-<section id="announcements" class="page" aria-live="polite">
+<section id="announcements" class="page">
 <h2>Announcements</h2>
 <ul>
-<li>Youth Rally – 16th Nov 2025: Don’t miss worship, teaching, and fellowship at PCEA Chieni Church.</li>
-<li>Presbytery Youth Convention – 2nd–6th Dec 2025: Bible study, workshops, evening praise & worship. Bring a book. Charges Ksh1500 (full or instalments).</li>
+<li>Check upcoming events and participate actively.</li>
 </ul>
 </section>
 
 <!-- Prayer Requests -->
-<section id="prayers" class="page" aria-live="polite">
+<section id="prayers" class="page">
 <h2>Prayer Requests</h2>
 <form id="prayerForm">
-<textarea id="prayerText" placeholder="Type your prayer request here..." required></textarea><br>
+<textarea id="prayerText" placeholder="Type your prayer request..." required></textarea><br>
 <button type="submit" class="post-btn">Post Anonymously</button>
 </form>
-<div id="prayerList" aria-live="polite" aria-atomic="true"></div>
+<div id="prayerList"></div>
 </section>
 
 <!-- Leaders -->
-<section id="leaders" class="page" aria-live="polite">
+<section id="leaders" class="page">
 <h2>Leaders</h2>
 <ul>
-<li><strong>Chairperson:</strong> <a href="https://wa.me/254742892647" class="whatsapp-link">Zachary Gikonyo</a></li>
-<li><strong>Vice Chairperson:</strong> <a href="https://wa.me/254714003648" class="whatsapp-link">Dalson Maina</a></li>
-<li><strong>Secretary:</strong> <a href="https://wa.me/254718357417" class="whatsapp-link">Ian Gathagu</a></li>
-<li><strong>Vice Secretary:</strong> <a href="https://wa.me/254110867929" class="whatsapp-link">Lydia Wamuyu</a></li>
-<li><strong>Treasurer:</strong> <a href="https://wa.me/254713285534" class="whatsapp-link">Winnie Maundu</a></li>
+<li><strong>Zachary Gikonyo:</strong> <a href="https://wa.me/254742892647" target="_blank">WhatsApp</a></li>
+<li><strong>Dalson Maina:</strong> <a href="https://wa.me/254714003648" target="_blank">WhatsApp</a></li>
+<li><strong>Ian Gathagu:</strong> <a href="https://wa.me/254718357417" target="_blank">WhatsApp</a></li>
+<li><strong>Lydia Wamuyu:</strong> <a href="https://wa.me/254110867929" target="_blank">WhatsApp</a></li>
+<li><strong>Winnie Maundu:</strong> <a href="https://wa.me/254713285534" target="_blank">WhatsApp</a></li>
 </ul>
-<p><em>Message from Secretary:</em> Welcome youth! Let’s grow together spiritually and socially in PCEA fellowship.</p>
 </section>
 
 <!-- Trivia -->
-<section id="trivia" class="page" aria-live="polite">
+<section id="trivia" class="page">
 <h2>Trivia Challenge</h2>
+<div>Time left: <span id="triviaTimer">10</span>s</div>
 <div id="triviaQuestion"></div>
 <div id="triviaOptions" style="margin-top:8px;"></div>
 <div id="triviaFeedback" style="margin-top:8px;font-size:1.2rem;"></div>
-<div class="countdown" id="triviaCountdown">Time: 10s</div>
-<div id="scoreboard" style="margin-top:12px;font-weight:bold;">Score: 0</div>
 <button id="nextQuestion" class="post-btn">Next Question</button>
 <div id="confetti"></div>
+<div>Score: <span id="triviaScore">0</span></div>
+</section>
+
+<!-- Ethan AI -->
+<section id="ethanAI" class="page">
+<h2>Ethan AI 🤖</h2>
+<div id="aiChat" class="ai-chat-box"></div>
+<input type="text" id="aiInput" placeholder="Ask Ethan AI..." />
+<button class="post-btn" onclick="sendAIMessage()">Send</button>
 </section>
 
 <footer>
 <div>© 2025 PCEA Center Youth — To God Be the Glory.</div>
-<div style="opacity:.9; font-size:.95rem; margin-top:6px;">Created with pride by <strong>Ian Gathagu</strong></div>
 </footer>
 
 <script>
-(function(){
-// Navigation
-const btns=Array.from(document.querySelectorAll('.nav-btn'));
-const pages=Array.from(document.querySelectorAll('.page'));
-const splash=document.getElementById('splash-screen');
-window.showPage=function(pageId,btnElement){
+// === Navigation ===
+const btns = Array.from(document.querySelectorAll('.nav-btn'));
+const pages = Array.from(document.querySelectorAll('.page'));
+function showPage(id,btnEl){
   btns.forEach(b=>b.classList.remove('active'));
-  let button=btnElement||btns.find(b=>b.dataset.page===pageId);
-  if(button)button.classList.add('active');
+  if(btnEl) btnEl.classList.add('active');
   pages.forEach(p=>p.classList.remove('active'));
-  const selected=document.getElementById(pageId);
-  if(selected)selected.classList.add('active');
-};
-btns.forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page,b)));
+  document.getElementById(id).classList.add('active');
+}
 
-// Theme toggle
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.onclick = () => document.body.classList.toggle('dark');
+// === Theme ===
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  document.body.classList.toggle('light');
+}
 
-// Prayer Requests
-const prayerForm=document.getElementById('prayerForm');
-const prayerText=document.getElementById('prayerText');
-const prayerList=document.getElementById('prayerList');
-let prayers=[];
-try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]'); if(!Array.isArray(prayers))prayers=[];}catch(e){prayers=[];}
-function renderPrayers(){prayerList.innerHTML='';[...prayers].reverse().forEach(item=>{const div=document.createElement('div');div.className='item';const dt=document.createElement('div');dt.style.fontSize='.85rem';dt.style.opacity='.85';dt.style.marginBottom='6px';dt.textContent=`Posted on ${item.date}`;const p=document.createElement('div');p.textContent=item.text;p.style.whiteSpace='pre-wrap';div.appendChild(p);div.appendChild(dt);prayerList.appendChild(div);});}
-prayerForm.addEventListener('submit',function(e){e.preventDefault();const txt=(prayerText.value||'').trim();if(!txt){alert('Please write a prayer request before posting.');return;}prayers.push({text:txt,date:new Date().toLocaleString()});localStorage.setItem('prayers_v1',JSON.stringify(prayers));prayerText.value='';renderPrayers();showPage('prayers');});
-renderPrayers();
-
-// Splash
-window.addEventListener('load',function(){setTimeout(()=>{if(splash)splash.style.display='none';showPage('home',btns.find(b=>b.dataset.page==='home'));},3200);});
-
-// Word of the Day
-const words=['Faith','Love','Hope','Grace','Peace','Joy','Service','Prayer','Truth','Wisdom'];
-document.getElementById('wordOfDay').textContent=words[Math.floor(Math.random()*words.length)];
-
-// Countdown
-function countdown(targetId,dateStr){
-  const el=document.getElementById(targetId);
-  const target=new Date(dateStr).getTime();
-  const interval = setInterval(()=>{
-    const now=new Date().getTime();
-    let dist=target-now;
-    if(dist<0){el.innerHTML='Event Started!'; clearInterval(interval); return;}
+// === Countdown ===
+function startCountdown(id,dateStr){
+  const el = document.getElementById(id);
+  const target = new Date(dateStr).getTime();
+  setInterval(()=>{
+    const now = new Date().getTime();
+    let dist = target - now;
+    if(dist<0){el.innerHTML='Event Started!';return;}
     let d=Math.floor(dist/(1000*60*60*24)),
         h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
         m=Math.floor((dist%(1000*60*60))/(1000*60)),
         s=Math.floor((dist%(1000*60))/1000);
-    el.innerHTML=`<strong>${el.dataset.label || ''}</strong><br>${d}d ${h}h ${m}m ${s}s`;
+    el.innerHTML=`<strong>${el.dataset.label}</strong><br>${d}d ${h}h ${m}m ${s}s`;
   },1000);
 }
-countdown('rallyCountdown','2025-11-16T00:00:00');
-countdown('conventionCountdown','2025-12-02T00:00:00');
+startCountdown('rallyCountdown','2025-11-16T00:00:00');
+startCountdown('conventionCountdown','2025-12-02T00:00:00');
+startCountdown('christmasCountdown','2025-12-25T00:00:00');
+startCountdown('newYearCountdown','2026-01-01T00:00:00');
 
-// Trivia with levels
-let triviaData = [];
-let currentLevel = 1;
-let currentQIndex = 0;
-let score = parseInt(localStorage.getItem('triviaScore_v1')||'0');
-document.getElementById('scoreboard').textContent = 'Score: '+score;
+// === Trivia Data ===
+let triviaData = {
+  level1:[
+    {question:"PCEA was founded in ____.", options:["1912","1920","1905","1930"], answer:"1912"},
+    {question:"The first book of the Bible is ____.", options:["Genesis","Exodus","Leviticus","Numbers"], answer:"Genesis"}
+  ],
+  level2:[
+    {question:"Jesus performed his first miracle at ____.", options:["Cana","Jerusalem","Bethlehem","Nazareth"], answer:"Cana"},
+    {question:"The Great Commission is in ____.", options:["Matthew 28","John 3","Luke 2","Acts 10"], answer:"Matthew 28"}
+  ]
+};
+let currentLevel=1,questionIndex=0,triviaScore=Number(localStorage.getItem('triviaScore')||0);
+document.getElementById('triviaScore').textContent=triviaScore;
+let currentQuestionSet = triviaData[`level${currentLevel}`];
+let triviaTimerInterval;
 
-function loadTrivia() {
-  // Example batch with level field
-  triviaData = [
-    {question:"Who built the Ark?","options":["Moses","Noah","Abraham","David"],answer:"Noah",level:1},
-    {question:"Jesus was born in ___ town of Bethlehem.","options":["Nazareth","Bethlehem","Jerusalem","Capernaum"],answer:"Bethlehem",level:1},
-    {question:"Who led Israelites out of Egypt?","options":["Moses","Aaron","Joshua","David"],answer:"Moses",level:1},
-    {question:"PCEA stands for ___","options":["Presbyterian Church of East Africa","Protestant Church of East Africa","Pentecostal Church of East Africa","Presbyterian Church of Europe"],answer:"Presbyterian Church of East Africa",level:1},
-    {question:"What is the first book of the Bible?","options":["Genesis","Exodus","Leviticus","Numbers"],answer:"Genesis",level:1},
-    {question:"Who betrayed Jesus?","options":["Peter","Judas","John","Paul"],answer:"Judas",level:1},
-    {question:"Who parted the Red Sea?","options":["Moses","Joshua","Aaron","David"],answer:"Moses",level:1},
-    {question:"What is the capital of Kenya?","options":["Nairobi","Mombasa","Kisumu","Nakuru"],answer:"Nairobi",level:1},
-    {question:"Complete the verse: 'For God so loved ___, that he gave his only Son.'","options":["the world","Israel","David","the disciples"],answer:"the world",level:1},
-    {question:"Who wrote most of the Psalms?","options":["David","Solomon","Moses","Isaiah"],answer:"David",level:1}
-  ];
-  showTriviaQuestion();
-}
-function showTriviaQuestion(){
-  const levelQuestions = triviaData.filter(q=>q.level===currentLevel);
-  if(levelQuestions.length===0){
-    alert('No more questions in this level.');
-    return;
+// === Trivia Functions ===
+function showTrivia(){
+  if(questionIndex>=currentQuestionSet.length){
+    if(triviaScore>=15 && currentLevel<2){ // Max level 2 for demo
+      currentLevel++;
+      alert('CONGRATULATIONS 👏 Level Up!');
+      questionIndex=0;
+      currentQuestionSet = triviaData[`level${currentLevel}`];
+    }else{return;}
   }
-  if(currentQIndex>=levelQuestions.length){
-    if(score>=30){ // 15*2 points
-      document.getElementById('congratsPopup').style.display='flex';
-      setTimeout(()=>{document.getElementById('congratsPopup').style.display='none';currentLevel++;currentQIndex=0;showTriviaQuestion();},1000);
-    } else { alert('Level completed! Not enough points to proceed.'); currentQIndex=0; showTriviaQuestion();}
-    return;
-  }
-  const q = levelQuestions[currentQIndex];
-  const optionsDiv = document.getElementById('triviaOptions');
-  const feedbackDiv = document.getElementById('triviaFeedback');
-  optionsDiv.innerHTML=''; feedbackDiv.innerHTML='';
-  document.getElementById('triviaQuestion').innerHTML='<strong>'+q.question+'</strong>';
+  const q=currentQuestionSet[questionIndex];
+  document.getElementById('triviaQuestion').textContent=q.question;
+  const optionsDiv=document.getElementById('triviaOptions');
+  optionsDiv.innerHTML='';
+  document.getElementById('triviaFeedback').textContent='';
+  let timer = 10;
+  document.getElementById('triviaTimer').textContent=timer;
+  clearInterval(triviaTimerInterval);
+  triviaTimerInterval=setInterval(()=>{
+    timer--;
+    document.getElementById('triviaTimer').textContent=timer;
+    if(timer<=0){
+      clearInterval(triviaTimerInterval);
+      document.getElementById('triviaFeedback').textContent='😢 Time up!';
+      questionIndex++;
+      setTimeout(showTrivia,1000);
+    }
+  },1000);
   q.options.forEach(opt=>{
-    const btn = document.createElement('button');
-    btn.textContent=opt; btn.className='nav-btn';
+    const btn=document.createElement('button');
+    btn.textContent=opt;
+    btn.className='nav-btn';
     btn.onclick=()=>{
+      clearInterval(triviaTimerInterval);
       if(opt===q.answer){
-        feedbackDiv.innerHTML='🎉 Correct!';
-        score+=2;
-        localStorage.setItem('triviaScore_v1',score);
-        document.getElementById('scoreboard').textContent='Score: '+score;
-      } else {
-        feedbackDiv.innerHTML='😢 Wrong! Correct: '+q.answer;
+        triviaScore+=2;
+        localStorage.setItem('triviaScore',triviaScore);
+        document.getElementById('triviaScore').textContent=triviaScore;
+        document.getElementById('triviaFeedback').textContent='🎉 Correct!';
+      }else{
+        document.getElementById('triviaFeedback').textContent=`😢 Wrong! Correct: ${q.answer}`;
       }
-      currentQIndex++;
-      setTimeout(showTriviaQuestion,500);
+      questionIndex++;
+      setTimeout(showTrivia,1000);
     };
     optionsDiv.appendChild(btn);
   });
 }
+document.getElementById('nextQuestion').onclick=showTrivia;
+showTrivia();
 
-document.getElementById('nextQuestion').onclick=()=>{showTriviaQuestion();};
+// === Prayer Requests ===
+let prayers=[];
+try{prayers=JSON.parse(localStorage.getItem('prayers_v1')||'[]');}catch(e){prayers=[];}
+const prayerForm=document.getElementById('prayerForm');
+prayerForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const txt=document.getElementById('prayerText').value.trim();
+  if(!txt) return;
+  prayers.push({text:txt,date:new Date().toLocaleString()});
+  localStorage.setItem('prayers_v1',JSON.stringify(prayers));
+  document.getElementById('prayerText').value='';
+  renderPrayers();
+});
+function renderPrayers(){
+  const list=document.getElementById('prayerList');
+  list.innerHTML='';
+  prayers.slice().reverse().forEach(p=>{
+    const div=document.createElement('div');
+    div.style.margin='4px 0';
+    div.innerHTML=`${p.text} <br><small>${p.date}</small>`;
+    list.appendChild(div);
+  });
+}
+renderPrayers();
 
-loadTrivia();
-
-// Confetti animation
-const style=document.createElement('style');
-style.innerHTML=`@keyframes fall{to{transform:translateY(100vh) rotate(360deg);opacity:0;}}`;
-document.head.appendChild(style);
-
-})();
+// === Ethan AI ===
+let chatHistory = [];
+try{chatHistory=JSON.parse(localStorage.getItem('ethanAI_v1')||'[]');}catch(e){chatHistory=[];}
+const aiChat = document.getElementById('aiChat');
+function renderAIChat(){
+  aiChat.innerHTML='';
+  chatHistory.forEach(msg=>{
+    const div=document.createElement('div');
+    div.style.margin='4px 0';
+    div.innerHTML=`<strong>${msg.sender}:</strong> ${msg.text}`;
+    aiChat.appendChild(div);
+  });
+  aiChat.scrollTop = aiChat.scrollHeight;
+}
+function sendAIMessage(){
+  const input=document.getElementById('aiInput');
+  const text=input.value.trim();
+  if(!text) return;
+  chatHistory.push({sender:'You',text});
+  localStorage.setItem('ethanAI_v1',JSON.stringify(chatHistory));
+  renderAIChat();
+  input.value='';
+  setTimeout(()=>{
+    let reply='I can answer Bible, PCEA history, trivia hints or give motivation.';
+    if(text.toLowerCase().includes('bible')) reply='Ask me any Bible verse or story!';
+    if(text.toLowerCase().includes('pcea')) reply='PCEA was founded in 1912 with many youth fellowships.';
+    if(text.toLowerCase().includes('trivia')) reply='Hints: Each correct answer gives 2 points.';
+    chatHistory.push({sender:'Ethan',text:reply});
+    localStorage.setItem('ethanAI_v1',JSON.stringify(chatHistory));
+    renderAIChat();
+  },500);
+}
+renderAIChat();
 </script>
 </body>
-    </html>
+  </html>
