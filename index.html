@@ -5,96 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PCEA CENTER YOUTHHUB</title>
 <style>
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg);
-  color: var(--text);
-  transition: background 0.5s, color 0.5s;
-}
-:root {
-  --bg: #f5f5f5;
-  --text: #111;
-  --card: white;
-}
-body.dark {
-  --bg: #0f172a;
-  --text: #f1f5f9;
-  --card: #1e293b;
-}
-header {
-  background: #004aad;
-  color: white;
-  padding: 15px;
-  text-align: center;
-}
-.container {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 20px;
-  background: var(--card);
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-button {
-  background: #004aad;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-button:hover { background: #003380; }
-.countdowns { display: flex; justify-content: space-between; margin-bottom: 15px; }
-.countdown { background: var(--card); padding: 10px; border-radius: 8px; text-align: center; flex: 1; margin: 0 5px; }
-.trivia { text-align: center; }
-#question { font-weight: bold; margin: 10px 0; }
-input[type=text] { padding: 8px; width: 80%; margin: 10px 0; }
-#congrats {
-  display: none;
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #22c55e;
-  color: white;
-  padding: 20px 40px;
-  border-radius: 10px;
-  font-size: 1.5em;
-  animation: pop 1s ease-in-out;
-}
-@keyframes pop {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-footer {
-  text-align: center;
-  padding: 10px;
-  margin-top: 20px;
-  font-size: 0.9em;
-}
+:root{--bg:#f5f7fa;--text:#222;--card:#fff;}
+body{margin:0;padding:0;font-family:Poppins,sans-serif;background:var(--bg);color:var(--text);transition:all .3s;}
+body.dark{--bg:#0f172a;--text:#f1f5f9;--card:#1e293b;}
+header{background:#004aad;color:white;padding:12px;text-align:center;display:flex;justify-content:space-between;align-items:center;}
+header h1{margin:0;font-size:1.6em;}
+button{cursor:pointer;border:none;padding:8px 14px;border-radius:6px;background:#004aad;color:white;transition:.2s;}
+button:hover{background:#003380;}
+.container{max-width:900px;margin:20px auto;padding:20px;background:var(--card);border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.15);}
+.countdowns{display:flex;justify-content:space-between;flex-wrap:wrap;margin-bottom:15px;}
+.countdown{flex:1;margin:0 5px;padding:10px;border-radius:8px;background:var(--card);text-align:center;}
+.trivia{margin-top:15px;text-align:center;}
+#question{font-weight:bold;margin:10px 0;}
+input[type=text]{padding:8px;width:80%;margin:10px 0;}
+#congrats{display:none;position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);background:#22c55e;color:white;padding:20px 40px;border-radius:10px;font-size:1.5em;animation:pop 1s ease-in-out;}
+@keyframes pop{0%{transform:translate(-50%,-50%) scale(0);opacity:0;}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1;}100%{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+footer{text-align:center;padding:10px;margin-top:20px;font-size:.9em;}
+#audioControl{margin-left:10px;}
 </style>
 </head>
 <body>
 
-<!-- Heavenly Background Music -->
-<audio id="bgMusic" autoplay loop>
-  <source src="https://cdn.pixabay.com/download/audio/2023/05/06/audio_4ab14e63c5.mp3?filename=heavenly-keys-143700.mp3" type="audio/mpeg">
-</audio>
-
 <header>
   <h1>PCEA CENTER YOUTHHUB</h1>
-  <button id="themeToggle">🌙 Toggle Theme</button>
+  <div>
+    <button id="themeToggle">🌙 Toggle Theme</button>
+    <button id="audioControl">🔊 Pause Music</button>
+  </div>
 </header>
+
+<!-- Background Music -->
+<audio id="bgMusic" autoplay loop>
+  <source src="https://cdn.pixabay.com/download/audio/2023/06/06/audio_d279b7d5e3.mp3?filename=what-a-friend-we-have-in-jesus-145746.mp3" type="audio/mpeg">
+</audio>
 
 <div class="container">
   <div class="countdowns">
+    <div class="countdown" id="rallyCountdown"></div>
+    <div class="countdown" id="conventionCountdown"></div>
     <div class="countdown" id="christmasCountdown"></div>
     <div class="countdown" id="newYearCountdown"></div>
-    <div class="countdown" id="triviaCountdown"></div>
   </div>
 
   <div class="trivia">
@@ -111,101 +61,74 @@ footer {
 <div id="congrats">🎉 CONGRATULATIONS 👏</div>
 
 <footer>
-  <p>Version 1.1.6 | Built by Ian Gathagu</p>
+  <p>Version 1.1.9 | Built by Ian Gathagu</p>
 </footer>
 
 <script>
-// --- THEMES ---
-const toggle = document.getElementById("themeToggle");
-toggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
+// --- Theme Toggle ---
+const toggle=document.getElementById("themeToggle");
+toggle.addEventListener("click",()=>{document.body.classList.toggle("dark");});
+
+// --- Music Control ---
+const bgMusic=document.getElementById("bgMusic");
+const audioControl=document.getElementById("audioControl");
+audioControl.addEventListener("click",()=>{
+  if(bgMusic.paused){bgMusic.play();audioControl.innerText="🔊 Pause Music";}
+  else{bgMusic.pause();audioControl.innerText="🔇 Play Music";}
 });
 
 // --- COUNTDOWNS ---
-function countdown(id, dateStr) {
-  const el = document.getElementById(id);
-  const countDownDate = new Date(dateStr).getTime();
-  setInterval(() => {
-    const now = new Date().getTime();
-    const distance = countDownDate - now;
-    if (distance < 0) { el.innerHTML = "🎉 Happening Now!"; return; }
-    const days = Math.floor(distance / (1000*60*60*24));
-    const hrs = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-    const mins = Math.floor((distance % (1000*60*60)) / (1000*60));
-    const secs = Math.floor((distance % (1000*60)) / 1000);
-    el.innerHTML = `<h3>${id.replace("Countdown","")}</h3>${days}d ${hrs}h ${mins}m ${secs}s`;
-  }, 1000);
+function countdown(id,dateStr,label){
+  const el=document.getElementById(id);
+  const target=new Date(dateStr).getTime();
+  setInterval(()=>{
+    const now=new Date().getTime();
+    let dist=target-now;
+    if(dist<0){el.innerHTML=label+" 🎉 Happening Now!";return;}
+    let d=Math.floor(dist/(1000*60*60*24)),
+        h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
+        m=Math.floor((dist%(1000*60*60))/(1000*60)),
+        s=Math.floor((dist%(1000*60))/1000);
+    el.innerHTML=`<h4>${label}</h4>${d}d ${h}h ${m}m ${s}s`;
+  },1000);
 }
-countdown("christmasCountdown", "Dec 25, 2025 00:00:00");
-countdown("newYearCountdown", "Jan 1, 2026 00:00:00");
+
+countdown("rallyCountdown","Nov 16, 2025 00:00:00","Youth Rally");
+countdown("conventionCountdown","Dec 2, 2025 00:00:00","Presbytery Convention");
+countdown("christmasCountdown","Dec 25, 2025 00:00:00","Christmas");
+countdown("newYearCountdown","Jan 1, 2026 00:00:00","New Year");
 
 // --- TRIVIA ---
-const triviaData = {
-  1: [
-    { q: "What does PCEA stand for?", a: "Presbyterian Church of East Africa" },
-    { q: "Who built the ark?", a: "Noah" },
-    { q: "Fill in: In the beginning ___ created the heavens and the earth.", a: "God" },
-    { q: "Who was swallowed by a big fish?", a: "Jonah" },
-    { q: "What is the first book of the New Testament?", a: "Matthew" },
-    { q: "Jesus turned water into ___?", a: "wine" },
-    { q: "Who betrayed Jesus?", a: "Judas" },
-    { q: "How many disciples did Jesus have?", a: "12" },
-    { q: "Who led the Israelites out of Egypt?", a: "Moses" },
-    { q: "In which city was Jesus born?", a: "Bethlehem" }
-  ],
-  2: [
-    { q: "Which prophet confronted King Ahab?", a: "Elijah" },
-    { q: "In which year was PCEA officially formed?", a: "1956" },
-    { q: "Who was the first Moderator of PCEA?", a: "Rev. John Gatu" },
-    { q: "Fill in: Faith without ___ is dead.", a: "works" },
-    { q: "Which Gospel focuses most on Jesus’ divinity?", a: "John" },
-    { q: "Where was Saul converted?", a: "Damascus" },
-    { q: "How many Psalms are there?", a: "150" },
-    { q: "Name the shortest verse in the Bible.", a: "Jesus wept" },
-    { q: "Who anointed David as king?", a: "Samuel" },
-    { q: "Who replaced Judas as an apostle?", a: "Matthias" }
-  ]
+const triviaData={
+1:[{q:"What does PCEA stand for?",a:"Presbyterian Church of East Africa"},{q:"Who built the ark?",a:"Noah"},{q:"Fill in: In the beginning ___ created the heavens and the earth.",a:"God"},{q:"Who was swallowed by a big fish?",a:"Jonah"},{q:"What is the first book of the New Testament?",a:"Matthew"},{q:"Jesus turned water into ___?",a:"wine"},{q:"Who betrayed Jesus?",a:"Judas"},{q:"How many disciples did Jesus have?",a:"12"},{q:"Who led the Israelites out of Egypt?",a:"Moses"},{q:"In which city was Jesus born?",a:"Bethlehem"}],
+2:[{q:"Which prophet confronted King Ahab?",a:"Elijah"},{q:"In which year was PCEA officially formed?",a:"1956"},{q:"Who was the first Moderator of PCEA?",a:"Rev. John Gatu"},{q:"Fill in: Faith without ___ is dead.",a:"works"},{q:"Which Gospel focuses most on Jesus’ divinity?",a:"John"},{q:"Where was Saul converted?",a:"Damascus"},{q:"How many Psalms are there?",a:"150"},{q:"Name the shortest verse in the Bible.",a:"Jesus wept"},{q:"Who anointed David as king?",a:"Samuel"},{q:"Who replaced Judas as an apostle?",a:"Matthias"}]
 };
 
-let currentLevel = 1;
-let currentIndex = 0;
-let score = parseInt(localStorage.getItem("score")) || 0;
-document.getElementById("score").innerText = "Score: " + score;
+let currentLevel=1,currentIndex=0,score=parseInt(localStorage.getItem("score"))||0;
+document.getElementById("score").innerText="Score: "+score;
 
-function showQuestion() {
-  const levelData = triviaData[currentLevel];
-  if (currentIndex >= levelData.length) {
-    if (score >= 15 && triviaData[currentLevel + 1]) {
-      document.getElementById("congrats").style.display = "block";
-      setTimeout(() => {
-        document.getElementById("congrats").style.display = "none";
-        currentLevel++;
-        currentIndex = 0;
-        document.getElementById("level").innerText = "Level " + currentLevel;
-        showQuestion();
-      }, 1000);
-    } else {
-      document.getElementById("question").innerText = "You’ve finished all levels!";
-    }
+function showQuestion(){
+  const levelData=triviaData[currentLevel];
+  if(currentIndex>=levelData.length){
+    if(score>=15 && triviaData[currentLevel+1]){
+      document.getElementById("congrats").style.display="block";
+      setTimeout(()=>{document.getElementById("congrats").style.display="none";currentLevel++;currentIndex=0;document.getElementById("level").innerText="Level "+currentLevel;showQuestion();},1000);
+    }else{document.getElementById("question").innerText="You’ve finished all levels!";}
     return;
   }
-  document.getElementById("question").innerText = levelData[currentIndex].q;
+  document.getElementById("question").innerText=levelData[currentIndex].q;
 }
 
-document.getElementById("submit").onclick = () => {
-  const ans = document.getElementById("answer").value.trim().toLowerCase();
-  const correct = triviaData[currentLevel][currentIndex].a.toLowerCase();
-  if (ans === correct) {
-    score += 2;
-    localStorage.setItem("score", score);
-    document.getElementById("score").innerText = "Score: " + score;
-  }
+document.getElementById("submit").onclick=()=>{
+  const ans=document.getElementById("answer").value.trim().toLowerCase();
+  const correct=triviaData[currentLevel][currentIndex].a.toLowerCase();
+  if(ans===correct){score+=2;localStorage.setItem("score",score);document.getElementById("score").innerText="Score: "+score;}
   currentIndex++;
   showQuestion();
-  document.getElementById("answer").value = "";
+  document.getElementById("answer").value="";
 };
 showQuestion();
 </script>
 
 </body>
-                                                     </html>
+  </html>
