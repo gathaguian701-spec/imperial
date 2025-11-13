@@ -1,171 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PCEA CENTER YOUTHHUB</title>
-<style>
-body{margin:0;font-family:Arial,sans-serif;background:#001f4d;color:white;text-align:center;transition:background 0.5s,color 0.5s;}
-header{padding:20px;}
-nav{display:flex;justify-content:center;gap:12px;padding:12px;background:#004aad;}
-.nav-btn{padding:10px 18px;border:none;border-radius:25px;background:white;color:#004aad;font-weight:600;cursor:pointer;transition:all .3s;}
-.nav-btn:hover{transform:scale(1.05);}
-.nav-btn.active{background:#002c7f;color:white;}
-.page{display:none;padding:16px;max-width:900px;margin:12px auto;text-align:left;}
-.page.active{display:block;}
-.countdown-container{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-around;margin:12px 0;}
-.countdown{background:#dbe9ff;color:#004aad;padding:12px;border-radius:8px;min-width:150px;}
-#verseOfDay{font-weight:bold;}
-.leader-btn{margin:6px;padding:10px 16px;border-radius:8px;background:#004aad;color:white;border:none;cursor:pointer;transition:all .2s;}
-.leader-btn:hover{transform:scale(1.03);}
-#leaderInfo{margin-top:12px;padding:12px;background:#002c7f;border-radius:8px;}
-audio{margin:12px 0;width:90%;}
-footer{padding:12px;background:#004aad;font-size:.9rem;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCEA CENTER YOUTHHUB v1.2.0</title>
+  <style>
+    body {
+      background-color: #001f3f;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    header {
+      animation: fadeIn 3s ease-in-out;
+      font-size: 30px;
+      margin-top: 20px;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    nav {
+      background: #002a5c;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #ffcc00;
+    }
+    section {
+      padding: 40px;
+    }
+    .countdown {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .count-box {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 15px;
+      width: 250px;
+      margin: 10px;
+    }
+    footer {
+      background-color: #002a5c;
+      padding: 20px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Splash -->
-<div id="splash-screen" style="position:fixed;inset:0;background:#001f4d;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;">
-<h1 id="hubTitle" style="opacity:0;font-size:2.2rem;">PCEA CENTER YOUTHHUB</h1>
-<p id="creator" style="opacity:0;font-size:1.2rem;margin-top:8px;">Proudly created by Ian Gathagu</p>
-</div>
+<header>
+  <h1>PCEA CENTER YOUTHHUB</h1>
+  <p><em>Proudly created by Ian Gathagu</em></p>
+</header>
 
-<!-- Navigation -->
 <nav>
-<button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
-<button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
-<button class="nav-btn" data-page="events" onclick="showPage('events',this)">📅 Events</button>
-<button class="nav-btn" data-page="announcements" onclick="showPage('announcements',this)">📢 Announcements</button>
+  <a href="#home">Home</a>
+  <a href="#leaders">Leaders</a>
+  <a href="#events">Events</a>
+  <a href="#announcements">Announcements</a>
+  <a href="#hymns">Hymns</a>
 </nav>
 
-<!-- Home -->
-<section id="home" class="page active">
-<h2>Welcome</h2>
-<div class="countdown-container">
-  <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
-  <div class="countdown" id="conventionCountdown" data-label="Presbytery Convention"></div>
-  <div class="countdown" id="christmasCountdown" data-label="Christmas"></div>
-  <div class="countdown" id="newYearCountdown" data-label="New Year"></div>
-</div>
-<p><strong>Verse of the Day:</strong> <span id="verseOfDay">Loading...</span></p>
-<audio id="bgMusic" controls autoplay loop>
-  <source src="A_Friend_We_Have_in_Jesus.mp3" type="audio/mpeg">
-  Your browser does not support audio.
-</audio>
+<!-- HOME SECTION -->
+<section id="home">
+  <h2>Welcome to PCEA Center YouthHub</h2>
+
+  <div class="countdown">
+    <div class="count-box">
+      <h3>Youth Rally Countdown</h3>
+      <p id="rally"></p>
+    </div>
+    <div class="count-box">
+      <h3>Convention Countdown</h3>
+      <p id="convention"></p>
+    </div>
+    <div class="count-box">
+      <h3>Christmas Countdown</h3>
+      <p id="christmas"></p>
+    </div>
+    <div class="count-box">
+      <h3>New Year Countdown</h3>
+      <p id="newyear"></p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:40px;">📖 Verse of the Day</h3>
+  <p id="verse"></p>
 </section>
 
-<!-- Leaders -->
-<section id="leaders" class="page">
-<h2>Leaders</h2>
-<div>
-  <button class="leader-btn" onclick="showLeader('Zachary Gikonyo')">Zachary's Office</button>
-  <button class="leader-btn" onclick="showLeader('Dalson Maina')">Dalson's Office</button>
-  <button class="leader-btn" onclick="showLeader('Ian Gathagu')">Ian's Office</button>
-  <button class="leader-btn" onclick="showLeader('Lydia Wamuyu')">Lydia's Office</button>
-  <button class="leader-btn" onclick="showLeader('Winnie Maundu')">Winnie's Office</button>
-</div>
-<div id="leaderInfo"></div>
+<!-- LEADERS SECTION -->
+<section id="leaders" style="background-color: #012b57;">
+  <h2>Meet Our Youth Leaders</h2>
+
+  <div>
+    <h3>Ian Gathagu — Secretary</h3>
+    <p>A passionate young leader serving as the Youth Secretary at PCEA Center. You can contact him for youth details.</p>
+    <a href="https://wa.me/254718357417" style="color:#ffcc00;">📞 Ian's Office (WhatsApp)</a>
+  </div>
+
+  <div>
+    <h3>Zachary Gikonyo — Chairperson</h3>
+    <p>Dedicated and visionary leader overseeing all youth activities and growth at PCEA Center.</p>
+    <a href="https://wa.me/254742892647" style="color:#ffcc00;">📞 Chairperson’s Office</a>
+  </div>
+
+  <div>
+    <h3>Dalson Maina — Vice Chairperson</h3>
+    <p>Supportive and dynamic in ensuring every youth member grows spiritually and socially.</p>
+    <a href="https://wa.me/254714003648" style="color:#ffcc00;">📞 Vice Chairperson’s Office</a>
+  </div>
+
+  <div>
+    <h3>Lydia Wamuyu — Treasurer</h3>
+    <p>Faithful steward handling all youth financial matters diligently and transparently.</p>
+    <a href="https://wa.me/254110867929" style="color:#ffcc00;">📞 Treasurer’s Office</a>
+  </div>
+
+  <div>
+    <h3>Winnie Maundu — Organizing Secretary</h3>
+    <p>Creative planner behind youth events, ensuring everything runs smoothly.</p>
+    <a href="https://wa.me/254713285534" style="color:#ffcc00;">📞 Organizing Secretary’s Office</a>
+  </div>
 </section>
 
-<!-- Events -->
-<section id="events" class="page">
-<h2>Upcoming Events</h2>
-<ul>
-<li><strong>Youth Rally – 16th Nov 2025:</strong> Worship, fellowship, games, and teaching at PCEA Chieni Church.</li>
-<li><strong>Presbytery Youth Convention – 2nd–6th Dec 2025:</strong> 5-day Bible studies, workshops, leadership training. Bring a book. Charges Ksh1500 (full or instalments).</li>
-<li><strong>Christmas 2025:</strong> Special praise & worship and fellowship at PCEA Center.</li>
-<li><strong>New Year's Day 2026:</strong> Celebration, prayers, and fellowship.</li>
-</ul>
+<!-- EVENTS SECTION -->
+<section id="events">
+  <h2>Upcoming Events</h2>
+  <p>Stay tuned for our youth programs and church activities.</p>
 </section>
 
-<!-- Announcements -->
-<section id="announcements" class="page">
-<h2>Announcements</h2>
-<ul>
-<li>Youth Rally – Don’t miss worship and fellowship on 16th Nov 2025.</li>
-<li>Presbytery Youth Convention – 2nd–6th Dec 2025: Bible studies and evening worship. Charges Ksh1500.</li>
-<li>Christmas and New Year celebrations – Join us for praise and community events.</li>
-</ul>
+<!-- ANNOUNCEMENTS -->
+<section id="announcements" style="background-color: #012b57;">
+  <h2>Announcements</h2>
+  <p>No new announcements at the moment. Keep checking for updates!</p>
+</section>
+
+<!-- HYMNS SECTION -->
+<section id="hymns">
+  <h2>🎶 Golden Bells Hymns</h2>
+
+  <div style="margin:auto; max-width:700px; text-align:left;">
+
+    <h3>Count Your Blessings</h3>
+    <p>
+      When upon life’s billows you are tempest-tossed,<br>
+      When you are discouraged, thinking all is lost,<br>
+      Count your many blessings, name them one by one,<br>
+      And it will surprise you what the Lord hath done.<br><br>
+
+      <strong>Refrain:</strong><br>
+      Count your blessings, name them one by one;<br>
+      Count your blessings, see what God hath done;<br>
+      Count your blessings, name them one by one;<br>
+      Count your many blessings, see what God hath done!
+    </p>
+
+    <h3>What a Friend We Have in Jesus</h3>
+    <p>
+      What a friend we have in Jesus,<br>
+      All our sins and griefs to bear!<br>
+      What a privilege to carry<br>
+      Everything to God in prayer!<br><br>
+
+      O what peace we often forfeit,<br>
+      O what needless pain we bear,<br>
+      All because we do not carry<br>
+      Everything to God in prayer.
+    </p>
+
+    <h3>Obinigwe</h3>
+    <p>
+      You are the living God oh<br>
+      There’s no one like You, Obinigwe.<br>
+      Nara ekele, nara otito,<br>
+      You’ve done so much oh, I cannot tell it all.<br><br>
+
+      If I had ten thousand tongues,<br>
+      It still won’t be enough,<br>
+      Nara ekele mo.
+    </p>
+
+    <audio controls autoplay loop style="width:100%; margin-top:20px;">
+      <source src="count_your_blessings.mp3" type="audio/mpeg">
+      <source src="what_a_friend.mp3" type="audio/mpeg">
+      <source src="obinigwe.mp3" type="audio/mpeg">
+      Your browser does not support audio playback.
+    </audio>
+  </div>
 </section>
 
 <footer>
-<div>© 2025 PCEA Center YouthHub — To God Be the Glory.</div>
-<div style="opacity:.9; font-size:.85rem;">v1.2.1</div>
+  <p>PCEA Center YouthHub © 2025 | Version 1.2.0 | To God be the Glory</p>
 </footer>
 
 <script>
-// Splash fade animation
-window.addEventListener('load',()=>{
-  const title = document.getElementById('hubTitle');
-  const creator = document.getElementById('creator');
-  let opacity = 0;
-  const fadeIn = setInterval(()=>{
-    if(opacity>=1){clearInterval(fadeIn);setTimeout(()=>document.getElementById('splash-screen').style.display='none',1000);} 
-    title.style.opacity = opacity;
-    creator.style.opacity = opacity;
-    opacity+=0.01;
-  },20);
-});
+  // COUNTDOWNS
+  function countdown(id, date) {
+    const target = new Date(date).getTime();
+    setInterval(() => {
+      const now = new Date().getTime();
+      const diff = target - now;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById(id).innerText = days > 0 ? days + " days left" : "Happening Today!";
+    }, 1000);
+  }
 
-// Navigation
-const btns=Array.from(document.querySelectorAll('.nav-btn'));
-const pages=Array.from(document.querySelectorAll('.page'));
-function showPage(pageId,btn){
-  btns.forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  pages.forEach(p=>p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-}
+  countdown("rally", "Nov 16, 2025");
+  countdown("convention", "Dec 2, 2025");
+  countdown("christmas", "Dec 25, 2025");
+  countdown("newyear", "Jan 1, 2026");
 
-// Countdown function
-function countdown(targetId,dateStr){
-  const el=document.getElementById(targetId);
-  const target=new Date(dateStr).getTime();
-  setInterval(()=>{
-    const now=new Date().getTime();
-    let dist = target - now;
-    if(dist<0){el.innerHTML='Event Started!';return;}
-    let d=Math.floor(dist/(1000*60*60*24)),
-        h=Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
-        m=Math.floor((dist%(1000*60*60))/(1000*60)),
-        s=Math.floor((dist%(1000*60))/1000);
-    el.innerHTML=`<strong>${el.dataset.label}</strong><br>${d}d ${h}h ${m}m ${s}s`;
-  },1000);
-}
-
-// Event countdowns
-countdown('rallyCountdown','2025-11-16T00:00:00');
-countdown('conventionCountdown','2025-12-02T00:00:00');
-countdown('christmasCountdown','2025-12-25T00:00:00');
-countdown('newYearCountdown','2026-01-01T00:00:00');
-
-// Leaders info
-const leaders = {
-  "Zachary Gikonyo": {position:"Chairperson",whatsapp:"+254742892647",bio:"Zachary is the energetic Chairperson of PCEA Center Youth. Contact him for leadership guidance."},
-  "Dalson Maina": {position:"Vice Chairperson",whatsapp:"+254714003648",bio:"Dalson coordinates youth programs. Reach out for support."},
-  "Ian Gathagu": {position:"Secretary",whatsapp:"+254718357417",bio:"Ian is the Secretary. Contact him for youth details on WhatsApp."},
-  "Lydia Wamuyu": {position:"Vice Secretary",whatsapp:"+254110867929",bio:"Lydia organizes youth events and maintains records."},
-  "Winnie Maundu": {position:"Treasurer",whatsapp:"+254713285534",bio:"Winnie manages youth funds and donations."}
-};
-function showLeader(name){
-  const l = leaders[name];
-  document.getElementById('leaderInfo').innerHTML=`
-    <strong>${name}</strong> — ${l.position}<br>
-    ${l.bio}<br>
-    <a href="https://wa.me/${l.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:#25D366;font-weight:bold;">Message on WhatsApp</a>
-  `;
-}
-
-// Verse of the Day (simple placeholder daily rotation)
-const verses = [
-  "Psalm 23:1 - The Lord is my shepherd; I shall not want.",
-  "John 3:16 - For God so loved the world...",
-  "Philippians 4:13 - I can do all things through Christ...",
-  // ...extend to 365 verses
-];
-const today = new Date();
-document.getElementById('verseOfDay').textContent = verses[today.getDate() % verses.length];
+  // VERSE OF THE DAY (simple rotation)
+  const verses = [
+    "Philippians 4:13 — I can do all things through Christ who strengthens me.",
+    "Proverbs 3:5 — Trust in the Lord with all your heart and lean not on your own understanding.",
+    "Romans 8:28 — All things work together for good to those who love God."
+  ];
+  const day = new Date().getDate() % verses.length;
+  document.getElementById("verse").innerText = verses[day];
 </script>
 
 </body>
