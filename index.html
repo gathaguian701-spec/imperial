@@ -1,241 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PCEA CENTER YOUTHHUB v1.2.0</title>
-  <style>
-    body {
-      background-color: #001f3f;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-    header {
-      animation: fadeIn 3s ease-in-out;
-      font-size: 30px;
-      margin-top: 20px;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    nav {
-      background: #002a5c;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    nav a:hover {
-      color: #ffcc00;
-    }
-    section {
-      padding: 40px;
-    }
-    .countdown {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    .count-box {
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 15px;
-      width: 250px;
-      margin: 10px;
-    }
-    footer {
-      background-color: #002a5c;
-      padding: 20px;
-      font-size: 14px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PCEA CENTER YOUTHHUB</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #004aad;
+  color: white;
+  text-align: center;
+}
+header {
+  padding: 20px;
+  animation: fadeInText 3s ease forwards;
+}
+@keyframes fadeInText {
+  0% {opacity: 0;}
+  50% {opacity: 0.5;}
+  100% {opacity: 1;}
+}
+nav {
+  background-color: #002c7f;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.nav-btn {
+  background: #004aad;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.nav-btn:hover {
+  transform: scale(1.05);
+  background-color: #0060c8;
+}
+.page {
+  display: none;
+  padding: 16px;
+  max-width: 900px;
+  margin: 12px auto;
+  text-align: left;
+}
+.page.active {
+  display: block;
+}
+h2 {
+  margin-top: 0;
+}
+button.hymn-btn {
+  display: block;
+  margin: 8px auto;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #0060c8;
+  color: white;
+  font-weight: bold;
+}
+button.hymn-btn:hover {
+  background-color: #0080ff;
+}
+#hymnContent {
+  margin-top: 12px;
+  background: rgba(255,255,255,0.1);
+  padding: 12px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+.countdown-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.countdown {
+  background: rgba(255,255,255,0.1);
+  padding: 10px 12px;
+  border-radius: 8px;
+  flex: 1;
+  min-width: 140px;
+}
+footer {
+  background: #002c7f;
+  color: white;
+  padding: 12px;
+  margin-top: 20px;
+  font-size: .9rem;
+}
+</style>
 </head>
 <body>
 
 <header>
   <h1>PCEA CENTER YOUTHHUB</h1>
-  <p><em>Proudly created by Ian Gathagu</em></p>
+  <div>Proudly created by <strong>Ian Gathagu</strong></div>
 </header>
 
 <nav>
-  <a href="#home">Home</a>
-  <a href="#leaders">Leaders</a>
-  <a href="#events">Events</a>
-  <a href="#announcements">Announcements</a>
-  <a href="#hymns">Hymns</a>
+  <button class="nav-btn active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
+  <button class="nav-btn" data-page="leaders" onclick="showPage('leaders',this)">👥 Leaders</button>
+  <button class="nav-btn" data-page="events" onclick="showPage('events',this)">📅 Events</button>
+  <button class="nav-btn" data-page="announcements" onclick="showPage('announcements',this)">📢 Announcements</button>
+  <button class="nav-btn" data-page="hymns" onclick="showPage('hymns',this)">🎵 Hymns</button>
 </nav>
 
-<!-- HOME SECTION -->
-<section id="home">
-  <h2>Welcome to PCEA Center YouthHub</h2>
-
-  <div class="countdown">
-    <div class="count-box">
-      <h3>Youth Rally Countdown</h3>
-      <p id="rally"></p>
-    </div>
-    <div class="count-box">
-      <h3>Convention Countdown</h3>
-      <p id="convention"></p>
-    </div>
-    <div class="count-box">
-      <h3>Christmas Countdown</h3>
-      <p id="christmas"></p>
-    </div>
-    <div class="count-box">
-      <h3>New Year Countdown</h3>
-      <p id="newyear"></p>
-    </div>
-  </div>
-
-  <h3 style="margin-top:40px;">📖 Verse of the Day</h3>
-  <p id="verse"></p>
+<!-- Home -->
+<section id="home" class="page active">
+<h2>Welcome to PCEA CENTER YOUTHHUB</h2>
+<div class="countdown-container">
+  <div class="countdown" id="rallyCountdown" data-label="Youth Rally"></div>
+  <div class="countdown" id="conventionCountdown" data-label="Presbytery Convention"></div>
+  <div class="countdown" id="christmasCountdown" data-label="Christmas"></div>
+  <div class="countdown" id="newYearCountdown" data-label="New Year"></div>
+</div>
+<p><strong>Verse of the Day:</strong> <span id="verseOfDay">Loading...</span></p>
 </section>
 
-<!-- LEADERS SECTION -->
-<section id="leaders" style="background-color: #012b57;">
-  <h2>Meet Our Youth Leaders</h2>
-
-  <div>
-    <h3>Ian Gathagu — Secretary</h3>
-    <p>A passionate young leader serving as the Youth Secretary at PCEA Center. You can contact him for youth details.</p>
-    <a href="https://wa.me/254718357417" style="color:#ffcc00;">📞 Ian's Office (WhatsApp)</a>
-  </div>
-
-  <div>
-    <h3>Zachary Gikonyo — Chairperson</h3>
-    <p>Dedicated and visionary leader overseeing all youth activities and growth at PCEA Center.</p>
-    <a href="https://wa.me/254742892647" style="color:#ffcc00;">📞 Chairperson’s Office</a>
-  </div>
-
-  <div>
-    <h3>Dalson Maina — Vice Chairperson</h3>
-    <p>Supportive and dynamic in ensuring every youth member grows spiritually and socially.</p>
-    <a href="https://wa.me/254714003648" style="color:#ffcc00;">📞 Vice Chairperson’s Office</a>
-  </div>
-
-  <div>
-    <h3>Lydia Wamuyu — Treasurer</h3>
-    <p>Faithful steward handling all youth financial matters diligently and transparently.</p>
-    <a href="https://wa.me/254110867929" style="color:#ffcc00;">📞 Treasurer’s Office</a>
-  </div>
-
-  <div>
-    <h3>Winnie Maundu — Organizing Secretary</h3>
-    <p>Creative planner behind youth events, ensuring everything runs smoothly.</p>
-    <a href="https://wa.me/254713285534" style="color:#ffcc00;">📞 Organizing Secretary’s Office</a>
-  </div>
+<!-- Leaders -->
+<section id="leaders" class="page">
+<h2>Leaders</h2>
+<div>
+  <p><strong>Ian Gathagu</strong> - Secretary. Contact for youth details on WhatsApp:</p>
+  <a href="https://wa.me/254718357417" target="_blank">Ian's Office</a>
+</div>
+<div>
+  <p><strong>Zachary Gikonyo</strong> - Chairperson. Contact for leadership info on WhatsApp:</p>
+  <a href="https://wa.me/254742892647" target="_blank">Zachary's Office</a>
+</div>
+<div>
+  <p><strong>Dalson Maina</strong> - Vice Chairperson. Contact for leadership info on WhatsApp:</p>
+  <a href="https://wa.me/254714003648" target="_blank">Dalson's Office</a>
+</div>
+<div>
+  <p><strong>Lydia Wamuyu</strong> - Vice Secretary. Contact for leadership info on WhatsApp:</p>
+  <a href="https://wa.me/254110867929" target="_blank">Lydia's Office</a>
+</div>
+<div>
+  <p><strong>Winnie Maundu</strong> - Treasurer. Contact for leadership info on WhatsApp:</p>
+  <a href="https://wa.me/254713285534" target="_blank">Winnie's Office</a>
+</div>
 </section>
 
-<!-- EVENTS SECTION -->
-<section id="events">
-  <h2>Upcoming Events</h2>
-  <p>Stay tuned for our youth programs and church activities.</p>
+<!-- Events -->
+<section id="events" class="page">
+<h2>Upcoming Events</h2>
+<ul>
+<li>Youth Rally – 16th Nov 2025</li>
+<li>Presbytery Youth Convention – 2nd–6th Dec 2025</li>
+</ul>
 </section>
 
-<!-- ANNOUNCEMENTS -->
-<section id="announcements" style="background-color: #012b57;">
-  <h2>Announcements</h2>
-  <p>No new announcements at the moment. Keep checking for updates!</p>
+<!-- Announcements -->
+<section id="announcements" class="page">
+<h2>Announcements</h2>
+<ul>
+<li>Youth Rally – Don’t miss worship, teaching, and fellowship at PCEA Chieni Church.</li>
+<li>Presbytery Youth Convention – Bible study, workshops, evening praise & worship.</li>
+</ul>
 </section>
 
-<!-- HYMNS SECTION -->
-<section id="hymns">
-  <h2>🎶 Golden Bells Hymns</h2>
-
-  <div style="margin:auto; max-width:700px; text-align:left;">
-
-    <h3>Count Your Blessings</h3>
-    <p>
-      When upon life’s billows you are tempest-tossed,<br>
-      When you are discouraged, thinking all is lost,<br>
-      Count your many blessings, name them one by one,<br>
-      And it will surprise you what the Lord hath done.<br><br>
-
-      <strong>Refrain:</strong><br>
-      Count your blessings, name them one by one;<br>
-      Count your blessings, see what God hath done;<br>
-      Count your blessings, name them one by one;<br>
-      Count your many blessings, see what God hath done!
-    </p>
-
-    <h3>What a Friend We Have in Jesus</h3>
-    <p>
-      What a friend we have in Jesus,<br>
-      All our sins and griefs to bear!<br>
-      What a privilege to carry<br>
-      Everything to God in prayer!<br><br>
-
-      O what peace we often forfeit,<br>
-      O what needless pain we bear,<br>
-      All because we do not carry<br>
-      Everything to God in prayer.
-    </p>
-
-    <h3>Obinigwe</h3>
-    <p>
-      You are the living God oh<br>
-      There’s no one like You, Obinigwe.<br>
-      Nara ekele, nara otito,<br>
-      You’ve done so much oh, I cannot tell it all.<br><br>
-
-      If I had ten thousand tongues,<br>
-      It still won’t be enough,<br>
-      Nara ekele mo.
-    </p>
-
-    <audio controls autoplay loop style="width:100%; margin-top:20px;">
-      <source src="count_your_blessings.mp3" type="audio/mpeg">
-      <source src="what_a_friend.mp3" type="audio/mpeg">
-      <source src="obinigwe.mp3" type="audio/mpeg">
-      Your browser does not support audio playback.
-    </audio>
-  </div>
+<!-- Hymns -->
+<section id="hymns" class="page">
+<h2>Hymns</h2>
+<button class="hymn-btn" onclick="showHymn('friend')">What a Friend We Have in Jesus</button>
+<button class="hymn-btn" onclick="showHymn('count')">Count Your Blessings</button>
+<button class="hymn-btn" onclick="showHymn('courage')">Courage Brother</button>
+<button class="hymn-btn" onclick="showHymn('awesome')">Awesome God</button>
+<div id="hymnContent"></div>
 </section>
 
 <footer>
-  <p>PCEA Center YouthHub © 2025 | Version 1.2.0 | To God be the Glory</p>
+  <div>© 2025 PCEA Center Youthhub — To God be the Glory.</div>
+  <div>Version 1.2.2</div>
 </footer>
 
 <script>
-  // COUNTDOWNS
-  function countdown(id, date) {
-    const target = new Date(date).getTime();
-    setInterval(() => {
-      const now = new Date().getTime();
-      const diff = target - now;
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      document.getElementById(id).innerText = days > 0 ? days + " days left" : "Happening Today!";
-    }, 1000);
-  }
+// Navigation
+const btns = Array.from(document.querySelectorAll('.nav-btn'));
+const pages = Array.from(document.querySelectorAll('.page'));
+function showPage(pageId, btnElement) {
+  btns.forEach(b => b.classList.remove('active'));
+  let button = btnElement || btns.find(b => b.dataset.page === pageId);
+  if (button) button.classList.add('active');
+  pages.forEach(p => p.classList.remove('active'));
+  const selected = document.getElementById(pageId);
+  if (selected) selected.classList.add('active');
+}
 
-  countdown("rally", "Nov 16, 2025");
-  countdown("convention", "Dec 2, 2025");
-  countdown("christmas", "Dec 25, 2025");
-  countdown("newyear", "Jan 1, 2026");
+// Countdown
+function countdown(targetId, dateStr){
+  const el = document.getElementById(targetId);
+  const target = new Date(dateStr).getTime();
+  setInterval(() => {
+    const now = new Date().getTime();
+    let dist = target - now;
+    if(dist < 0){ el.innerHTML = 'Event Started!'; return; }
+    let d = Math.floor(dist/(1000*60*60*24)),
+        h = Math.floor((dist%(1000*60*60*24))/(1000*60*60)),
+        m = Math.floor((dist%(1000*60*60))/(1000*60)),
+        s = Math.floor((dist%(1000*60))/1000);
+    el.innerHTML = `<strong>${el.dataset.label}</strong><br>${d}d ${h}h ${m}m ${s}s`;
+  },1000);
+}
+countdown('rallyCountdown','2025-11-16T00:00:00');
+countdown('conventionCountdown','2025-12-02T00:00:00');
+countdown('christmasCountdown','2025-12-25T00:00:00');
+countdown('newYearCountdown','2026-01-01T00:00:00');
 
-  // VERSE OF THE DAY (simple rotation)
-  const verses = [
-    "Philippians 4:13 — I can do all things through Christ who strengthens me.",
-    "Proverbs 3:5 — Trust in the Lord with all your heart and lean not on your own understanding.",
-    "Romans 8:28 — All things work together for good to those who love God."
-  ];
-  const day = new Date().getDate() % verses.length;
-  document.getElementById("verse").innerText = verses[day];
+// Verse of the Day
+const versesOfDay = [
+  "For God so loved the world... - John 3:16",
+  "The Lord is my shepherd; I shall not want. - Psalm 23:1",
+  "Trust in the Lord with all your heart... - Proverbs 3:5",
+  // add 365 verses here
+];
+function getVerseOfDay() {
+  const now = new Date();
+  const dayIndex = now.getDate() - 1;
+  document.getElementById('verseOfDay').textContent = versesOfDay[dayIndex % versesOfDay.length];
+}
+getVerseOfDay();
+
+// Hymns
+const hymns = {
+  friend: `What a Friend We Have in Jesus
+What a Friend we have in Jesus,
+All our sins and griefs to bear!
+What a privilege to carry
+Everything to God in prayer!...`,
+  count: `Count Your Blessings
+When upon life's billows you are tempest-tossed,
+When you are discouraged, thinking all is lost,
+Count your many blessings, name them one by one,...`,
+  courage: `Courage Brother
+Courage, brother! Do not stumble,
+Though your path be dark and narrow.
+God is faithful, He will guide you,...`,
+  awesome: `Awesome God
+Our God is an awesome God,
+He reigns from heaven above
+With wisdom, power, and love
+Our God is an awesome God...`
+};
+function showHymn(name){
+  document.getElementById('hymnContent').textContent = hymns[name];
+}
 </script>
-
 </body>
   </html>
