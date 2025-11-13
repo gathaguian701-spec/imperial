@@ -5,181 +5,121 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PCEA CENTER YOUTHHUB</title>
 <style>
-body {margin:0;padding:0;font-family:Arial,sans-serif;background:#001f4d;color:white;transition:background 0.5s, color 0.5s;}
-header {text-align:center;padding:50px;}
-nav {text-align:center;margin:20px 0;}
-nav button {margin:5px;padding:10px 20px;font-size:16px;cursor:pointer;background:#004aad;color:white;border:none;border-radius:5px;transition:0.3s;}
-nav button:hover {background:#0066ff;}
-section {display:none;padding:20px;max-width:900px;margin:0 auto;}
-#splash {text-align:center;font-size:2em;margin-top:100px;}
-#themesToggle {position:fixed;top:10px;right:10px;padding:6px 12px;cursor:pointer;background:#004aad;border:none;color:white;border-radius:5px;}
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #0a0a0a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  /* Portal title fade-in */
+  h1 {
+    font-size: 3em;
+    color: #007bff;
+    animation: fadeIn 2s ease forwards;
+    opacity: 0;
+  }
+  p {
+    color: #fff;
+    font-size: 1.2em;
+    margin-top: 10px;
+    animation: fadeIn 2s ease forwards 2s;
+    opacity: 0;
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* Construction trailer container */
+  .construction-container {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin-top: 50px;
+  }
+
+  /* Crane arm */
+  .crane-arm {
+    position: absolute;
+    width: 150px;
+    height: 10px;
+    background: #007bff;
+    top: 20px;
+    left: 0;
+    transform-origin: left center;
+    animation: swing 2s infinite ease-in-out;
+  }
+
+  @keyframes swing {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(15deg); }
+  }
+
+  /* Crane hook */
+  .hook {
+    width: 10px;
+    height: 40px;
+    background: #fff;
+    position: absolute;
+    top: 10px;
+    left: 140px;
+    animation: dropLift 2s infinite ease-in-out;
+  }
+  @keyframes dropLift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(30px); }
+  }
+
+  /* Moving dirt pile */
+  .dirt {
+    position: absolute;
+    width: 60px;
+    height: 40px;
+    background: #964B00;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0 0 50% 50%;
+    animation: moveDirt 2s infinite ease-in-out;
+  }
+  @keyframes moveDirt {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -20px); }
+  }
+
+  /* Flashing under construction */
+  .construction {
+    font-size: 2em;
+    color: #007bff;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 30px;
+    animation: flash 1s infinite;
+  }
+  @keyframes flash {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
 </style>
 </head>
 <body>
 
-<div id="splash">
-  <div id="splashText">PCEA CENTER YOUTHHUB</div>
-  <div id="splashSub" style="margin-top:20px;font-size:1.2em;">Proudly created by Ian Gathagu</div>
+<h1>PCEA CENTER YOUTHHUB</h1>
+<p>Proudly created by Ian Gathagu</p>
+
+<div class="construction-container">
+  <div class="crane-arm"></div>
+  <div class="hook"></div>
+  <div class="dirt"></div>
 </div>
 
-<nav style="display:none;">
-  <button onclick="showSection('home')">HOME</button>
-  <button onclick="showSection('leaders')">LEADERS</button>
-  <button onclick="showSection('events')">EVENTS</button>
-  <button onclick="showSection('announcements')">ANNOUNCEMENTS</button>
-  <button onclick="showSection('hymns')">HYMNS</button>
-</nav>
-
-<button id="themesToggle">Toggle Theme</button>
-
-<!-- Sections -->
-<section id="home">
-  <h2>Countdowns</h2>
-  <p>Rally: <span id="rallyCountdown"></span></p>
-  <p>Convention: <span id="conventionCountdown"></span></p>
-  <p>Christmas: <span id="christmasCountdown"></span></p>
-  <p>New Year: <span id="newYearCountdown"></span></p>
-
-  <h2>Verse of the Day</h2>
-  <p id="verseOfDay"></p>
-  <p id="verseExplanation"></p>
-</section>
-
-<section id="leaders">
-  <h2>Leaders</h2>
-  <button onclick="alert('Ian Gathagu: Secretary, contact via WhatsApp')">Ian's Office</button>
-  <button onclick="window.open('https://wa.me/254718357417')">WhatsApp Ian</button>
-  <br><br>
-  <button onclick="alert('Zachary Gikonyo: Contact for youth guidance')">Zachary's Office</button>
-  <button onclick="window.open('https://wa.me/254742892647')">WhatsApp Zachary</button>
-  <br><br>
-  <button onclick="alert('Dalson Maina: Youth coordinator')">Dalson's Office</button>
-  <button onclick="window.open('https://wa.me/254714003648')">WhatsApp Dalson</button>
-  <br><br>
-  <button onclick="alert('Lydia Wamuyu: Treasurer')">Lydia's Office</button>
-  <button onclick="window.open('https://wa.me/254110867929')">WhatsApp Lydia</button>
-  <br><br>
-  <button onclick="alert('Winnie Maundu: Event organizer')">Winnie's Office</button>
-  <button onclick="window.open('https://wa.me/254713285534')">WhatsApp Winnie</button>
-</section>
-
-<section id="events">
-  <h2>Events Countdown</h2>
-  <p>Rally: <span id="rallyEvent"></span></p>
-  <p>Convention: <span id="conventionEvent"></span></p>
-  <p>Christmas: <span id="christmasEvent"></span></p>
-  <p>New Year: <span id="newYearEvent"></span></p>
-</section>
-
-<section id="announcements">
-  <h2>Announcements</h2>
-  <p>No new announcements yet.</p>
-</section>
-
-<section id="hymns">
-  <h2>Hymns</h2>
-  <div id="hymnButtons"></div>
-  <div id="hymnLyrics" style="margin-top:20px; white-space: pre-line;"></div>
-</section>
-
-<script>
-// Splash fade and open hub
-setTimeout(() => {
-  document.getElementById('splash').style.display='none';
-  document.querySelector('nav').style.display='block';
-  showSection('home');
-}, 4000);
-
-// Theme toggle
-let dark = true;
-document.getElementById('themesToggle').onclick = () => {
-  dark = !dark;
-  document.body.style.background = dark ? "#001f4d" : "#ffffff";
-  document.body.style.color = dark ? "white" : "black";
-};
-
-// Show section function
-function showSection(id){
-  document.querySelectorAll('section').forEach(sec=>sec.style.display='none');
-  document.getElementById(id).style.display='block';
-}
-
-// Countdown logic
-function countdown(target, elem){
-  function update(){
-    const now = new Date();
-    const diff = target - now;
-    if(diff<0){document.getElementById(elem).textContent="Event started!"; return;}
-    const d=Math.floor(diff/1000/60/60/24);
-    const h=Math.floor(diff/1000/60/60)%24;
-    const m=Math.floor(diff/1000/60)%60;
-    const s=Math.floor(diff/1000)%60;
-    document.getElementById(elem).textContent=`${d}d ${h}h ${m}m ${s}s`;
-  }
-  update();
-  setInterval(update,1000);
-}
-
-// Set countdown dates
-countdown(new Date('2025-11-20T09:00:00'),'rallyCountdown');
-countdown(new Date('2025-12-01T09:00:00'),'conventionCountdown');
-countdown(new Date('2025-12-25T00:00:00'),'christmasCountdown');
-countdown(new Date('2026-01-01T00:00:00'),'newYearCountdown');
-countdown(new Date('2025-11-20T09:00:00'),'rallyEvent');
-countdown(new Date('2025-12-01T09:00:00'),'conventionEvent');
-countdown(new Date('2025-12-25T00:00:00'),'christmasEvent');
-countdown(new Date('2026-01-01T00:00:00'),'newYearEvent');
-
-// Verse of the Day
-const verses = [
-  {verse:"For God so loved the world that He gave His only Son, that whoever believes in Him shall not perish but have eternal life.", explanation:"John 3:16 - God's immense love and salvation promise."},
-  {verse:"The Lord is my shepherd; I shall not want.", explanation:"Psalm 23:1 - God guides and provides for us."},
-  {verse:"I can do all things through Christ who strengthens me.", explanation:"Philippians 4:13 - Strength and perseverance in Christ."}
-  // Add 365 verses here...
-];
-
-function showVerse(){
-  const now = new Date();
-  const day = now.getDate() + now.getMonth()*30;
-  const index = day % verses.length;
-  document.getElementById('verseOfDay').textContent = verses[index].verse;
-  document.getElementById('verseExplanation').textContent = verses[index].explanation;
-}
-showVerse();
-
-// Hymns integration
-const hymns = {
-  "A Child of the King": `My Father is rich in houses and lands...
-[CHORUS] I'm a child of the King!`,
-  "Amazing Grace": `Amazing Grace how sweet the sound...
-We've no less days to sing God's praise`,
-  "Silent Night": `Silent night, holy night...
-Sleep in heavenly peace`,
-  "What a Friend We Have in Jesus": `All our sins and griefs to bear...
-Take it to the Lord in prayer`,
-  "Count Your Blessings": `When upon life's billows you are tempest-tossed...
-Count your many blessings, name them one by one`,
-  "My Hope": `My hope is built on nothing less...
-All other ground is sinking sand`,
-  "Nearer My God to Thee": `Nearer to thee...
-Still all my song shall be, Nearer to thee`,
-  "He Leadeth Me": `O blessed thought!...
-E'en death's cold wave I will not flee`
-};
-
-const hymnButtonsDiv = document.getElementById("hymnButtons");
-Object.keys(hymns).forEach(name=>{
-  const btn = document.createElement("button");
-  btn.textContent = name;
-  btn.style.margin="4px";
-  btn.onclick = ()=>{document.getElementById("hymnLyrics").textContent=hymns[name];};
-  hymnButtonsDiv.appendChild(btn);
-});
-</script>
-
-<footer style="text-align:center;margin-top:20px;">
-Version 1.3
-</footer>
+<div class="construction">UNDER CONSTRUCTION</div>
 
 </body>
-  </html>
+</html>
