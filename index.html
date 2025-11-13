@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imperial Techub | PCEA Center Youth</title>
+  <style>
+    /* General */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #001f4d, #003b99);
+      color: white;
+      overflow-x: hidden;
+      height: 100vh;
+    }
+
+    /* Splash Screen */
+    #splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #001030;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: screenFade 2s ease-in-out forwards;
+      z-index: 999;
+    }
+    #splash-text {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #cce6ff;
+      opacity: 0;
+      text-shadow: 0 0 20px #66aaff, 0 0 40px #3388ff;
+      animation: textFade 8s ease-in-out 1s forwards;
+    }
+    @keyframes screenFade {
+      0% { background-color: #000; }
+      100% { background-color: #001f4d; }
+    }
+    @keyframes textFade {
+      0% { opacity: 0; transform: scale(0.9); }
+      40% { opacity: 1; transform: scale(1); }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .hidden {
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: rgba(0, 0, 60, 0.7);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 10px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar li {
+      margin: 8px 15px;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .navbar a:hover, .navbar a.active {
+      color: #00b4ff;
+    }
+
+    /* Sections */
+    section {
+      display: none;
+      padding: 40px 20px;
+      text-align: center;
+      animation: fadeIn 1.5s ease;
+    }
+    section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Fun Fact */
+    .funfact {
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      display: inline-block;
+      max-width: 700px;
+      padding: 20px;
+    }
+    .funfact h2 {
+      font-size: 1.8rem;
+    }
+
+    /* Events countdown */
+    .countdown {
+      margin: 15px auto;
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      max-width: 600px;
+      padding: 15px;
+    }
+
+    /* Announcements */
+    .announcement {
+      background: rgba(255,255,255,0.1);
+      margin: 15px auto;
+      max-width: 700px;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: left;
+    }
+
+    /* Leaders */
+    .leader {
+      background: rgba(255,255,255,0.1);
+      margin: 10px auto;
+      max-width: 500px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .leader a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+
+    /* Hymnbook */
+    .hymn {
+      background: rgba(255,255,255,0.1);
+      margin: 10px auto;
+      max-width: 700px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .lyrics {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.4;
+    }
+
+    /* Footer */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+      background-color: rgba(0, 0, 50, 0.6);
+      padding: 10px 0;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+    }
+    .footer strong { color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <!-- Splash Screen -->
+  <div id="splash">
+    <h1 id="splash-text">IMPERIAL TECHUB</h1>
+  </div>
+
+  <!-- Main -->
+  <div id="main-content" class="hidden">
+    <nav class="navbar">
+      <ul>
+        <li><a href="#" class="active" onclick="showSection('home')">HOME</a></li>
+        <li><a href="#" onclick="showSection('events')">EVENTS</a></li>
+        <li><a href="#" onclick="showSection('announcements')">ANNOUNCEMENTS</a></li>
+        <li><a href="#" onclick="showSection('calendar')">CALENDAR</a></li>
+        <li><a href="#" onclick="showSection('leaders')">LEADERS</a></li>
+        <li><a href="#" onclick="showSection('hymnbook')">HYMNBOOK</a></li>
+      </ul>
+    </nav>
+
+    <!-- Sections -->
+    <section id="home" class="active">
+      <div class="funfact">
+        <h2>💡 Did You Know?</h2>
+        <p id="funFact">Loading today's fun fact...</p>
+        <small>Check back tomorrow for another fun fact!</small>
+      </div>
+    </section>
+
+    <section id="events">
+      <h2>🕒 Upcoming Events</h2>
+      <div id="countdowns"></div>
+    </section>
+
+    <section id="announcements">
+      <div class="announcement">
+        <h3>PCEA Ngorano Parish Youth Rally</h3>
+        <p>📅 Sunday, 16th November 2025 — PCEA Chieni Church</p>
+        <p>All youths are encouraged to attend as we come together for fellowship, worship, and spiritual growth. Let us pray, prepare, and participate fully in this time of renewal and unity in Christ.</p>
+        <em>To God be the Glory.</em>
+      </div>
+      <div class="announcement">
+        <h3>Presbytery Youth Convention</h3>
+        <p>📅 Tuesday, 2nd – Saturday, 6th December 2025</p>
+        <p>This blessed event will bring together youth from all parishes for worship, renewal, and unity in Christ. Charges are Ksh 1500 per person (payable in installments).</p>
+        <em>To God be the Glory.</em>
+      </div>
+    </section>
+
+    <section id="calendar">
+      <h2>📅 Event Calendar</h2>
+      <p>Nov 16, 2025 — Youth Rally at PCEA Chieni</p>
+      <p>Dec 2–6, 2025 — Presbytery Youth Convention</p>
+      <p>Dec 25, 2025 — Christmas Celebration</p>
+      <p>Jan 1, 2026 — New Year Thanksgiving</p>
+    </section>
+
+    <section id="leaders">
+      <h2>👥 Meet the Leaders</h2>
+      <div class="leader"><strong>Zachary Gikonyo</strong> — Chairperson — <a href="https://wa.me/254742892647" target="_blank">Message Office</a></div>
+      <div class="leader"><strong>Dalson Maina</strong> — Vice Chairperson — <a href="https://wa.me/254714003648" target="_blank">Message Office</a></div>
+      <div class="leader"><strong>Ian Gathagu</strong> — Secretary — <a href="https://wa.me/254718357417" target="_blank">Message Office</a></div>
+      <div class="leader"><strong>Lydia Wamuyu</strong> — Committee Member — <a href="https://wa.me/254110867929" target="_blank">Message Office</a></div>
+      <div class="leader"><strong>Winnie Maundu</strong> — Treasurer — <a href="https://wa.me/254713285534" target="_blank">Message Office</a></div>
+    </section>
+
+    <section id="hymnbook">
+      <h2>🎵 Hymnbook Search</h2>
+      <input type="text" id="search" placeholder="Search hymns by any line..." onkeyup="searchHymns()" style="padding:8px;width:80%;border-radius:5px;border:none;">
+      <div id="hymns"></div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p>PROUDLY CREATED BY <strong>IAN GATHAGU</strong></p>
+    <p>v1.1.0</p>
+  </footer>
+
+  <script>
+    // Splash Screen Logic (10 seconds total)
+    window.onload = function () {
+      setTimeout(() => {
+        const splash = document.getElementById("splash");
+        splash.style.transition = "opacity 1.5s ease";
+        splash.style.opacity = "0";
+        setTimeout(() => {
+          splash.style.display = "none";
+          const main = document.getElementById("main-content");
+          main.classList.remove("hidden");
+          main.style.opacity = "1";
+        }, 1500);
+      }, 8500);
+      setTimeout(setFunFactOfTheDay, 9500);
+      setTimeout(initCountdowns, 9500);
+      setTimeout(loadHymns, 9500);
+    };
+
+    // Navbar section switch
+    function showSection(id) {
+      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.querySelectorAll(".navbar a").forEach(a => a.classList.remove("active"));
+      event.target.classList.add("active");
+    }
+
+    // Fun Facts
+    const funFacts = [
+      "The Bible is the most translated book in the world!",
+      "Jesus wept. (John 11:35)",
+      "‘Fear not’ appears 365 times in the Bible — one for each day!",
+      "Noah’s Ark was roughly the length of one and a half football fields.",
+      "Psalm 117 is the shortest chapter in the Bible.",
+      "‘Hallelujah’ means ‘Praise the Lord’ in Hebrew.",
+      "God doesn’t call the qualified; He qualifies the called.",
+      "Rainbows are a symbol of God’s promise to Noah.",
+      "Every heartbeat is a reminder of God’s ongoing grace.",
+      "‘Emmanuel’ means ‘God with us’.",
+      "Faith is mentioned over 240 times in Scripture.",
+      "Forgiveness doesn’t change the past — it opens the future."
+    ];
+    function setFunFactOfTheDay() {
+      const today = new Date().toDateString();
+      const saved = JSON.parse(localStorage.getItem("funFactOfTheDay"));
+      if (!saved || saved.date !== today) {
+        const random = Math.floor(Math.random() * funFacts.length);
+        const newFact = { date: today, fact: funFacts[random] };
+        localStorage.setItem("funFactOfTheDay", JSON.stringify(newFact));
+        document.getElementById("funFact").innerText = newFact.fact;
+      } else {
+        document.getElementById("funFact").innerText = saved.fact;
+      }
+    }
+
+    // Countdowns
+    const events = [
+      { name: "Youth Rally", date: "Nov 16, 2025 00:00:00" },
+      { name: "Presbytery Convention", date: "Dec 2, 2025 00:00:00" },
+      { name: "Christmas Day", date: "Dec 25, 2025 00:00:00" },
+      { name: "New Year’s Day", date: "Jan 1, 2026 00:00:00" }
+    ];
+    function initCountdowns() {
+      const div = document.getElementById("countdowns");
+      div.innerHTML = "";
+      events.forEach(e => {
+        const cd = document.createElement("div");
+        cd.className = "countdown";
+        cd.innerHTML = `<h3>${e.name}</h3><p id="${e.name.replace(/\s+/g,'')}"></p>`;
+        div.appendChild(cd);
+        setInterval(() => updateCountdown(e.name, e.date), 1000);
+      });
+    }
+    function updateCountdown(name, date) {
+      const now = new Date().getTime();
+      const distance = new Date(date).getTime() - now;
+      const d = Math.floor(distance / (1000*60*60*24));
+      const h = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+      const m = Math.floor((distance % (1000*60*60)) / (1000*60));
+      const s = Math.floor((distance % (1000*60)) / 1000);
+      document.getElementById(name.replace(/\s+/g,'')).innerText =
+        distance > 0 ? `${d}d ${h}h ${m}m ${s}s` : "Event started!";
+    }
+
+    // Hymnbook
+    const hymnData = [
+      { title: "Guide Me O Thou Great Jehovah", lyrics: "Guide me, O Thou great Jehovah, pilgrim through this barren land; I am weak, but Thou art mighty; hold me with Thy powerful hand..." },
+      { title: "Rock of Ages", lyrics: "Rock of Ages, cleft for me, let me hide myself in Thee; Let the water and the blood, from Thy wounded side which flowed..." },
+      { title: "Amazing Grace", lyrics: "Amazing grace! how sweet the sound, that saved a wretch like me! I once was lost, but now am found..." },
+      { title: "What a Friend We Have in Jesus", lyrics: "What a friend we have in Jesus, all our sins and griefs to bear! What a privilege to carry everything to God in prayer..." },
+      { title: "To God Be the Glory", lyrics: "To God be the glory, great things He hath done, so loved He the world that He gave us His Son..." },
+      { title: "Blessed Assurance", lyrics: "Blessed assurance, Jesus is mine! O what a foretaste of glory divine! Heir of salvation, purchase of God..." }
+    ];
+    function loadHymns() {
+      const hymnsDiv = document.getElementById("hymns");
+      hymnsDiv.innerHTML = "";
+      hymnData.forEach(h => {
+        const el = document.createElement("div");
+        el.className = "hymn";
+        el.innerHTML = `<strong>${h.title}</strong><div class='lyrics'>${h.lyrics}</div>`;
+        el.onclick = () => {
+          const lyr = el.querySelector(".lyrics");
+          lyr.style.display = lyr.style.display === "block" ? "none" : "block";
+        };
+        hymnsDiv.appendChild(el);
+      });
+    }
+    function searchHymns() {
+      const q = document.getElementById("search").value.toLowerCase();
+      const hymnsDiv = document.getElementById("hymns");
+      hymnsDiv.innerHTML = "";
+      hymnData.filter(h => h.title.toLowerCase().includes(q) || h.lyrics.toLowerCase().includes(q))
+        .forEach(h => {
+          const el = document.createElement("div");
+          el.className = "hymn";
+          el.innerHTML = `<strong>${h.title}</strong><div class='lyrics'>${h.lyrics}</div>`;
+          el.onclick = () => {
+            const lyr = el.querySelector(".lyrics");
+            lyr.style.display = lyr.style.display === "block" ? "none" : "block";
+          };
+          hymnsDiv.appendChild(el);
+        });
+    }
+  </script>
+</body>
+  </html>
