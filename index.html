@@ -1,410 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>IMPERIAL TECHUB</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMPERIAL TECHUB</title>
 
-  <!-- Inline tiny IT favicon (SVG) -->
-  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAyMzY2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHRleHQgeD0iNCIgeT0iMjQiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmaWxsPSJ3aGl0ZSI+SVQ8L3RleHQ+PC9zdmc+" />
+<style>
+/* Global Style */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f8ff;
+    color: #001f54;
+}
 
-  <style>
-    :root{
-      --royal:#002366;
-      --accent:#00b4ff;
-      --glass: rgba(255,255,255,0.06);
-      --muted: rgba(224,224,224,0.9);
-      --bg:#fbfdff;
-      --text:#002b4d;
-    }
-    *{box-sizing:border-box}
-    body {
-      margin:0; font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
-      background: linear-gradient(135deg,var(--royal), #003b99); color:#fff; -webkit-font-smoothing:antialiased;
-      min-height:100vh; overflow-x:hidden;
-    }
+/* Navigation */
+nav {
+    background: #003b8e;
+    padding: 15px;
+    text-align: center;
+}
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+nav a:hover {
+    text-decoration: underline;
+}
 
-    /* ===== SPLASH (5 seconds) ===== */
-    #splash {
-      position: fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column;
-      z-index: 9999; background: #001f4d; pointer-events: none;
-      animation: splashHold 4.5s linear forwards;
-    }
-    @keyframes splashHold { 0%{opacity:1} 90%{opacity:1} 100%{opacity:0; visibility:hidden} }
-    #splash-text { font-size:clamp(2rem,6vw,4rem); color:#cfe9ff; font-weight:900; letter-spacing:2px; animation:textGlow 4s ease-in-out 0.5s forwards; }
-    @keyframes textGlow { 0%{opacity:0;transform:scale(.9)} 20%{opacity:1;transform:scale(1)} 90%{opacity:1} 100%{opacity:0} }
+/* Intro Screen (5 Seconds) */
+#intro-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #001F54;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    animation: fadeOut 5s ease forwards;
+    z-index: 9999;
+}
+.intro-text {
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+.pulse-loader {
+    width: 20px;
+    height: 20px;
+    margin-top: 20px;
+    border-radius: 50%;
+    background: #4da3ff;
+    animation: pulse 1.4s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(0.8); opacity: 0.8; }
+}
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
 
-    /* glowing pulse below text */
-    .pulse {
-      margin-top:18px; width:18px; height:18px; border-radius:50%; background:var(--accent);
-      box-shadow: 0 0 0 rgba(0,180,255,0.4);
-      animation: pulseAnim 1.6s infinite;
-    }
-    @keyframes pulseAnim {
-      0%{ box-shadow:0 0 0 0 rgba(0,180,255,0.45) }
-      60%{ box-shadow:0 0 0 26px rgba(0,180,255,0) }
-      100%{ box-shadow:0 0 0 0 rgba(0,180,255,0) }
-    }
+/* Sections */
+section {
+    padding: 40px;
+}
 
-    /* SITE wrapper, becomes visible after splash */
-    #site { opacity:0; transition: opacity 0.6s ease-in-out; padding-bottom:84px; }
+/* Leaders */
+.leader-card {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
-    /* NAV */
-    header.navbar { position: sticky; top:0; z-index:900; background: rgba(0,0,0,0.12); backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,0.02); }
-    .nav-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 16px; gap:12px; }
-    .brand { display:flex; align-items:center; gap:12px; color:#fff; font-weight:800; }
-    .logo { width:44px; height:44px; border-radius:8px; background: linear-gradient(135deg,var(--accent),#62d3ff); display:flex; align-items:center; justify-content:center; color:#012; font-weight:900; }
-    .nav-links { display:flex; gap:8px; flex-wrap:wrap; }
-    .nav-links button { background:transparent; border:0; color:#fff; padding:8px 12px; border-radius:8px; font-weight:700; cursor:pointer; transition:all .12s; }
-    .nav-links button.active { color:var(--accent); background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); }
+/* Hymns */
+.hymn {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
 
-    main { max-width:1100px; margin:20px auto; padding:0 16px; }
-    section { display:none; padding:12px 0 40px 0; }
-    section.active { display:block; animation: fadeIn .5s ease; }
-    @keyframes fadeIn { from{opacity:0; transform:translateY(6px)} to{opacity:1;transform:none} }
+/* Meeting Modal */
+#meeting-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+#meeting-box {
+    background: white;
+    width: 90%;
+    height: 80%;
+    border-radius: 10px;
+    padding: 10px;
+}
 
-    .card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:16px; border:1px solid rgba(255,255,255,0.03); box-shadow:0 8px 30px rgba(0,0,0,0.35); color:#fff; }
+/* MiniPay Modal */
+#minipay-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+#minipay-box {
+    background: white;
+    padding: 25px;
+    width: 350px;
+    border-radius: 12px;
+    text-align: center;
+}
+.membership-card {
+    background: #e8f0ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+.buy-btn {
+    background: #003b8e;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+}
+</style>
 
-    .funfact { text-align:center; display:inline-block; padding:18px; border-radius:12px; background: rgba(255,255,255,0.03); max-width:780px; }
-
-    /* Events grid */
-    .events-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:12px; }
-    .event-card { padding:12px; border-radius:10px; text-align:center; background: rgba(255,255,255,0.03); }
-    .countdown { font-family: 'Courier New', monospace; font-weight:800; color:var(--accent); margin-top:8px; font-size:1.05rem; }
-
-    /* Leaders */
-    .leaders-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:12px; }
-    .leader-card { background: rgba(255,255,255,0.03); padding:12px; border-radius:10px; text-align:left; color:#fff; }
-    .wa-btn { background: linear-gradient(90deg,#25D366,#128C7E); color:#012; padding:8px 10px; border-radius:8px; font-weight:800; text-decoration:none; margin-right:8px; }
-    .call-btn { background: linear-gradient(90deg,#ffd54f,#ffb300); color:#012; padding:8px 10px; border-radius:8px; font-weight:700; text-decoration:none; }
-
-    /* Hymnbook */
-    .hymn-search { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
-    .hymn-search input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:#fff; }
-
-    .hymn-list { display:flex; flex-direction:column; gap:8px; max-height:420px; overflow:auto; padding-right:6px; }
-    .hymn-item { padding:10px; border-radius:8px; background: rgba(255,255,255,0.03); cursor:pointer; border:1px solid rgba(255,255,255,0.02); }
-    .hymn-lyrics { display:none; margin-top:8px; color:#e9f3ff; white-space:pre-line; }
-
-    /* Membership cards */
-    .membership-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:12px; }
-    .membership-card { background: rgba(255,255,255,0.03); padding:14px; border-radius:10px; text-align:center; }
-    .buy-btn { padding:10px 14px; border-radius:8px; border:0; cursor:pointer; font-weight:800; color:#012; background: var(--accent); }
-
-    /* Modal (Jitsi and MiniPay) */
-    .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:10000; }
-    .modal-inner { width:94%; max-width:900px; background:#fff; color:#012; border-radius:10px; overflow:hidden; }
-    .modal-top { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--royal); color:#fff; }
-    .modal-body { padding:0; }
-    .modal-body iframe { width:100%; height:640px; border:0; display:block; }
-    .modal-close { background:#ff7676; border:0; color:#012; padding:8px 12px; border-radius:8px; cursor:pointer; }
-
-    footer.app-footer { position:fixed; left:0; right:0; bottom:0; background: rgba(0,0,20,0.6); color: rgba(240,240,240,0.95); padding:10px 12px; text-align:center; z-index:9999; border-top:1px solid rgba(255,255,255,0.03); }
-    footer.app-footer strong{ color:#fff; }
-
-    @media (max-width:760px) {
-      .modal-body iframe { height:420px; }
-    }
-  </style>
 </head>
 <body>
-  <!-- SPLASH -->
-  <div id="splash" aria-hidden="true">
-    <div id="splash-text">IMPERIAL TECHUB</div>
-    <div class="pulse"></div>
-  </div>
 
-  <!-- SITE -->
-  <div id="site" aria-hidden="true">
-    <header class="navbar">
-      <div class="nav-inner">
-        <div class="brand"><div class="logo">IT</div><div style="font-weight:800">IMPERIAL TECHUB</div></div>
-        <div class="nav-links" role="menubar" aria-label="Sections">
-          <button data-section="home" class="active">HOME</button>
-          <button data-section="events">EVENTS</button>
-          <button data-section="announcements">ANNOUNCEMENTS</button>
-          <button data-section="calendar">CALENDAR</button>
-          <button data-section="leaders">LEADERS</button>
-          <button data-section="hymnbook">HYMNBOOK</button>
-          <button data-section="membership">MEMBERSHIP</button>
-          <button data-section="video">VIDEO FELLOWSHIP</button>
-        </div>
-      </div>
-    </header>
+<!-- INTRO SCREEN -->
+<div id="intro-screen">
+    <div class="intro-text">IMPERIAL TECHUB</div>
+    <div class="pulse-loader"></div>
+</div>
 
-    <main>
-      <!-- HOME -->
-      <section id="home" class="active">
-        <div class="card funfact" style="margin:16px auto; max-width:900px;">
-          <h2>💡 Fun Fact</h2>
-          <p id="funFact">Loading...</p>
-          <small style="color:var(--muted)">Changes daily — come back tomorrow for a new fact.</small>
-        </div>
-      </section>
+<script>
+setTimeout(() => {
+    document.getElementById("intro-screen").style.display = "none";
+}, 5000);
+</script>
 
-      <!-- EVENTS -->
-      <section id="events">
-        <div class="card" style="margin:16px auto;">
-          <h2>📅 Upcoming Events — Live Countdowns</h2>
-          <div class="events-grid" id="eventsGrid" style="margin-top:12px;"></div>
-        </div>
-      </section>
+<!-- NAVIGATION -->
+<nav>
+    <a href="#home">HOME</a>
+    <a href="#events">EVENTS</a>
+    <a href="#announcements">ANNOUNCEMENTS</a>
+    <a href="#calendar">CALENDAR</a>
+    <a href="#leaders">LEADERS</a>
+    <a href="#hymnbook">HYMNBOOK</a>
+    <a href="#membership">MEMBERSHIP</a>
+    <a href="#" onclick="openMeetingModal()">MEETING</a>
+</nav>
 
-      <!-- ANNOUNCEMENTS -->
-      <section id="announcements">
-        <div class="card announce" style="margin:16px auto;">
-          <h2>📣 Announcements</h2>
-          <div>
-            <h3>PCEA NGORANO PARISH YOUTH RALLY</h3>
-            <p><strong>Sunday, 16th November 2025 — PCEA Chieni Church</strong></p>
-            <p>All youths are encouraged to attend for fellowship, worship, and spiritual growth. To God be the Glory.</p>
-          </div>
-          <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0;">
-          <div>
-            <h3>PRESBYTERY YOUTH CONVENTION</h3>
-            <p><strong>Tuesday, 2nd December – Saturday, 6th December 2025</strong></p>
-            <p>Charges: Ksh. 1,500 per person (payable in small instalments). To God be the Glory.</p>
-          </div>
-        </div>
-      </section>
+<!-- HOME -->
+<section id="home">
+    <h2>Fun Fact of the Day</h2>
+    <p id="funfact"></p>
+</section>
 
-      <!-- CALENDAR -->
-      <section id="calendar">
-        <div class="card" style="margin:16px auto;">
-          <h2>🗓 Calendar</h2>
-          <ul class="calendar-list" id="calendarList" style="margin-top:12px;"></ul>
-        </div>
-      </section>
+<script>
+const facts = [
+    "Did you know? The Bible is the best-selling book of all time.",
+    "Jesus is mentioned in the Quran more than Muhammad.",
+    "Psalm 118:8 is the center verse of the Bible.",
+    "The shortest verse in the Bible is 'Jesus wept.'"
+];
+let factIndex = Math.floor((Date.now() / 86400000) % facts.length);
+document.getElementById("funfact").innerText = facts[factIndex];
+</script>
 
-      <!-- LEADERS -->
-      <section id="leaders">
-        <div class="card" style="margin:16px auto;">
-          <h2>👥 Leaders & Contacts</h2>
-          <div class="leaders-grid" id="leadersGrid" style="margin-top:12px;"></div>
-        </div>
-      </section>
+<!-- EVENTS -->
+<section id="events">
+    <h2>Upcoming Events</h2>
+    <div id="countdowns"></div>
+</section>
 
-      <!-- HYMNBOOK -->
-      <section id="hymnbook">
-        <div class="card" style="margin:16px auto;">
-          <h2>🎵 Hymnbook</h2>
-          <div class="hymn-search" style="margin-top:12px;">
-            <input id="hymnQuery" placeholder="Search hymn by title or any line..." aria-label="Search hymns" />
-            <button id="clearHymn" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff;cursor:pointer">Clear</button>
-          </div>
-          <div class="hymn-list" id="hymnList" style="margin-top:12px;"></div>
-          <small style="display:block;margin-top:12px;color:var(--muted)">Click a hymn to expand the full lyrics.</small>
-        </div>
-      </section>
+<script>
+const events = [
+    { name: "Youth Rally", date: "2025-11-16T09:00:00" },
+    { name: "Presbytery Youth Convention", date: "2025-12-02T09:00:00" },
+    { name: "Christmas Day", date: "2025-12-25T00:00:00" },
+    { name: "New Year's Day", date: "2026-01-01T00:00:00" }
+];
 
-      <!-- MEMBERSHIP (MiniPay modal) -->
-      <section id="membership">
-        <div class="card" style="margin:16px auto;">
-          <h2>💛 Support & Membership</h2>
-          <p>Choose a membership tier to support youth programs. Payments are processed securely via MiniPay.</p>
-
-          <div class="membership-grid">
-            <div class="membership-card">
-              <h3>Gold</h3>
-              <p><strong>Ksh 300 / month</strong></p>
-              <button class="buy-btn" data-plan="Gold" data-amount="300">Buy Gold</button>
-            </div>
-
-            <div class="membership-card">
-              <h3>Platinum</h3>
-              <p><strong>Ksh 500 / month</strong></p>
-              <button class="buy-btn" data-plan="Platinum" data-amount="500">Buy Platinum</button>
-            </div>
-
-            <div class="membership-card">
-              <h3>Diamond</h3>
-              <p><strong>Ksh 1000 / month</strong></p>
-              <button class="buy-btn" data-plan="Diamond" data-amount="1000">Buy Diamond</button>
-            </div>
-          </div>
-
-          <small style="display:block;margin-top:10px;color:var(--muted)">Payments handled by MiniPay — secure and mobile friendly.</small>
-        </div>
-      </section>
-
-      <!-- VIDEO FELLOWSHIP -->
-      <section id="video">
-        <div class="card video-card" style="margin:16px auto;">
-          <h2>🎥 Video Fellowship</h2>
-          <p style="color:var(--muted)">Click <strong>Join Meeting</strong> to open a fresh, secure meeting room in a pop-up. The room is unique for each session.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button id="joinVideoBtn" style="padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:#012;font-weight:800;cursor:pointer">Join Meeting</button>
-            <button id="leaveVideoBtn" style="padding:10px 14px;border-radius:8px;border:0;background:#ff7676;color:#012;font-weight:800;cursor:pointer;display:none">Leave Meeting</button>
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- MODALS -->
-  <!-- Jitsi meeting modal -->
-  <div id="jitsiModal" class="modal" aria-hidden="true">
-    <div class="modal-inner" role="dialog" aria-modal="true" aria-labelledby="jitsiTitle">
-      <div class="modal-top">
-        <div id="jitsiTitle">Youth Fellowship Meeting</div>
-        <div><button class="modal-close" id="jitsiCloseBtn">Leave</button></div>
-      </div>
-      <div class="modal-body" id="jitsiBody">
-        <!-- Jitsi iframe will be injected here by External API (in a child div) -->
-      </div>
-    </div>
-  </div>
-
-  <!-- MiniPay modal -->
-  <div id="minipayModal" class="modal" aria-hidden="true">
-    <div class="modal-inner" role="dialog" aria-modal="true" aria-labelledby="mpTitle">
-      <div class="modal-top">
-        <div id="mpTitle">Complete Payment</div>
-        <div><button class="modal-close" id="mpCloseBtn">Close</button></div>
-      </div>
-      <div class="modal-body" id="mpBody" style="padding:0;">
-        <!-- We'll try to embed the MiniPay checkout in an iframe -->
-        <iframe id="mpIframe" src="" style="width:100%;height:640px;border:0;"></iframe>
-      </div>
-    </div>
-  </div>
-
-  <footer class="app-footer" role="contentinfo">
-    <div>PROUDLY CREATED BY <strong>IAN GATHAGU</strong></div>
-    <div style="opacity:0.9">v1.3.3</div>
-  </footer>
-
-  <!-- SCRIPTS -->
-  <script>
-    /**********************
-     * SITE INITIALIZATION
-     **********************/
-    // Show site after splash finishes (5s total: 4.5s animation + 0.5s)
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const splash = document.getElementById('splash');
-        splash.style.transition = 'opacity 0.6s ease';
-        splash.style.opacity = '0';
-        setTimeout(() => {
-          splash.style.display = 'none';
-          document.getElementById('site').style.opacity = '1';
-          // initialize features
-          activateNavButton('home');
-          showSection('home');
-          setFunFactOfTheDay();
-          initEvents();
-          renderCalendar();
-          renderLeaders();
-          loadHymns();
-          // preload jitsi external api for faster joins
-          preloadScript('https://meet.jit.si/external_api.js');
-        }, 600);
-      }, 4500); // end of visual splash animation
-    });
-
-    /* ---------- NAVIGATION ---------- */
-    (function(){
-      const nav = document.querySelector('.nav-links');
-      nav.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-section]');
-        if(!btn) return;
-        const section = btn.getAttribute('data-section');
-        activateNavButton(section);
-        showSection(section);
-        if(section === 'video') {
-          // optional: scroll to top of main
-          window.scrollTo({top:0, behavior:'smooth'});
+function updateCountdowns() {
+    let html = "";
+    events.forEach(ev => {
+        const diff = new Date(ev.date) - new Date();
+        if (diff > 0) {
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            html += `<p><strong>${ev.name}:</strong> ${d}d ${h}h ${m}m ${s}s</p>`;
         }
-      });
-    })();
+    });
+    document.getElementById("countdowns").innerHTML = html;
+}
+setInterval(updateCountdowns, 1000);
+</script>
 
-    function activateNavButton(section){
-      document.querySelectorAll('.nav-links button').forEach(b => b.classList.toggle('active', b.getAttribute('data-section') === section));
-    }
-    function showSection(sectionId){
-      document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
-      const el = document.getElementById(sectionId);
-      if(el) el.classList.add('active');
-    }
+<!-- ANNOUNCEMENTS -->
+<section id="announcements">
+    <h2>Announcements</h2>
 
-    /* ---------- FUN FACT (daily) ---------- */
-    const FUN_FACTS = [
-      "Jesus had 12 disciples — the same number of months in a year!",
-      "The Bible is the most translated book in the world.",
-      "David was the youngest of his brothers — yet chosen by God.",
-      "There are many verses reminding us to trust God daily."
-    ];
-    function setFunFactOfTheDay(){
-      const today = new Date().toDateString();
-      let saved = null;
-      try { saved = JSON.parse(localStorage.getItem('it_funFact')); } catch(e){ saved = null; }
-      if(!saved || saved.date !== today){
-        const idx = Math.floor(Math.random() * FUN_FACTS.length);
-        const entry = { date: today, fact: FUN_FACTS[idx] };
-        try { localStorage.setItem('it_funFact', JSON.stringify(entry)); } catch(e){}
-        document.getElementById('funFact').innerText = entry.fact;
-      } else {
-        document.getElementById('funFact').innerText = saved.fact;
-      }
-    }
+    <h3>Youth Rally</h3>
+    <p>There will be a Youth Rally on Sunday, 16th November, at PCEA Chieni Church.</p>
 
-    /* ---------- EVENTS & COUNTDOWNS ---------- */
-    const EVENTS = [
-      { id:'youth-rally', title:'Youth Rally — PCEA Chieni Church', start:'2025-11-16T09:00:00', end:'2025-11-16T17:00:00', location:'PCEA Chieni Church' },
-      { id:'presbytery-convention', title:'Presbytery Youth Convention', start:'2025-12-02T09:00:00', end:'2025-12-06T18:00:00', location:'Presbytery Venue' },
-      { id:'christmas', title:'Christmas Day', start:'2025-12-25T00:00:00', end:'2025-12-25T23:59:59', location:'All Parishes' },
-      { id:'new-year', title:"New Year's Day", start:'2026-01-01T00:00:00', end:'2026-01-01T23:59:59', location:'All Parishes' }
-    ];
-    let countdownInterval = null;
-    function initEvents(){
-      EVENTS.forEach(e => { e.startDate = new Date(e.start); e.endDate = new Date(e.end); });
-      renderEvents();
-      if(countdownInterval) clearInterval(countdownInterval);
-      countdownInterval = setInterval(updateCountdowns, 1000);
-      updateCountdowns();
-    }
-    function renderEvents(){
-      const container = document.getElementById('eventsGrid');
-      container.innerHTML = '';
-      const now = new Date();
-      const mapped = EVENTS.map(e=>{
-        let diff;
-        if(now > e.endDate) diff = Infinity;
-        else if(now >= e.startDate && now <= e.endDate) diff = 0;
-        else diff = e.startDate - now;
-        return {...e, diff};
-      }).sort((a,b)=> a.diff - b.diff);
-      mapped.forEach(e=>{
-        const div = document.createElement('div');
-        div.className = 'event-card';
-        div.id = 'card-'+e.id;
-        div.innerHTML = `
-          <h3 style="margin:0 0 6px 0">${e.title}</h3>
-          <div style="color:rgba(224,224,224,0.85);font-size:0.95rem">${formatDateRange(e.startDate,e.endDate)}</div>
-          <div class="countdown" id="cd-${e.id}">--d --h --m --s</div>
-          <div style="color:rgba(224,224,224,0.85);font-size:0.95rem;margin-top:8px">Location: ${e.location}</div>
-        `;
-        container.appendChild(div);
-      });
-    }
-    function updateCountdowns(){
-      const now = new Date();
-      EVENTS.forEach(e=>{
-        const el = document.getElementById('cd-'+e.id);
-        if(!el) return;
-        if(now > e.endDate){ el.innerText = 'Event Passed'; el.style.color = 'rgba(255,255,255,0.6)'; return; }
-        if(now >= e.startDate && now <= e.endDate){ el.innerText = 'Now Happening!'; el.style.color = '#ffdd57'; return; }
-        let diff = e.startDate - now;
-        const days = Math.floor(diff / (24*60*60*1000)); diff -= days*(24*60*60*1000);
-        const hours = Math.floor(diff / (60*60*1000)); diff -= hours*(60*60*1000);
-        const minutes = Math.floor(diff / (60*1000)); diff -= minutes*(60*1000);
-        const seconds = Math.floor(diff/1000);
-        el.innerText = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
-        el.style.color = 'var(--accent)';
-      });
-    }
-    function formatDateRange(s,e){
-      const opts = { year:'numeric', month:'long', day:'numeric' };
-      if(s.toDateString() === e.toDateString()) return s.toLocaleDateString(undefined, opts);
-      return s.toLocaleDateString(undefine
+    <h3>Presbytery Youth Convention</h3>
+    <p>The convention will be held from 2nd to 6th December 2025. Charges: Ksh 1500.</p>
+</section>
+
+<!-- CALENDAR -->
+<section id="calendar">
+    <h2>Calendar</h2>
+    <ul>
+        <li>Nov 16 — Youth Rally</li>
+        <li>Dec 2–6 — Presbytery Youth Convention</li>
+        <li>Dec 25 — Christmas Day</li>
+        <li>Jan 1 — New Year's Day</li>
+    </ul>
+</section>
+
+<!-- LEADERS -->
+<section id="leaders">
+    <h2>Our Leaders</h2>
+
+    <div class="leader-card">
+        <h3>Zachary Gikonyo — Chairperson</h3>
+        <a href="https://wa.me/254742892647">WhatsApp</a> | <a href="tel:+254742892647">Call</a>
+    </div>
+
+    <div class="leader-card">
+        <h3>Dalson Maina — Vice Chairperson</h3>
+        <a href="https://wa.me/254714003648">WhatsApp</a> | <a href="tel:+254714003648">Call</a>
+    </div>
+
+    <div class="leader-card">
+        <h3>Ian Gathagu — Secretary</h3>
+        <a href="https://wa.me/254718357417">WhatsApp</a> | <a href="tel:+254718357417">Call</a>
+    </div>
+
+    <div class="leader-card">
+        <h3>Lydia Wamuyu — Vice Secretary</h3>
+        <a href="https://wa.me/254110867929">WhatsApp</a> | <a href="tel:+254110867929">Call</a>
+    </div>
+
+    <div class="leader-card">
+        <h3>Winnie Maundu — Treasurer</h3>
+        <a href="https://wa.me/254713285534">WhatsApp</a> | <a href="tel:+254713285534">Call</a>
+    </div>
+</section>
+
+<!-- HYMNBOOK -->
+<section id="hymnbook">
+    <h2>Hymnbook</h2>
+    <input type="text" id="searchHymn" placeholder="Search by any line..." style="padding:10px;width:90%;border-radius:8px;">
+    <div id="hymns"></div>
+</section>
+
+<script>
+const hymnList = [
+    { title: "Hymn 1", lyrics: "Amazing grace how sweet the sound..." },
+    { title: "Hymn 2", lyrics: "Great is thy faithfulness..." }
+];
+
+function loadHymns() {
+    let html = "";
+    hymnList.forEach(h => {
+        html += `<div class='hymn'><h3>${h.title}</h3><p>${h.lyrics}</p></div>`;
+    });
+    document.getElementById("hymns").innerHTML = html;
+}
+loadHymns();
+
+document.getElementById("searchHymn").addEventListener("input", function(){
+    let q = this.value.toLowerCase();
+    let html = "";
+    hymnList.forEach(h => {
+        if (h.lyrics.toLowerCase().includes(q) || h.title.toLowerCase().includes(q)) {
+            html += `<div class='hymn'><h3>${h.title}</h3><p>${h.lyrics}</p></div>`;
+        }
+    });
+    document.getElementById("hymns").innerHTML = html;
+});
+</script>
+
+<!-- MEMBERSHIP -->
+<section id="membership">
+    <h2>Youth Membership</h2>
+
+    <div class="membership-card">
+        <h3>Gold — KSh 300</h3>
+        <button class="buy-btn" onclick="openMiniPay('gold')">Buy</button>
+    </div>
+
+    <div class="membership-card">
+        <h3>Platinum — KSh 500</h3>
+        <button class="buy-btn" onclick="openMiniPay('platinum')">Buy</button>
+    </div>
+
+    <div class="membership-card">
+        <h3>Diamond — KSh 1000</h3>
+        <button class="buy-btn" onclick="openMiniPay('diamond')">Buy</button>
+    </div>
+</section>
+
+<!-- MINIPAY MODAL -->
+<div id="minipay-modal">
+    <div id="minipay-box">
+        <h2>MiniPay Checkout</h2>
+        <p id="mp-text"></p>
+        <button onclick="pay()">Confirm Payment</button><br><br>
+        <button onclick="closeMiniPay()">Close</button>
+    </div>
+</div>
+
+<script>
+let currentPlan = "";
+
+function openMiniPay(plan){
+    currentPlan = plan;
+    document.getElementById("mp-text").innerText = 
+        "You are purchasing the " + plan.toUpperCase() + " membership.";
+    document.getElementById("minipay-modal").style.display = "flex";
+}
+
+function closeMiniPay(){
+    document.getElementById("minipay-modal").style.display = "none";
+}
+
+function pay(){
+    alert("MiniPay TEST MODE: Payment successful for " + currentPlan.toUpperCase());
+    closeMiniPay();
+}
+</script>
+
+<!-- MEETING MODAL -->
+<div id="meeting-modal">
+    <div id="meeting-box">
+        <button onclick="closeMeetingModal()" style="float:right;">Close</button>
+        <div id="jitsiContainer" style="width:100%;height:95%;"></div>
+    </div>
+</div>
+
+<script src="https://8x8.vc/vpaas-magic-cookie-756b4b93478540f5bb2e85a9a346496b/external_api.js"></script>
+
+<script>
+function openMeetingModal(){
+    document.getElementById("meeting-modal").style.display = "flex";
+
+    const domain = "8x8.vc";
+    const options = {
+        roomName: "IMPERIAL-TECHUB-MEETING",
+        parentNode: document.querySelector('#jitsiContainer'),
+        width: "100%",
+        height: "100%"
+    };
+    new JitsiMeetExternalAPI(domain, options);
+}
+function closeMeetingModal(){
+    document.getElementById("meeting-modal").style.display = "none";
+    document.getElementById("jitsiContainer").innerHTML = "";
+}
+</script>
+
+<!-- FOOTER -->
+<footer style="text-align:center;padding:20px;margin-top:40px;color:#003b8e;">
+    PROUDLY CREATED BY IAN GATHAGU <br>
+    v1.3.2
+</footer>
+
+</body>
+  </html>
