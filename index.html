@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>IMPERIAL TECHUB</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAyMzY2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHRleHQgeD0iNCIgeT0iMjQiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmaWxsPSJ3aGl0ZSI+SVQ8L3RleHQ+PC9zdmc+" />
+
+<style>
+  /* ====== Root / Reset ====== */
+  :root{
+    --royal:#002366;
+    --accent:#00b4ff;
+    --card-bg: rgba(255,255,255,0.04);
+    --muted: rgba(230,230,230,0.85);
+    --glass: rgba(255,255,255,0.03);
+    --white: #ffffff;
+    --site-max:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: "Inter", "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+    background: linear-gradient(135deg,var(--royal), #003b99);
+    color:var(--white);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    line-height:1.45;
+  }
+  main{max-width:var(--site-max);margin:22px auto;padding:0 16px;}
+
+  /* ====== SPLASH / INTRO (exact 5s) ====== */
+  #intro-screen{
+    position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    z-index:9999;background:#001f4d;pointer-events:none;
+    animation:introHold 5s linear forwards;
+  }
+  @keyframes introHold{0%{opacity:1} 95%{opacity:1} 100%{opacity:0;visibility:hidden}}
+  #intro-text{font-weight:900;color:#cfe9ff;font-size:clamp(2rem,7vw,4rem);letter-spacing:2px;opacity:1;transform:translateY(0);animation:introText 4.4s ease-in-out 0.2s forwards;}
+  @keyframes introText{0%{opacity:0;transform:scale(.95)}20%{opacity:1;transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1.02)}}
+  .intro-pulse{margin-top:18px;width:18px;height:18px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 rgba(0,180,255,0.4);animation:pulseAnim 1.6s infinite}
+  @keyframes pulseAnim{0%{box-shadow:0 0 0 0 rgba(0,180,255,0.45)}60%{box-shadow:0 0 0 26px rgba(0,180,255,0)}100%{box-shadow:0 0 0 0 rgba(0,180,255,0)}}
+
+  /* show site after intro */
+  #site{opacity:0;transition:opacity .5s ease-in-out}
+
+  /* ====== Top nav ====== */
+  .topbar{position:sticky;top:0;z-index:900;background:rgba(0,0,0,0.14);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
+  .nav-inner{max-width:var(--site-max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#62d3ff);display:flex;align-items:center;justify-content:center;color:#012;font-weight:900}
+  .brand .title{font-weight:800}
+  .nav-links{display:flex;gap:8px;flex-wrap:wrap}
+  .nav-btn{background:transparent;border:0;color:var(--white);padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer;transition:all .12s}
+  .nav-btn:hover{color:var(--accent);transform:translateY(-3px)}
+  .nav-btn.active{background:rgba(255,255,255,0.03);color:var(--accent)}
+
+  /* ====== Pages (virtual pages) ====== */
+  section.page{display:none;opacity:0;transform:translateY(6px);transition:opacity .35s ease, transform .35s ease}
+  section.page.active{display:block;opacity:1;transform:none}
+
+  /* ====== Card styling ====== */
+  .card{background:var(--card-bg);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 10px 30px rgba(0,0,0,0.35)}
+  .grid{display:grid;gap:14px}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  .center{display:flex;align-items:center;justify-content:center}
+
+  h1,h2,h3{color:var(--white)}
+  p{color:var(--muted)}
+
+  /* ====== Home: fun fact ====== */
+  .fun-card{max-width:900px;margin:0 auto;text-align:center}
+
+  /* ====== Events ====== */
+  .events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px}
+  .event-qty{font-weight:900;font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.25rem;color:var(--accent);margin-top:8px}
+  .event-meta{color:var(--muted);font-size:.95rem;margin-top:8px}
+
+  /* ====== Leaders ====== */
+  .leaders-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .leader-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:10px}
+  .contact-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .wa-btn{background:linear-gradient(90deg,#25D366,#128C7E);color:#012;padding:8px 10px;border-radius:8px;font-weight:800;text-decoration:none}
+  .call-btn{background:linear-gradient(90deg,#ffd54f,#ffb300);color:#012;padding:8px 10px;border-radius:8px;font-weight:700;text-decoration:none}
+
+  /* ====== Hymnbook ====== */
+  .hymn-search{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+  .hymn-search input{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white)}
+  .hymn-list{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto}
+  .hymn-item{padding:12px;border-radius:10px;background:var(--glass);cursor:pointer}
+  .hymn-lyrics{display:none;color:#e9f3ff;margin-top:8px;white-space:pre-line}
+
+  /* ====== Membership cards ====== */
+  .membership-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}
+  .membership-card{padding:16px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));text-align:center}
+  .buy-btn{padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:#012;font-weight:800;cursor:pointer}
+
+  /* ====== Modal (Jitsi & MiniPay) ====== */
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:10000}
+  .modal.show{display:flex}
+  .modal-content{width:95%;max-width:1000px;background:#fff;border-radius:10px;overflow:hidden;color:#012}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--royal);color:#fff}
+  .modal-body{padding:0}
+  .modal-iframe{width:100%;height:640px;border:0;display:block}
+  .modal-close{background:#ff7676;border:0;color:#012;padding:8px 12px;border-radius:8px;cursor:pointer}
+
+  /* ====== Footer ====== */
+  footer.app-footer{margin-top:30px;text-align:center;padding:12px 0;color:rgba(255,255,255,0.9)}
+  footer.app-footer strong{color:#fff}
+
+  /* Responsive tweaks */
+  @media (max-width:900px){ .grid.cols-3{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){
+    .grid.cols-3,.grid.cols-2{grid-template-columns:1fr}
+    .modal-iframe{height:420px}
+    .nav-inner{padding:10px}
+  }
+</style>
+</head>
+<body>
+
+  <!-- INTRO: exact 5s -->
+  <div id="intro-screen" aria-hidden="true">
+    <div id="intro-text">IMPERIAL TECHUB</div>
+    <div class="intro-pulse"></div>
+  </div>
+
+  <!-- SITE (hidden until intro done) -->
+  <div id="site" aria-hidden="true">
+    <!-- TOP NAV -->
+    <header class="topbar">
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="logo">IT</div>
+          <div class="title">IMPERIAL TECHUB</div>
+        </div>
+        <nav class="nav-links" role="navigation" aria-label="Main navigation">
+          <button class="nav-btn active" data-page="home">HOME</button>
+          <button class="nav-btn" data-page="events">EVENTS</button>
+          <button class="nav-btn" data-page="announcements">ANNOUNCEMENTS</button>
+          <button class="nav-btn" data-page="calendar">CALENDAR</button>
+          <button class="nav-btn" data-page="leaders">LEADERS</button>
+          <button class="nav-btn" data-page="hymnbook">HYMNBOOK</button>
+          <button class="nav-btn" data-page="membership">MEMBERSHIP</button>
+          <button class="nav-btn" data-page="video">VIDEO FELLOWSHIP</button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HOME -->
+      <section id="home" class="page active">
+        <div class="card fun-card center">
+          <h2 style="margin-bottom:10px">💡 Fun Fact</h2>
+          <p id="funFact" style="font-size:1.05rem"></p>
+          <small style="color:var(--muted)">New fact daily</small>
+        </div>
+      </section>
+
+      <!-- EVENTS -->
+      <section id="events" class="page">
+        <div class="card">
+          <h2>📅 Upcoming Events</h2>
+          <div id="eventsGrid" class="events-grid"></div>
+        </div>
+      </section>
+
+      <!-- ANNOUNCEMENTS -->
+      <section id="announcements" class="page">
+        <div class="card">
+          <h2>📣 Announcements</h2>
+          <div style="margin-top:12px">
+            <div class="card" style="margin-bottom:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))">
+              <h3>PCEA NGORANO PARISH YOUTH RALLY</h3>
+              <p><strong>Sunday, 16th November 2025 — PCEA Chieni Church</strong></p>
+              <p>All youths are encouraged to attend for fellowship, worship, and spiritual growth. To God be the Glory.</p>
+            </div>
+            <div class="card" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))">
+              <h3>PRESBYTERY YOUTH CONVENTION</h3>
+              <p><strong>Tuesday, 2nd December – Saturday, 6th December 2025</strong></p>
+              <p>Charges: Ksh. 1,500 per person (payable in instalments). Let us prepare in prayer.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALENDAR -->
+      <section id="calendar" class="page">
+        <div class="card">
+          <h2>🗓 Calendar</h2>
+          <ul id="calendarList" style="margin-top:12px;color:var(--muted)"></ul>
+        </div>
+      </section>
+
+      <!-- LEADERS -->
+      <section id="leaders" class="page">
+        <div class="card">
+          <h2>👥 Leaders & Contacts</h2>
+          <div class="leaders-grid" id="leadersGrid" style="margin-top:12px"></div>
+        </div>
+      </section>
+
+      <!-- HYMNBOOK -->
+      <section id="hymnbook" class="page">
+        <div class="card">
+          <h2>🎵 Hymnbook</h2>
+          <div class="hymn-search" style="margin-top:12px">
+            <input id="hymnQuery" placeholder="Search hymn by title or any line..." />
+            <button id="clearHymn" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white)">Clear</button>
+          </div>
+          <div id="hymnList" class="hymn-list"></div>
+          <small style="display:block;margin-top:12px;color:var(--muted)">Click a hymn to expand lyrics.</small>
+        </div>
+      </section>
+
+      <!-- MEMBERSHIP -->
+      <section id="membership" class="page">
+        <div class="card">
+          <h2>💛 Support & Membership</h2>
+          <p style="color:var(--muted)">Choose a tier to support youth activities. Payments via MiniPay.</p>
+          <div class="membership-grid" style="margin-top:12px">
+            <div class="membership-card">
+              <h3>Gold</h3>
+              <p><strong>Ksh 300 / month</strong></p>
+              <button class="buy-btn" data-plan="Gold" data-amount="300">Buy Gold</button>
+            </div>
+            <div class="membership-card">
+              <h3>Platinum</h3>
+              <p><strong>Ksh 500 / month</strong></p>
+              <button class="buy-btn" data-plan="Platinum" data-amount="500">Buy Platinum</button>
+            </div>
+            <div class="membership-card">
+              <h3>Diamond</h3>
+              <p><strong>Ksh 1000 / month</strong></p>
+              <button class="buy-btn" data-plan="Diamond" data-amount="1000">Buy Diamond</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIDEO FELLOWSHIP -->
+      <section id="video" class="page">
+        <div class="card">
+          <h2>🎥 Video Fellowship</h2>
+          <p style="color:var(--muted)">Click <strong>Join Meeting</strong> below to open a fresh meeting in a modal. Meeting rooms are unique for each session.</p>
+          <div style="margin-top:12px">
+            <button id="joinVideoBtn" class="buy-btn" style="background:var(--accent);color:#012">Join Meeting</button>
+            <button id="leaveVideoBtn" class="buy-btn" style="display:none;background:#ff7676;color:#012">Leave Meeting</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      PROUDLY CREATED BY <strong>IAN GATHAGU</strong> — v1.3.4
+    </footer>
+  </div>
+
+  <!-- ===== Modals ===== -->
+  <!-- Jitsi Modal -->
+  <div id="jitsiModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="jitsiTitle">
+      <div class="modal-head">
+        <div id="jitsiTitle">Youth Fellowship Meeting</div>
+        <div><button class="modal-close" id="jitsiCloseBtn">Leave</button></div>
+      </div>
+      <div class="modal-body" id="jitsiBody"></div>
+    </div>
+  </div>
+
+  <!-- MiniPay Modal -->
+  <div id="mpModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="mpTitle">
+      <div class="modal-head">
+        <div id="mpTitle">Complete Payment</div>
+        <div><button class="modal-close" id="mpCloseBtn">Close</button></div>
+      </div>
+      <div class="modal-body" id="mpBody" style="padding:0">
+        <iframe id="mpIframe" src="" style="width:100%;height:640px;border:0;"></iframe>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ----------------------
+   SITE BOOT + INTRO FIX
+   ---------------------- */
+(function(){
+  const intro = document.getElementById('intro-screen');
+  const site = document.getElementById('site');
+
+  // Force-remove intro at exactly 5s in case animation hangs
+  setTimeout(() => {
+    if(intro && intro.style.display !== 'none'){
+      intro.style.display = 'none';
+      site.style.opacity = '1';
+      site.removeAttribute('aria-hidden');
+      initSite();
+    }
+  }, 5000);
+
+  // Also listen for animationend for faster removal on some browsers
+  intro.addEventListener('animationend', () => {
+    intro.style.display = 'none';
+    site.style.opacity = '1';
+    site.removeAttribute('aria-hidden');
+    initSite();
+  });
+})();
+
+/* ----------------------
+   Init: preloads + bindings
+   ---------------------- */
+function initSite(){
+  bindNav();
+  setFunFactOfTheDay();
+  initEvents();
+  renderCalendar();
+  renderLeaders();
+  loadHymns();
+  bindMembershipButtons();
+  preloadScript('https://meet.jit.si/external_api.js'); // prefetch Jitsi API for speed
+}
+
+/* ----------------------
+   NAV / Virtual Pages (smooth fade)
+   ---------------------- */
+function bindNav(){
+  const buttons = document.querySelectorAll('.nav-btn');
+  buttons.forEach(btn => btn.addEventListener('click', () => {
+    const page = btn.dataset.page;
+    if(!page) return;
+    // active state
+    buttons.forEach(b=>b.classList.toggle('active', b===btn));
+    showPage(page);
+  }));
+}
+function showPage(pageId){
+  document.querySelectorAll('section.page').forEach(s=>{
+    if(s.id === pageId){
+      s.classList.add('active');
+      s.scrollTop = 0;
+    } else {
+      s.classList.remove('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ----------------------
+   FUN FACT (daily rotation)
+   ---------------------- */
+const FUN_FACTS = [
+  "The Bible is the most translated book in the world.",
+  "Jesus wept — the shortest verse (John 11:35).",
+  "'Fear not' appears in many forms across Scripture — a daily reminder.",
+  "Psalm 117 is the shortest chapter in the Bible."
+];
+function setFunFactOfTheDay(){
+  const today = new Date().toDateString();
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('it_funFact')); } catch(e){ saved = null; }
+  if(!saved || saved.date !== today){
+    const idx = Math.floor(Math.random() * FUN_FACTS.length);
+    const entry = { date: today, fact: FUN_FACTS[idx] };
+    try { localStorage.setItem('it_funFact', JSON.stringify(entry)); } catch(e){}
+    document.getElementById('funFact').innerText = entry.fact;
+  } else {
+    document.getElementById('funFact').innerText = saved.fact;
+  }
+}
+
+/* ----------------------
+   EVENTS & COUNTDOWNS (sorted nearest->farthest)
+   ---------------------- */
+const EVENTS = [
+  { id:'youth-rally', title:'Youth Rally — PCEA Chieni Church', start:'2025-11-16T09:00:00', end:'2025-11-16T17:00:00', location:'PCEA Chieni Church' },
+  { id:'presbytery-convention', title:'Presbytery Youth Convention', start:'2025-12-02T09:00:00', end:'2025-12-06T18:00:00', location:'Presbytery Venue' },
+  { id:'christmas', title:'Christmas Day', start:'2025-12-25T00:00:00', end:'2025-12-25T23:59:59', location:'All Parishes' },
+  { id:'new-year', title:"New Year's Day", start:'2026-01-01T00:00:00', end:'2026-01-01T23:59:59', location:'All Parishes' }
+];
+let countdownInterval = null;
+function initEvents(){
+  EVENTS.forEach(e=>{ e.startDate = new Date(e.start); e.endDate = new Date(e.end); });
+  renderEvents();
+  if(countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(updateCountdowns,1000);
+  updateCountdowns();
+}
+function renderEvents(){
+  const container = document.getElementById('eventsGrid');
+  container.innerHTML = '';
+  const now = new Date();
+  const mapped = EVENTS.map(e=>{
+    let diff;
+    if(now > e.endDate) diff = Infinity;
+    else if(now >= e.startDate && now <= e.endDate) diff = 0;
+    else diff = e.startDate - now;
+    return {...e,diff};
+  }).sort((a,b)=> a.diff - b.diff);
+  mapped.forEach(e=>{
+    const div = document.createElement('div');
+    div.className = 'event- card event- card';
+    div.innerHTML = `
+      <div class="card">
+        <h3 style="margin:0">${e.title}</h3>
+        <div class="event-meta">${formatDateRange(e.startDate,e.endDate)}</div>
+        <div class="event-qty" id="cd-${e.id}">--d --h --m --s</div>
+        <div class="event-meta">Location: ${e.location}</div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+function updateCountdowns(){
+  const now = new Date();
+  EVENTS.forEach(e=>{
+    const el = document.getElementById('cd-'+e.id);
+    if(!el) return;
+    if(now > e.endDate){ el.innerText = 'Event Passed'; el.style.color = 'rgba(255,255,255,0.6)'; return; }
+    if(now >= e.startDate && now <= e.endDate){ el.innerText = 'Now Happening!'; el.style.color = '#ffdd57'; return; }
+    let diff = e.startDate - now;
+    const days = Math.floor(diff / (24*60*60*1000)); diff -= days*(24*60*60*1000);
+    const hours = Math.floor(diff / (60*60*1000)); diff -= hours*(60*60*1000);
+    const minutes = Math.floor(diff / (60*1000)); diff -= minutes*(60*1000);
+    const seconds = Math.floor(diff/1000);
+    el.innerText = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+  });
+}
+function formatDateRange(s,e){
+  const opts = { year:'numeric', month:'short', day:'numeric' };
+  if(s.toDateString()===e.toDateString()) return s.toLocaleDateString(undefined,opts);
+  return s.toLocaleDateString(undefined,opts) + ' — ' + e.toLocaleDateString(undefined,opts);
+}
+function pad(n){ return String(n).padStart(2,'0'); }
+
+/* ----------------------
+   Calendar
+   ---------------------- */
+function renderCalendar(){
+  const ul = document.getElementById('calendarList');
+  ul.innerHTML = '';
+  EVENTS.forEach(e=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<strong style="color:var(--white)">${e.title}</strong> — <span style="color:var(--muted)">${e.startDate.toDateString()}</span>`;
+    ul.appendChild(li);
+  });
+}
+
+/* ----------------------
+   Leaders
+   ---------------------- */
+function renderLeaders(){
+  const leaders = [
+    { office:"Zachary's Office", name:"Zachary Gikonyo", role:"Chairperson", phone:"+254742892647" },
+    { office:"Dalson's Office", name:"Dalson Maina", role:"Vice Chairperson", phone:"+254714003648" },
+    { office:"Ian's Office", name:"Ian Gathagu", role:"Secretary", phone:"+254718357417" },
+    { office:"Lydia's Office", name:"Lydia Wamuyu", role:"Vice Secretary", phone:"+254110867929" },
+    { office:"Winnie's Office", name:"Winnie Maundu", role:"Treasurer", phone:"+254713285534" }
+  ];
+  const grid = document.getElementById('leadersGrid');
+  grid.innerHTML = '';
+  leaders.forEach(ld=>{
+    const el = document.createElement('div');
+    el.className = 'leader-card';
+    el.innerHTML = `
+      <div style="font-weight:900">${ld.office}</div>
+      <div style="color:var(--muted)">${ld.name} — ${ld.role}</div>
+      <div class="contact-actions">
+        <a class="wa-btn" href="https://wa.me/${ld.phone.replace(/\D/g,'')}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a class="call-btn" href="tel:${ld.phone.replace(/\D/g,'')}">Call</a>
+        <div style="color:var(--muted);padding-left:6px">${ld.phone}</div>
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+/* ----------------------
+   Hymnbook
+   ---------------------- */
+const HYMNS = [
+  { id:'amazing-grace', title:'Amazing Grace', lyrics:`Amazing grace! How sweet the sound\nThat saved a wretch like me.\nI once was lost, but now am found.` },
+  { id:'how-great', title:'How Great Thou Art', lyrics:`O Lord my God! When I in awesome wonder\nConsider all the worlds Thy hands have made` },
+  { id:'to-god', title:'To God Be the Glory', lyrics:`To God be the glory, great things He hath done.` }
+];
+function loadHymns(){
+  renderHymnList('');
+  const q = document.getElementById('hymnQuery');
+  const c = document.getElementById('clearHymn');
+  if(q) q.addEventListener('input', ()=> renderHymnList(q.value));
+  if(c) c.addEventListener('click', ()=> { q.value=''; renderHymnList(''); });
+}
+function renderHymnList(filter){
+  const list = document.getElementById('hymnList');
+  list.innerHTML = '';
+  const f = (filter||'').trim().toLowerCase();
+  const filtered = HYMNS.filter(h => !f || h.title.toLowerCase().includes(f) || h.lyrics.toLowerCase().includes(f));
+  if(filtered.length===0){ list.innerHTML = `<div style="color:var(--muted);padding:8px">No hymns found.</div>`; return; }
+  filtered.forEach(h=>{
+    const item = document.createElement('div');
+    item.className = 'hymn-item';
+    item.innerHTML = `<div style="font-weight:800">${h.title}</div><div class="hymn-lyrics">${escapeHtml(h.lyrics)}</div>`;
+    item.addEventListener('click', ()=>{
+      document.querySelectorAll('.hymn-item .hymn-lyrics').forEach(x=>x.style.display='none');
+      document.querySelectorAll('.hymn-item').forEach(x=>x.classList.remove('expanded'));
+      const lyrics = item.querySelector('.hymn-lyrics');
+      const visible = lyrics.style.display==='block';
+      lyrics.style.display = visible ? 'none' : 'block';
+      item.classList.toggle('expanded', !visible);
+      if(!visible) item.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+    list.appendChild(item);
+  });
+}
+function escapeHtml(txt){ return txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+/* ----------------------
+   Membership (MiniPay modal embed + fallback)
+   ---------------------- */
+function bindMembershipButtons(){
+  const MERCHANT_ID = encodeURIComponent('+254718357417');
+  const MINIPAY_BASE = 'https://checkout.minipay.co/checkout';
+  const buyBtns = document.querySelectorAll('.buy-btn');
+  const mpModal = document.getElementById('mpModal');
+  const mpIframe = document.getElementById('mpIframe');
+  const mpClose = document.getElementById('mpCloseBtn');
+
+  buyBtns.forEach(btn=>{
+    btn.addEventListener('click', () => {
+      const plan = btn.dataset.plan || btn.getAttribute('data-plan') || btn.textContent.trim();
+      const amount = btn.dataset.amount || btn.getAttribute('data-amount') || '100';
+      const ref = makeReference(plan, amount);
+      const params = new URLSearchParams({
+        merchant: MERCHANT_ID,
+        amount: amount,
+        currency: 'KES',
+        reference: ref,
+        description: `${plan} membership`
+      });
+      const url = `${MINIPAY_BASE}?${params.toString()}`;
+      // try embed first
+      mpIframe.src = url;
+      mpModal.classList.add('show');
+      // fallback to new tab if embedding blocked in 3s
+      const fallback = setTimeout(()=> {
+        window.open(url,'_blank');
+      }, 3000);
+
+      // optionally listen for postMessage from MiniPay if supported (left generic)
+      function msgHandler(ev){
+        // In production validate ev.origin
+        try {
+          const data = ev.data || {};
+          if(data && data.miniPay && data.reference === ref){
+            clearTimeout(fallback);
+            alert('Payment recorded. Thank you!');
+            window.removeEventListener('message', msgHandler);
+            mpIframe.src = '';
+            mpModal.classList.remove('show');
+          }
+        } catch(e){}
+      }
+      window.addEventListener('message', msgHandler);
+    });
+  });
+  mpClose.addEventListener('click', ()=>{ document.getElementById('mpIframe').src=''; mpModal.classList.remove('show'); });
+}
+function makeReference(plan, amount){
+  const now=new Date(); return `IT-${plan}-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${now.getHours()}${now.getMinutes()}${now.getSeconds()}-${Math.floor(Math.random()*9000)+1000}`;
+}
+
+/* ----------------------
+   Jitsi dynamic modal (unique rooms) + preloader
+   ---------------------- */
+(function(){
+  const joinBtn = document.getElementById('joinVideoBtn');
+  const leaveBtn = document.getElementById('leaveVideoBtn');
+  const modal = document.getElementById('jitsiModal');
+  const body = document.getElementById('jitsiBody');
+  const closeBtn = document.getElementById('jitsiCloseBtn');
+  let api = null;
+  let scriptLoaded = false;
+
+  joinBtn.addEventListener('click', ()=>{
+    if(api) return;
+    loadJitsi(()=> {
+      const room = generateRoomName();
+      const node = document.createElement('div');
+      node.id = 'jitsi-'+Date.now();
+      node.style.width='100%'; node.style.height='640px';
+      body.appendChild(node);
+      try {
+        api = new JitsiMeetExternalAPI('meet.jit.si', {
+          roomName: room,
+          parentNode: node,
+          width: '100%',
+          height: 640,
+          interfaceConfigOverwrite: { TOOLBAR_BUTTONS: ['microphone','camera','desktop','fullscreen','hangup','chat','participants-pane','raisehand']},
+          configOverwrite: { prejoinPageEnabled: false }
+        });
+        modal.classList.add('show'); joinBtn.style.display='none'; leaveBtn.style.display='inline-block';
+        api.addEventListener('videoConferenceLeft', cleanup);
+      } catch(err){
+        console.error(err); alert('Could not start meeting. Try again.');
+        node.remove(); api=null;
+      }
+    });
+  });
+
+  leaveBtn.addEventListener('click', cleanup);
+  closeBtn.addEventListener('click', cleanup);
+
+  function cleanup(){
+    try{ if(api) api.dispose(); } catch(e){}
+    api = null;
+    body.innerHTML = '';
+    modal.classList.remove('show');
+    joinBtn.style.display='inline-block'; leaveBtn.style.display='none';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function loadJitsi(cb){
+    if(scriptLoaded){ cb(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://meet.jit.si/external_api.js';
+    s.async = true;
+    s.onload = ()=>{ scriptLoaded = true; cb(); };
+    s.onerror = ()=>{ alert('Unable to load video service (network).'); };
+    document.head.appendChild(s);
+  }
+
+  function generateRoomName(){
+    const now = new Date(); const Y=now.getFullYear(), M=String(now.getMonth()+1).padStart(2,'0'), D=String(now.getDate()).padStart(2,'0');
+    const h=String(now.getHours()).padStart(2,'0'), m=String(now.getMinutes()).padStart(2,'0'), s=String(now.getSeconds()).padStart(2,'0');
+    return `PCEA-Center-Youth-${Y}${M}${D}-${h}${m}${s}-${Math.floor(Math.random()*9000)+1000}`;
+  }
+})();
+
+/* ----------------------
+   Helpers: preload script
+   ---------------------- */
+function preloadScript(src){
+  const s = document.createElement('script'); s.src = src; s.async = true;
+  s.onload = ()=> console.log('preloaded',src); s.onerror = ()=> console.log('preload failed',src);
+  document.head.appendChild(s);
+}
+
+/* ----------------------
+   DOM-ready small binds executed in initSite()
+   ---------------------- */
+
+/* Note: renderCalendar, renderLeaders, loadHymns are called in initSite() */
+
+/* ----------------------
+   End of script
+   ---------------------- */
+
+</script>
+</body>
+</html>
