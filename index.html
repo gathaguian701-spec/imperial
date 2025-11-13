@@ -1,421 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Imperial Techub | PCEA Center Youth</title>
-  <meta name="referrer" content="no-referrer" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IMPERIAL TECHUB | PCEA Center Youth</title>
+<style>
+:root {
+  --royal: #002366;
+  --accent: #00b4ff;
+  --glass: rgba(255, 255, 255, 0.06);
+  --text: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", Roboto, system-ui;
+  background: linear-gradient(135deg, var(--royal), #003b99);
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-  <style>
-    :root{
-      --royal: #002366; /* chosen deep royal */
-      --accent: #00b4ff;
-      --glass: rgba(255,255,255,0.06);
-      --muted: rgba(224,224,224,0.9);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
-      background: linear-gradient(135deg,var(--royal), #003b99);
-      color:#fff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      min-height:100vh;
-      overflow-x:hidden;
-    }
+/* Splash */
+#splash {
+  position: fixed; inset: 0; background: #000;
+  display: flex; align-items: center; justify-content: center;
+  animation: splashFade 10s ease-in-out forwards; z-index: 9999;
+}
+@keyframes splashFade {
+  0%,30% { opacity: 1; background: #000; }
+  70% { opacity: 1; background: var(--royal); }
+  100% { opacity: 0; visibility: hidden; }
+}
+#splash-text {
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: #cfe9ff;
+  font-weight: 800;
+  letter-spacing: 2px;
+  animation: textGlow 8s ease-in-out forwards;
+}
+@keyframes textGlow {
+  0% { opacity: 0; transform: scale(.9); }
+  20%,80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; }
+}
 
-    /* SPLASH (10s total) */
-    #splash {
-      position: fixed;
-      inset: 0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
-      background:#000;
-      pointer-events:none;
-    }
-    /* visual 'lighting' runs 8.5s, we fade out in JS for final 1.5s */
-    #splash.lit { animation: splashLight 8.5s linear forwards; }
-    @keyframes splashLight { 0% { background:#000 } 100% { background: var(--royal) } }
+/* Layout */
+#site { opacity: 0; transition: opacity 1s ease-in-out; }
+.navbar {
+  position: sticky; top: 0; background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px); z-index: 100;
+}
+.nav-inner {
+  max-width: 1100px; margin: auto;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px;
+}
+.logo { font-weight: 900; background: linear-gradient(135deg,var(--accent),#62d3ff); color:#021; padding:6px 10px; border-radius:8px; }
+.nav-links { display:flex; flex-wrap:wrap; gap:8px; }
+.nav-links button {
+  background:none; border:0; color:#fff; font-weight:700; padding:8px 12px; border-radius:6px; cursor:pointer;
+}
+.nav-links button.active { background:rgba(255,255,255,0.1); color:var(--accent); }
 
-    #splash-text {
-      color:#cfe9ff;
-      font-size: clamp(2rem, 6vw, 4rem);
-      font-weight:900;
-      letter-spacing:2px;
-      opacity:0;
-      transform: scale(.95);
-      text-align:center;
-      text-shadow: 0 0 20px rgba(0,180,255,0.12);
-      animation: textGlow 8s ease-in-out 1s forwards;
-      pointer-events:none;
-    }
-    @keyframes textGlow{
-      0% { opacity:0; transform:scale(.92); filter: blur(2px); }
-      30% { opacity:1; transform:scale(1); filter: blur(0); text-shadow: 0 0 28px rgba(0,180,255,0.45); }
-      75% { opacity:1; transform:scale(1); }
-      100% { opacity:0; transform:scale(1.02); filter: blur(2px); }
-    }
+section { display:none; padding:30px 0; }
+section.active { display:block; animation:fadeIn .6s ease; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
 
-    /* SITE wrapper hidden while splash visible */
-    #site { opacity:0; transition: opacity 1s ease-in-out; min-height:100vh; padding-bottom:84px; }
+.container { max-width:1100px; margin:auto; padding:0 16px; }
+.card { background:var(--glass); border-radius:10px; padding:16px; margin-top:10px; box-shadow:0 0 10px rgba(0,0,0,0.2); }
 
-    /* NAVBAR */
-    .navbar { position: sticky; top:0; z-index:900; background: rgba(0,0,0,0.14); border-bottom:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px); }
-    .nav-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 16px; gap:12px; }
-    .brand { display:flex; align-items:center; gap:12px; }
-    .logo { width:44px; height:44px; border-radius:8px; background: linear-gradient(135deg,var(--accent), #62d3ff); display:flex; align-items:center; justify-content:center; color:#021; font-weight:900; }
-    .brand .title { font-weight:700; font-size:1rem; }
-    .nav-links { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    .nav-links button { background:transparent; border:0; color:#fff; padding:8px 12px; border-radius:8px; font-weight:700; cursor:pointer; transition: transform .12s, color .12s; }
-    .nav-links button:hover { color:var(--accent); transform: translateY(-2px); }
-    .nav-links button.active { color:var(--accent); background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
+footer { text-align:center; background:rgba(0,0,20,0.6); padding:8px; font-size:0.9rem; margin-top:20px; }
 
-    /* SECTIONS */
-    main { max-width:1100px; margin:20px auto; padding:0 16px; }
-    section { display:none; padding:12px 0 40px 0; animation: sectionIn .6s ease; }
-    section.active { display:block; }
-    @keyframes sectionIn { from { opacity:0; transform: translateY(6px) } to { opacity:1; transform: translateY(0) } }
+/* Buttons */
+.wa-btn,.call-btn {
+  padding:6px 10px; border-radius:6px; color:#012; font-weight:700;
+  text-decoration:none; display:inline-block; margin:4px 3px;
+}
+.wa-btn { background:linear-gradient(90deg,#25D366,#128C7E); }
+.call-btn { background:linear-gradient(90deg,#ffd54f,#ffb300); }
 
-    .card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:16px; border:1px solid rgba(255,255,255,0.03); box-shadow: 0 8px 30px rgba(0,0,0,0.35); }
+/* Hymnbook */
+.hymn { margin-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:8px; }
+.hymn h4 { cursor:pointer; color:var(--accent); }
 
-    /* HOME / FUN FACT */
-    .funfact { text-align:center; display:inline-block; padding:18px; border-radius:12px; background: var(--glass); max-width:780px; }
-    .funfact h2 { margin:0 0 8px 0; font-size:1.45rem; }
-    .funfact p { margin:6px 0; min-height:60px; font-size:1.05rem; }
-
-    /* EVENTS */
-    .events-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:12px; }
-    .event-card { padding:12px; border-radius:10px; text-align:center; background:var(--glass); }
-    .countdown { font-family: 'Courier New', monospace; font-weight:800; color:var(--accent); margin-top:8px; font-size:1.05rem; }
-
-    /* ANNOUNCEMENTS */
-    .announce { display:flex; flex-direction:column; gap:12px; text-align:left; }
-
-    /* CALENDAR */
-    .calendar-list { list-style:none; padding:0; max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:10px; }
-    .cal-item { background:var(--glass); padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; }
-
-    /* LEADERS */
-    .leaders-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:12px; }
-    .leader-card { background:var(--glass); padding:12px; border-radius:10px; text-align:left; }
-    .leader-card .actions { margin-top:8px; display:flex; gap:8px; align-items:center; }
-    .wa-btn { background: linear-gradient(90deg,#25D366,#128C7E); color:#012; padding:8px 10px; border-radius:8px; font-weight:800; text-decoration:none; }
-    .call-btn { background: linear-gradient(90deg,#ffd54f,#ffb300); color:#012; padding:8px 10px; border-radius:8px; font-weight:700; text-decoration:none; }
-
-    /* HYMNBOOK */
-    .hymn-search { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
-    .hymn-search input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:#fff; }
-    .hymn-list { display:flex; flex-direction:column; gap:8px; max-height:420px; overflow:auto; padding-right:6px; }
-    .hymn-item { padding:10px; border-radius:8px; background:var(--glass); cursor:pointer; border:1px solid rgba(255,255,255,0.02); }
-    .hymn-item .title { font-weight:700; }
-    .hymn-lyrics { margin-top:8px; color:#f2f2f2; white-space:pre-line; display:none; font-size:0.98rem; line-height:1.5; }
-
-    /* VIDEO */
-    .video-card { display:flex; flex-direction:column; gap:12px; align-items:center; max-width:1100px; margin:0 auto; }
-    .video-frame { width:100%; height:640px; border:0; border-radius:10px; overflow:hidden; background:#000; }
-
-    /* FOOTER fixed */
-    footer.app-footer { position: fixed; left:0; right:0; bottom:0; background: rgba(0,0,20,0.6); color: rgba(240,240,240,0.95); padding:10px 12px; text-align:center; z-index:10000; border-top:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px); }
-    footer.app-footer strong { color:#fff; }
-
-    /* responsive */
-    @media (max-width:740px){
-      .video-frame { height:420px; }
-      .logo { width:36px; height:36px; }
-      .brand .title { display:none; }
-    }
-  </style>
+/* Video */
+#videoFrame { width:100%; height:600px; border:none; margin-top:10px; display:none; }
+</style>
 </head>
+
 <body>
+<div id="splash"><div id="splash-text">IMPERIAL TECHUB</div></div>
 
-  <!-- SPLASH -->
-  <div id="splash" class="lit" aria-hidden="true">
-    <div id="splash-text">IMPERIAL TECHUB</div>
-  </div>
-
-  <!-- SITE -->
-  <div id="site" aria-hidden="true">
-    <header class="navbar" role="navigation" aria-label="Main navigation">
-      <div class="nav-inner">
-        <div class="brand"><div class="logo">IT</div><div class="title">IMPERIAL TECHUB</div></div>
-        <div class="nav-links" role="menubar" aria-label="Sections">
-          <button data-section="home" class="active">HOME</button>
-          <button data-section="events">EVENTS</button>
-          <button data-section="announcements">ANNOUNCEMENTS</button>
-          <button data-section="calendar">CALENDAR</button>
-          <button data-section="leaders">LEADERS</button>
-          <button data-section="hymnbook">HYMNBOOK</button>
-          <button data-section="video">VIDEO FELLOWSHIP</button>
-        </div>
+<div id="site">
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="logo">IT</div>
+      <div class="nav-links">
+        <button data-section="home" class="active">HOME</button>
+        <button data-section="events">EVENTS</button>
+        <button data-section="announcements">ANNOUNCEMENTS</button>
+        <button data-section="calendar">CALENDAR</button>
+        <button data-section="leaders">LEADERS</button>
+        <button data-section="hymnbook">HYMNBOOK</button>
+        <button data-section="video">VIDEO FELLOWSHIP</button>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main>
-      <!-- HOME -->
-      <section id="home" class="active">
-        <div class="card funfact" style="margin:16px auto;">
-          <h2>💡 Did You Know?</h2>
-          <p id="funFact">Loading today's fun fact...</p>
-          <small style="color:var(--muted)">Changes daily — come back tomorrow for a new fact.</small>
-        </div>
-      </section>
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="container">
+      <div class="card funfact">
+        <h2>💡 Daily Fun Fact</h2>
+        <p id="funFact">Loading...</p>
+      </div>
+    </div>
+  </section>
 
-      <!-- EVENTS -->
-      <section id="events">
-        <div class="card" style="margin:16px auto;">
-          <h2>📅 Upcoming Events — Live Countdowns</h2>
-          <div class="events-grid" id="eventsGrid" style="margin-top:12px;"></div>
-        </div>
-      </section>
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="container">
+      <div class="card">
+        <h2>⏳ Upcoming Events</h2>
+        <div id="eventsGrid"></div>
+      </div>
+    </div>
+  </section>
 
-      <!-- ANNOUNCEMENTS -->
-      <section id="announcements">
-        <div class="card announce" style="margin:16px auto;">
-          <h2>📣 Announcements</h2>
-          <div>
-            <h3>PCEA NGORANO PARISH YOUTH RALLY</h3>
-            <p><strong>Sunday, 16th November 2025 — PCEA Chieni Church</strong></p>
-            <p>Greetings in the name of our Lord Jesus Christ. This is to inform all youth members that there will be a Youth Rally on Sunday, 16th November at PCEA Chieni Church. All youths are encouraged to attend for fellowship, worship, and spiritual growth. Let us pray, prepare, and participate fully as we share in this wonderful time of renewal and unity in Christ.</p>
-            <p><em>To God be the Glory.</em></p>
-          </div>
-          <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0;">
-          <div>
-            <h3>PRESBYTERY YOUTH CONVENTION</h3>
-            <p><strong>Tuesday, 2nd December – Saturday, 6th December 2025</strong></p>
-            <p>We are pleased to announce that this year’s Presbytery Youth Convention will be held from Tuesday, 2nd December to Saturday, 6th December 2025. This blessed event will bring together youth from all parishes within the Presbytery for fellowship, spiritual growth, worship, and renewal in Christ. Charges are Ksh. 1,500 per person (payable in small instalments).</p>
-            <p><em>To God be the Glory.</em></p>
-          </div>
-        </div>
-      </section>
+  <!-- ANNOUNCEMENTS -->
+  <section id="announcements">
+    <div class="container">
+      <div class="card">
+        <h2>📢 PCEA Ngorano Parish Youth Rally</h2>
+        <p>Greetings in the name of our Lord Jesus Christ,</p>
+        <p>This is to inform all youth members that there will be a Youth Rally on <strong>Sunday, 16th November 2025</strong> at <strong>PCEA Chieni Church</strong>.</p>
+        <p>All youths are encouraged to attend for fellowship, worship, and spiritual growth.</p>
+        <p><em>To God be the Glory.</em></p>
+      </div>
+      <div class="card">
+        <h2>📢 Presbytery Youth Convention</h2>
+        <p>Greetings in the name of our Lord and Savior Jesus Christ,</p>
+        <p>The Presbytery Youth Convention will be held from <strong>Tuesday, 2nd December to Saturday, 6th December 2025</strong>.</p>
+        <p>Charges: <strong>Ksh. 1,500</strong> per person (can be paid in instalments).</p>
+        <p>Let’s come expectant to encounter the Lord and be empowered for greater service in His vineyard.</p>
+        <p><em>To God be the Glory.</em></p>
+      </div>
+    </div>
+  </section>
 
-      <!-- CALENDAR -->
-      <section id="calendar">
-        <div class="card" style="margin:16px auto;">
-          <h2>🗓 Calendar</h2>
-          <ul class="calendar-list" id="calendarList" style="margin-top:12px;"></ul>
-        </div>
-      </section>
+  <!-- CALENDAR -->
+  <section id="calendar">
+    <div class="container">
+      <div class="card">
+        <h2>📅 Calendar</h2>
+        <ul>
+          <li>Youth Rally – 16 Nov 2025</li>
+          <li>Presbytery Convention – 2–6 Dec 2025</li>
+          <li>Christmas Day – 25 Dec 2025</li>
+          <li>New Year’s Day – 1 Jan 2026</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-      <!-- LEADERS -->
-      <section id="leaders">
-        <div class="card" style="margin:16px auto;">
-          <h2>👥 Leaders & Contacts</h2>
-          <div class="leaders-grid" id="leadersGrid" style="margin-top:12px;"></div>
-        </div>
-      </section>
+  <!-- LEADERS -->
+  <section id="leaders">
+    <div class="container">
+      <div class="card">
+        <h2>👥 Youth Leaders</h2>
+        <div class="leaders" id="leadersGrid"></div>
+      </div>
+    </div>
+  </section>
 
-      <!-- HYMNBOOK -->
-      <section id="hymnbook">
-        <div class="card" style="margin:16px auto;">
-          <h2>🎵 Hymnbook</h2>
-          <div class="hymn-search" style="margin-top:12px;">
-            <input id="hymnQuery" placeholder="Search hymn by title or any line..." aria-label="Search hymns" />
-            <button id="clearHymn" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff;cursor:pointer">Clear</button>
-          </div>
-          <div class="hymn-list" id="hymnList" style="margin-top:12px;"></div>
-          <small style="display:block;margin-top:12px;color:var(--muted)">Click a hymn to expand the full lyrics.</small>
-        </div>
-      </section>
+  <!-- HYMNBOOK -->
+  <section id="hymnbook">
+    <div class="container">
+      <div class="card">
+        <h2>📖 Hymnbook</h2>
+        <input type="text" id="hymnSearch" placeholder="Search hymns by any line..." style="width:100%;padding:8px;border-radius:6px;margin-bottom:10px;border:none;">
+        <div id="hymnsList"></div>
+      </div>
+    </div>
+  </section>
 
-      <!-- VIDEO FELLOWSHIP -->
-      <section id="video">
-        <div class="card video-card" style="margin:16px auto;">
-          <h2>🎥 Video Fellowship</h2>
-          <p style="color:var(--muted)">Click <strong>Join Meeting</strong> to load the live Youth Fellowship room inside this page. The room will request camera & microphone permission.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button id="joinVideoBtn" style="padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:#012;font-weight:800;cursor:pointer">Join Meeting</button>
-            <button id="leaveVideoBtn" style="padding:10px 14px;border-radius:8px;border:0;background:#ff7676;color:#012;font-weight:800;cursor:pointer;display:none">Leave Meeting</button>
-          </div>
-          <div id="videoContainer" style="width:100%;margin-top:12px;"></div>
-        </div>
-      </section>
+  <!-- VIDEO FELLOWSHIP -->
+  <section id="video">
+    <div class="container">
+      <div class="card">
+        <h2>🎥 Video Fellowship</h2>
+        <p>Click below to join our live Youth Fellowship meeting.</p>
+        <button id="joinVideo" style="padding:10px 16px;background:var(--accent);color:#000;border:none;border-radius:6px;font-weight:700;cursor:pointer;">Join Meeting</button>
+        <iframe id="videoFrame" allow="camera; microphone; fullscreen; display-capture" src=""></iframe>
+      </div>
+    </div>
+  </section>
+</div>
 
-    </main>
-  </div>
+<footer>
+  PROUDLY CREATED BY <strong>IAN GATHAGU</strong><br>v1.3.0
+</footer>
 
-  <!-- FOOTER -->
-  <footer class="app-footer" role="contentinfo">
-    <div>PROUDLY CREATED BY <strong>IAN GATHAGU</strong></div>
-    <div style="opacity:0.9">v1.2.2</div>
-  </footer>
+<script>
+/* Splash */
+window.addEventListener("load", () => setTimeout(() => document.getElementById("site").style.opacity = "1", 10000));
 
-  <!-- SCRIPTS -->
-  <script>
-    /* ---------- SPLASH TIMING (10s total) ---------- */
-    (function(){
-      const splash = document.getElementById('splash');
-      const site = document.getElementById('site');
+/* Nav */
+document.querySelectorAll(".nav-links button").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".nav-links button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.getElementById(btn.dataset.section).classList.add("active");
+  };
+});
 
-      window.addEventListener('load', () => {
-        // Keep the 'lit' animation in markup (8.5s). After 8.5s, fade out for 1.5s -> total 10s.
-        setTimeout(() => {
-          splash.style.transition = 'opacity 1.5s ease';
-          splash.style.opacity = '0';
-          setTimeout(() => {
-            splash.style.display = 'none';
-            site.style.opacity = '1';
-            site.setAttribute('aria-hidden','false');
-            // Initialize site functionality after splash removed
-            activateNavButton('home');
-            showSection('home');
-            setFunFactOfTheDay();
-            initEvents();
-            renderCalendar();
-            renderLeaders();
-            loadHymns();
-          }, 1500);
-        }, 8500);
-      });
-    })();
+/* Fun Fact */
+const FUN = [
+  "'Fear not' appears 365 times in the Bible!",
+  "Jesus wept – the shortest verse in the Bible.",
+  "The word 'Gospel' means 'Good News'.",
+  "Psalm 117 is the shortest chapter in the Bible.",
+  "The Bible was written over 1,500 years by 40 authors."
+];
+const today = new Date().toDateString();
+const saved = JSON.parse(localStorage.getItem("fact") || "{}");
+const fact = (saved.date === today) ? saved.fact : FUN[Math.floor(Math.random() * FUN.length)];
+localStorage.setItem("fact", JSON.stringify({ date: today, fact }));
+document.getElementById("funFact").textContent = fact;
 
-    /* ---------- NAVIGATION ---------- */
-    (function(){
-      const nav = document.querySelector('.nav-links');
-      nav.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-section]');
-        if(!btn) return;
-        const section = btn.getAttribute('data-section');
-        activateNavButton(section);
-        showSection(section);
-      });
-      // keyboard accessible
-      nav.querySelectorAll('button').forEach(b=>{
-        b.addEventListener('keydown', (ev)=>{
-          if(ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); b.click(); }
-        });
-      });
-    })();
-
-    function activateNavButton(section){
-      document.querySelectorAll('.nav-links button').forEach(b => b.classList.toggle('active', b.getAttribute('data-section') === section));
+/* Events countdown */
+const EVENTS = [
+  { title: "Youth Rally – PCEA Chieni Church", date: "2025-11-16T09:00:00" },
+  { title: "Presbytery Youth Convention", date: "2025-12-02T09:00:00" },
+  { title: "Christmas Day", date: "2025-12-25T00:00:00" },
+  { title: "New Year’s Day", date: "2026-01-01T00:00:00" }
+];
+const grid = document.getElementById("eventsGrid");
+EVENTS.forEach(e => {
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `<h3>${e.title}</h3><div class="countdown" id="cd-${e.title.replace(/\s+/g,'')}">--</div>`;
+  grid.appendChild(div);
+});
+function updateCountdowns() {
+  const now = new Date();
+  EVENTS.forEach(e => {
+    const t = new Date(e.date) - now;
+    const el = document.getElementById("cd-" + e.title.replace(/\s+/g, ""));
+    if (t <= 0) el.textContent = "Now Happening!";
+    else {
+      const d = Math.floor(t / 86400000),
+            h = Math.floor(t / 3600000) % 24,
+            m = Math.floor(t / 60000) % 60,
+            s = Math.floor(t / 1000) % 60;
+      el.textContent = `${d}d ${h}h ${m}m ${s}s`;
     }
+  });
+}
+setInterval(updateCountdowns, 1000); updateCountdowns();
 
-    function showSection(sectionId){
-      document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
-      const el = document.getElementById(sectionId);
-      if(el) el.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+/* Leaders */
+const L = [
+  { office: "Zachary's Office", name: "Zachary Gikonyo", role: "Chairperson", phone: "+254742892647" },
+  { office: "Dalson's Office", name: "Dalson Maina", role: "Vice Chairperson", phone: "+254714003648" },
+  { office: "Ian's Office", name: "Ian Gathagu", role: "Secretary", phone: "+254718357417" },
+  { office: "Lydia's Office", name: "Lydia Wamuyu", role: "Vice Secretary", phone: "+254110867929" },
+  { office: "Winnie's Office", name: "Winnie Maundu", role: "Treasurer", phone: "+254713285534" }
+];
+const leadersGrid = document.getElementById("leadersGrid");
+L.forEach(p => {
+  const w = `https://wa.me/${p.phone.replace(/\D/g, '')}`,
+        t = `tel:${p.phone.replace(/\D/g, '')}`;
+  leadersGrid.innerHTML += `
+    <div class="card">
+      <strong>${p.office}</strong><br>${p.name} – ${p.role}<br>
+      <a class="wa-btn" href="${w}" target="_blank">WhatsApp</a>
+      <a class="call-btn" href="${t}">Call</a>
+    </div>`;
+});
 
-    /* ---------- FUN FACT (daily) ---------- */
-    const FUN_FACTS = [
-      "The Bible is the most translated book in the world!",
-      "Jesus wept. (John 11:35)",
-      "'Fear not' appears 365 times in the Bible — one for each day!",
-      "Noah’s Ark was roughly the length of one and a half football fields.",
-      "Psalm 117 is the shortest chapter in the Bible.",
-      "The Bible was written by over 40 authors across 1,500 years.",
-      "'Hallelujah' means 'Praise the Lord' in Hebrew.",
-      "The word 'Gospel' means 'Good News'.",
-      "David killed Goliath when he was still a teenager!",
-      "Jesus began His public ministry at about 30 years old.",
-      "Faith is mentioned over 240 times in Scripture.",
-      "The fish symbol (Ichthys) was an early Christian secret sign.",
-      "Worship is not just singing — it is how we live each day."
-    ];
+/* Hymnbook */
+const HYMNS = [
+  { title: "Amazing Grace", lyrics: "Amazing grace! How sweet the sound..." },
+  { title: "How Great Thou Art", lyrics: "O Lord my God, when I in awesome wonder..." },
+  { title: "Blessed Assurance", lyrics: "Blessed assurance, Jesus is mine!..." }
+];
+const hymnsList = document.getElementById("hymnsList");
+function displayHymns(filter="") {
+  hymnsList.innerHTML = "";
+  HYMNS.filter(h => h.title.toLowerCase().includes(filter) || h.lyrics.toLowerCase().includes(filter))
+       .forEach(h => {
+         const div = document.createElement("div");
+         div.className = "hymn";
+         div.innerHTML = `<h4>${h.title}</h4><p style="display:none;">${h.lyrics}</p>`;
+         div.querySelector("h4").onclick = () => {
+           const p = div.querySelector("p");
+           p.style.display = p.style.display === "none" ? "block" : "none";
+         };
+         hymnsList.appendChild(div);
+       });
+}
+displayHymns();
+document.getElementById("hymnSearch").addEventListener("input", e => displayHymns(e.target.value.toLowerCase()));
 
-    function setFunFactOfTheDay(){
-      const today = new Date().toDateString();
-      let saved = null;
-      try { saved = JSON.parse(localStorage.getItem('it_funFact')); } catch(e) { saved = null; }
-      if(!saved || saved.date !== today){
-        const prev = saved ? saved.fact : null;
-        let idx = Math.floor(Math.random() * FUN_FACTS.length);
-        if(prev && FUN_FACTS[idx] === prev) idx = (idx + 1) % FUN_FACTS.length;
-        const entry = { date: today, fact: FUN_FACTS[idx] };
-        try { localStorage.setItem('it_funFact', JSON.stringify(entry)); } catch(e){}
-        document.getElementById('funFact').innerText = entry.fact;
-      } else {
-        document.getElementById('funFact').innerText = saved.fact;
-      }
-    }
-
-    /* ---------- EVENTS & COUNTDOWNS ---------- */
-    const EVENTS = [
-      { id:'youth-rally', title:'Youth Rally — PCEA Chieni Church', start:'2025-11-16T09:00:00', end:'2025-11-16T17:00:00', location:'PCEA Chieni Church' },
-      { id:'presbytery-convention', title:'Presbytery Youth Convention', start:'2025-12-02T09:00:00', end:'2025-12-06T18:00:00', location:'Presbytery Venue' },
-      { id:'christmas', title:'Christmas Day', start:'2025-12-25T00:00:00', end:'2025-12-25T23:59:59', location:'All Parishes' },
-      { id:'new-year', title:"New Year's Day", start:'2026-01-01T00:00:00', end:'2026-01-01T23:59:59', location:'All Parishes' }
-    ];
-
-    let countdownInterval = null;
-    function initEvents(){
-      EVENTS.forEach(e=>{ e.startDate = new Date(e.start); e.endDate = new Date(e.end); });
-      renderEvents();
-      if(countdownInterval) clearInterval(countdownInterval);
-      countdownInterval = setInterval(updateCountdowns, 1000);
-      updateCountdowns();
-    }
-
-    function renderEvents(){
-      const container = document.getElementById('eventsGrid');
-      container.innerHTML = '';
-      const now = new Date();
-      const mapped = EVENTS.map(e=>{
-        let diff;
-        if(now > e.endDate) diff = Infinity;
-        else if(now >= e.startDate && now <= e.endDate) diff = 0;
-        else diff = e.startDate - now;
-        return {...e, diff};
-      }).sort((a,b)=> a.diff - b.diff);
-      mapped.forEach(e=>{
-        const div = document.createElement('div');
-        div.className = 'event-card';
-        div.id = 'card-'+e.id;
-        div.innerHTML = `
-          <h3 style="margin:0 0 6px 0">${e.title}</h3>
-          <div style="color:var(--muted);font-size:0.95rem">${formatDateRange(e.startDate,e.endDate)}</div>
-          <div class="countdown" id="cd-${e.id}">--d --h --m --s</div>
-          <div style="color:var(--muted);font-size:0.95rem;margin-top:8px">Location: ${e.location}</div>
-          <div style="margin-top:10px"><button style="background:none;border:0;color:var(--accent);font-weight:700;cursor:pointer" onclick="activateNavButton('announcements'); showSection('announcements')">View Details</button></div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function formatDateRange(s,e){
-      const opts = { year:'numeric', month:'long', day:'numeric' };
-      if(s.toDateString() === e.toDateString()) return s.toLocaleDateString(undefined, opts);
-      return s.toLocaleDateString(undefined, opts) + ' — ' + e.toLocaleDateString(undefined, opts);
-    }
-
-    function updateCountdowns(){
-      const now = new Date();
-      EVENTS.forEach(e=>{
-        const el = document.getElementById('cd-'+e.id);
-        if(!el) return;
-        if(now > e.endDate){
-          el.innerText = 'Event Passed';
-          el.style.color = 'rgba(255,255,255,0.6)';
-          return;
-        }
-        if(now >= e.startDate && now <= e.endDate){
-          el.innerText = 'Now Happening!';
-          el.style.color = '#ffdd57';
-          return;
-        }
-        let diff = e.startDate - now;
-        const days = Math.floor(diff / (24*60*60*1000));
-        diff -= days*(24*60*60*1000);
-        const hours = Math.floor(diff / (60*60*1000));
-        diff -= hours*(60*60*1000);
-        const minutes = Math.floor(diff / (60*1000));
-        diff -= minutes*(60*1000);
-        const seconds = Math.floor(diff/1000);
-        el.innerText = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
-        el.style.color = 'var(--accent)';
-      });
-    }
-    function pad(n){ return String(n).padStart(2,'0'); }
-
-    /* ---------- CALENDAR ---------- */
-    function renderCalendar(){
-      const ul = document.getElementById('calendarList');
-      ul.innerHTML = '';
-      EVENTS.forEach(e=>{
-        const li = document.createElement('li');
-        li.className = 'cal-item';
-        li.innerHTML = `<div style="font-weight:700">${e.title}</div><div style="color:var(--muted)">${e.startDate.toDateSt
+/* Video Fellowship */
+document.getElementById("joinVideo").onclick = () => {
+  const frame = document.getElementById("videoFrame");
+  frame.src = "https://meet.jit.si/PCEA-Center-Youth-Fellowship";
+  frame.style.display = "block";
+};
+</script>
+</body>
+  </html>
