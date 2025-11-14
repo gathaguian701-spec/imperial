@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IMPERIAL TECHUB — v1.3.5</title>
+  <meta name="description" content="IMPERIAL TECHUB — PCEA youth site" />
+  <style>
+    :root{
+      --royal:#002366; --accent:#00b4ff; --muted: rgba(220,230,240,0.85);
+      --card: rgba(255,255,255,0.03); --glass: rgba(255,255,255,0.02);
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg,var(--royal), #003b99);
+      color:#fff; -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit}
+    main{max-width:var(--maxw);margin:18px auto;padding:0 14px}
+
+    /* Intro (5s) */
+    #intro {
+      position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column;
+      background:#001F4D; z-index:9999; animation:introFade 5s linear forwards;
+    }
+    @keyframes introFade { 0%{opacity:1}95%{opacity:1}100%{opacity:0;visibility:hidden} }
+    #intro h1{font-size:clamp(2rem,6vw,4rem); color:#cfe9ff; font-weight:900; letter-spacing:2px; margin-bottom:14px; text-align:center}
+    .pulse{width:20px;height:20px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 rgba(0,180,255,0.45);animation:pulse 1.6s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,180,255,.45)}60%{box-shadow:0 0 0 28px rgba(0,180,255,0)}100%{box-shadow:0 0 0 0 rgba(0,180,255,0)}}
+
+    /* Top nav (hidden until login completes) */
+    header.topbar{position:sticky;top:0;background:rgba(0,0,0,0.12);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);z-index:900;display:none}
+    .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#62d3ff);display:flex;align-items:center;justify-content:center;color:#012;font-weight:900}
+    .nav-links{display:flex;gap:8px;flex-wrap:wrap}
+    .nav-btn{background:transparent;border:0;color:#fff;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+    .nav-btn.active{color:var(--accent);background:rgba(255,255,255,0.02)}
+
+    /* layout & cards */
+    .card{background:var(--card);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 30px rgba(0,0,0,0.35)}
+    .center{text-align:center}
+    h2,h3{margin-bottom:8px}
+    input,select,textarea{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;width:100%;margin-top:8px}
+    button{padding:10px 12px;border-radius:8px;border:0;background:var(--accent);color:#012;font-weight:800;cursor:pointer}
+    .muted{color:var(--muted)}/* app grid for chat */
+    .app-grid{display:grid;grid-template-columns:300px 1fr 320px;gap:12px;margin-top:12px}
+    @media (max-width:1100px){ .app-grid{grid-template-columns:1fr; } .right-column{display:none} }
+
+    /* conversation list */
+    .convo-item{display:flex;gap:10px;align-items:center;padding:10px;border-radius:8px;cursor:pointer}
+    .convo-item.active{background:linear-gradient(90deg,rgba(0,180,255,0.06), rgba(255,255,255,0.01)) }
+    .avatar{width:48px;height:48px;border-radius:50%;background:#fff;color:#012;display:flex;align-items:center;justify-content:center;font-weight:900}
+
+    /* chat window */
+    .chat-window{height:64vh;overflow:auto;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02))}
+    .msg{margin:8px 0;max-width:78%;padding:8px;border-radius:12px}
+    .msg.me{margin-left:auto;background:linear-gradient(90deg,var(--accent),#66d8ff);color:#012}
+    .msg.other{background:rgba(255,255,255,0.03)}
+    .meta{font-size:0.82rem;color:var(--muted);margin-bottom:6px}
+
+    .composer{display:flex;gap:8px;align-items:center;margin-top:10px}
+    .composer input[type='text']{flex:1;padding:10px;border-radius:999px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+
+    /* right column */
+    .right-column{position:sticky;top:80px;height:calc(100vh - 100px);overflow:auto}
+
+    /* bible */
+    .reader{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:10px}
+    .verse{margin:8px 0;font-size:1rem;line-height:1.6}
+    .num{font-weight:800;color:var(--accent);margin-right:8px}
+
+    footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.95);padding-bottom:28px}
+    .hidden{display:none!important}
+    .small{font-size:.92rem}
+    .muted-small{color:rgba(220,230,240,0.7);font-size:.9rem}
+    .inline-btn{background:transparent;border:0;color:var(--accent);cursor:pointer;font-weight:800}
+    textarea{min-height:80px}
+    .chip{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);display:inline-block;margin-right:6px}
+  </style>
+</head>
+<body>
+
+  <!-- INTRO -->
+  <div id="intro" aria-hidden="true">
+    <h1>IMPERIAL TECHUB</h1>
+    <div class="pulse" aria-hidden="true"></div>
+  </div>
+
+  <!-- TOP NAV (hidden until login) -->
+  <header class="topbar" id="topbar" aria-hidden="true">
+    <div class="nav-inner">
+      <div class="brand"><div class="logo">IT</div><div style="font-weight:900">IMPERIAL TECHUB</div></div>
+      <nav class="nav-links" id="navlinks" aria-label="Main navigation">
+        <button class="nav-btn" data-page="home">HOME</button>
+        <button class="nav-btn" data-page="events">EVENTS</button>
+        <button class="nav-btn" data-page="announcements">ANNOUNCEMENTS</button>
+        <button class="nav-btn" data-page="calendar">CALENDAR</button>
+        <button class="nav-btn" data-page="leaders">LEADERS</button>
+        <button class="nav-btn" data-page="hymnbook">HYMNBOOK</button>
+        <button class="nav-btn" data-page="membership">MEMBERSHIP</button>
+        <button class="nav-btn" data-page="video">MEETING</button>
+        <button class="nav-btn" data-page="bible">BIBLE</button>
+        <button class="nav-btn" data-page="chat">CHAT</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- AUTH area (visible after intro). Nav hidden until auth success -->
+    <section id="auth" class="card" style="max-width:920px;margin:48px auto">
+      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:320px">
+          <h2>Sign in</h2>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+            <input id="signinEmail" placeholder="Email" />
+            <input id="signinPassword" placeholder="Password" type="password" />
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button id="btnSignIn">Sign In</button>
+            <button id="btnGoogleSignIn" style="background:#fff;color:#012">Sign in with Google</button>
+            <button id="btnShowRegister" style="background:#3b82f6">Create account</button>
+          </div>
+          <div id="signinMsg" class="muted-small" style="margin-top:8px"></div>
+        </div>
+
+        <div style="flex:1;min-width:260px">
+          <h3 class="small">Why sign in?</h3>
+          <ul class="muted-small" style="text-align:left;margin-top:8px">
+            <li>Access Bible, Chat & Meetings</li>
+            <li>Join events, see announcements, and contact leaders</li>
+            <li>Profile & membership management</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTER modal -->
+    <div id="registerModal" class="hidden" style="position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:2000;display:flex">
+      <div style="background:#fff;color:#012;padding:16px;border-radius:10px;width:760px;max-width:96%">
+        <h3>Create Account</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <input id="regFullName" placeholder="Full name" />
+          <input id="regUsername" placeholder="Username" />
+          <input id="regEmail" placeholder="Email" />
+          <input id="regPhone" placeholder="Phone (+254...)" />
+          <input id="regChurch" placeholder="Church" />
+          <input id="regDistrict" placeholder="District" />
+          <label style="grid-column:1/3">Profile photo: <input id="regPhoto" type="file" accept="image/*" /></label>
+          <input id="regPassword" type="password" placeholder="Password" />
+          <input id="regPassword2" type="password" placeholder="Confirm password" />
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+          <button id="regCancel" style="background:#eee;color:#012">Cancel</button>
+          <button id="regCreate">Create account</button>
+        </div>
+        <div id="regMsg" class="muted-small" style="margin-top:8px"></div>
+      </div>
+    </div><!-- APP area (hidden until logged in) -->
+    <div id="app" class="hidden">
+
+      <!-- Main grid: left (convos), center, right -->
+      <div id="homePage" class="page" style="display:block">
+        <div class="card center" style="max-width:900px;margin:18px auto">
+          <h2 id="funFactTitle">💡 Fun Fact</h2>
+          <p id="funFact" style="font-size:1.05rem"></p>
+          <small class="muted-small">New fact daily</small>
+        </div>
+      </div>
+
+      <div id="appGrid" style="margin-top:12px;display:flex;gap:12px;flex-direction:column">
+        <!-- Events & announcements row -->
+        <div style="display:grid;grid-template-columns:1fr 420px;gap:12px">
+          <div class="card">
+            <h3>Upcoming Events & Countdowns</h3>
+            <div id="eventsGrid" style="margin-top:10px"></div>
+          </div>
+
+          <div class="card">
+            <h3>Announcements</h3>
+            <div style="margin-top:8px">
+              <div class="muted-small"><strong>PCEA NGORANO PARISH YOUTH RALLY</strong><div class="muted">Sunday, 16th November 2025 — PCEA Chieni Church</div></div>
+              <hr style="border-color:rgba(255,255,255,0.03);margin:8px 0" />
+              <div class="muted-small"><strong>PRESBYTERY YOUTH CONVENTION</strong><div class="muted">Tuesday, 2nd December — Saturday, 6th December 2025 — Fee Ksh 1,500</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaders / Bible / Meeting / Chat Buttons -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="card">
+            <h3>Leaders</h3>
+            <div id="leadersGrid" style="margin-top:8px"></div>
+          </div>
+
+          <div class="card">
+            <h3>Quick Access</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+              <button class="inline-btn" id="openBibleBtn">Open Bible</button>
+              <button class="inline-btn" id="openChatBtn">Open Chat</button>
+              <button class="inline-btn" id="joinMeetBtn">Join Meeting</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bible reader section -->
+        <div id="bibleSection" class="card hidden">
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="bookSelect"></select>
+            <select id="chapterSelect"></select>
+            <input id="verseSearch" placeholder="Search verse or phrase" style="flex:1" />
+            <button id="toggleTheme">Toggle Light/Dark</button>
+          </div>
+          <div class="reader" id="bibleReader" style="margin-top:12px">
+            <div id="bookTitle" style="font-weight:900"></div>
+            <div id="chapterTitle" class="muted-small" style="margin-bottom:8px"></div>
+            <div id="versesContainer"></div>
+          </div>
+        </div>
+
+        <!-- Chat area (Facebook-like) -->
+        <div id="chatSection" class="card hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <strong id="chatHeaderTitle">Youth Chat</strong>
+              <div id="chatHeaderSubtitle" class="muted-small">Group or Direct Messages</div>
+            </div>
+            <div>
+              <button id="newConversationBtn" class="inline-btn">New</button>
+              <button id="leaveConversationBtn" class="inline-btn">Leave</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:300px 1fr 320px;gap:12px;margin-top:12px" class="app-grid">
+            <!-- Conversations list -->
+            <aside>
+              <div class="card">
+                <input id="convoSearch" placeholder="Search conversations..." />
+                <div id="convoList" style="margin-top:8px;max-height:60vh;overflow:auto"></div>
+              </div>
+            </aside>
+
+            <!-- Messages -->
+            <section>
+              <div id="chatWindow" class="chat-window"></div>
+
+              <div class="composer" style="margin-top:8px">
+                <input id="msgInput" type="text" placeholder="Type a message..." />
+                <input id="fileInput" type="file" accept="image/*,audio/*" style="display:none" />
+                <button id="attachBtn" class="inline-btn">📎</button>
+                <button id="emojiBtn" class="inline-btn">😊</button>
+                <button id="recordBtn" class="inline-btn">🎤</button>
+                <button id="sendBtn" class="inline-btn">Send</button>
+              </div>
+              <div id="typingIndicator" class="muted-small" style="margin-top:6px"></div>
+            </section>
+
+            <!-- Conversation info -->
+            <aside class="right-column">
+              <div class="card">
+                <h4 class="small">Conversation Info</h4>
+                <div id="convInfo" class="muted-small">No conversation selected</div>
+                <div style="margin-top:12px">
+                  <button id="profileBtn" class="inline-btn">Edit profile</button>
+                  <button id="signOutBtn" class="inline-btn">Sign out</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+      </div>
+
+      <footer>PROUDLY CREATED BY <strong>IAN GATHAGU</strong> — v1.3.5</footer>
+    </div>
+
+  </main>
+
+  <!-- Meeting modal (for embed or fallback) -->
+  <div id="meetModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;z-index:2000">
+    <div style="background:#fff;color:#012;width:95%;max-width:1000px;border-radius:8px;padding:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-weight:800">Meeting</div>
+        <div><button id="closeMeet" style="background:#ff7676;border:0;padding:8px;border-radius:6px">Close</button></div>
+      </div>
+      <div id="meetBody" style="height:640px;margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- Firebase modular SDK -->
+  <script type="module">
+  /* ===========================
+     Firebase modular imports
+     =========================== */
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, onSnapshot, orderBy, serverTimestamp, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";// ===== Your Firebase config (user-provided) =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyBNnNfTHE6h-hnTW6LAixiAJ7X--HMTMA0",
+    authDomain: "imperial-techub.firebaseapp.com",
+    projectId: "imperial-techub",
+    storageBucket: "imperial-techub.firebasestorage.app",
+    messagingSenderId: "361070773876",
+    appId: "1:361070773876:web:ce41754e58a058e827f321"
+  };
+  // Initialize
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  /* ===========================
+     UI helpers
+     =========================== */
+  const $ = id => document.getElementById(id);
+  const show = el => el && el.classList.remove('hidden') && (el.style.display = '');
+  const hide = el => el && el.classList.add('hidden') && (el.style.display = 'none');
+
+  // safe-append
+  function el(tag, attrs={}, html=''){ const e=document.createElement(tag); for(const k in attrs) e[k]=attrs[k]; if(html) e.innerHTML=html; return e; }
+
+  /* ===========================
+     Intro → show auth
+     =========================== */
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const intro = $('intro');
+    // when intro animation ends -> show auth
+    intro.addEventListener('animationend', ()=> {
+      intro.style.display = 'none';
+      $('auth').style.display = 'block';
+    });
+    // fallback to ensure show after 5.2s
+    setTimeout(()=>{ if(intro.style.display !== 'none'){ intro.style.display='none'; $('auth').style.display='block'; } }, 5200);
+  });
+
+  /* ===========================
+     Auth: sign-in, register, Google sign-in
+     =========================== */
+  // Prepare UI
+  $('regCancel').addEventListener('click', ()=> { $('registerModal').classList.add('hidden'); });
+
+  // Create account
+  $('regCreate').addEventListener('click', async ()=>{
+    const fullName = $('regFullName').value.trim();
+    const username = $('regUsername').value.trim();
+    const email = $('regEmail').value.trim();
+    const phone = $('regPhone').value.trim();
+    const church = $('regChurch').value.trim();
+    const district = $('regDistrict').value.trim();
+    const pass = $('regPassword').value;
+    const pass2 = $('regPassword2').value;
+    if(!fullName||!username||!email||!phone||!pass){ $('regMsg').innerText = 'Please fill required fields'; return; }
+    if(pass !== pass2){ $('regMsg').innerText = 'Passwords do not match'; return; }
+    $('regMsg').innerText = 'Creating account...';
+    try{
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      const uid = cred.user.uid;
+      // upload photo if provided
+      let photoURL = '';
+      const file = $('regPhoto').files[0];
+      if(file){
+        const sRef = storageRef(storage, `profiles/${uid}/${file.name}`);
+        await uploadBytes(sRef, file);
+        photoURL = await getDownloadURL(sRef);
+      }
+      // create user doc
+      await setDoc(doc(db,'users',uid), {
+        fullName, username, email, phone, church, district, photoURL, createdAt: serverTimestamp(), lastSeen: serverTimestamp(), online: true
+      });
+      $('regMsg').innerText = 'Account created';
+      $('registerModal').classList.add('hidden');
+    }catch(err){ console.error(err); $('regMsg').innerText = 'Registration error: ' + err.message; }
+  });
+
+  // Sign in with email/password
+  $('btnSignIn').addEventListener('click', async ()=>{
+    const email = $('signinEmail').value.trim();
+    const pw = $('signinPassword').value;
+    if(!email||!pw){ $('signinMsg').innerText = 'Enter email and password'; return; }
+    $('signinMsg').innerText = 'Signing in...';
+    try{
+      await signInWithEmailAndPassword(auth, email, pw);
+      $('signinMsg').innerText = '';
+    }catch(err){ console.error(err); $('signinMsg').innerText = 'Sign-in failed: ' + err.message; }
+  });
+
+  // Google Sign-in
+  $('btnGoogleSignIn').addEventListener('click', async ()=>{
+    const provider = new GoogleAuthProvider();
+    try{
+      await signInWithPopup(auth, provider);
+    }catch(err){ console.error(err); $('signinMsg').innerText = 'Google sign-in failed: ' + err.message; }
+  });
+
+  // Sign out
+  $('signOutBtn').addEventListener('click', async ()=>{
+    try{
+      if(window.currentUserDocRef) await updateDoc(window.currentUserDocRef, { online:false, lastSeen: serverTimestamp() });
+    }catch(e){ console.warn(e); }
+    await fbSignOut(auth);
+  });
+
+  /* ===========================
+     Auth state listener — show/hide nav & app
+     =========================== */
+  let conversationsUnsub = null;
+  onAuthStateChanged(auth, async user => {
+    if(user){
+      // show nav & app
+      $('topbar').style.display = 'block';
+      $('app').classList.remove('hidden');
+      $('auth').style.display = 'none';
+      // ensure user doc exists and mark online
+      const uDocRef = doc(db,'users',user.uid);
+      window.currentUserDocRef = uDocRef;
+      const snap = await getDoc(uDocRef);
+      if(!snap.exists()){
+        await setDoc(uDocRef, { fullName: user.displayName||'', username:'', email:user.email||'', phone:user.phoneNumber||'', church:'', district:'', photoURL:user.photoURL||'', createdAt: serverTimestamp(), lastSeen: serverTimestamp(), online:true });
+      } else {
+        await setDoc(uDocRef, { lastSeen: serverTimestamp(), online:true }, { merge:true });
+      }
+      // show welcome fun fact
+      setFunFact();
+      // render app placeholders
+      renderLeaders();
+      renderEvents();
+      // bind nav click actions
+      bindNav();
+      // prefetch bible sample
+      initBible();
+      // prepare chat subscriptions
+      subscribeConversations();
+    } else {
+      // hide app
+      $('topbar').style.display = 'none';
+      $('app').classList.add('hidden');
+      $('auth').style.display = 'block';
+      // clean chat subscriptions
+      if(conversationsUnsub) { conversationsUnsub(); conversationsUnsub = null; }
+    }
+  });
+
+  /* ===========================
+     NAV binding
+     =========================== */
+  function bindNav(){
+    document.querySelectorAll('.nav-btn').forEach(b=>{
+      b.addEventListener('click', (e)=>{
+        document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+        const p = b.dataset.page;
+        if(p==='home'){ document.getElementById('homePage').classList.remove('hidden'); window.scrollTo({top:0,behavior:'smooth'}); }
+        else if(p==='events'){ document.getElementById('homePage').classList.remove('hidden'); document.getElementById('eventsGrid').parentElement.scrollIntoView({behavior:'smooth'}); }
+        else if(p==='announcements'){ alert('Announcements — view in page'); }
+        else if(p==='leaders'){ document.getElementById('leadersGrid').parentElement.scrollIntoView({behavior:'smooth'}); }
+        else if(p==='hymnbook'){ alert('Hymnbook: disabled per settings'); }
+        else if(p==='membership'){ alert('Membership/Payments disabled'); }
+        else if(p==='video'){ openMeetModal(); }
+        else if(p==='bible'){ openBible(); }
+        else if(p==='chat'){ openChat(); }
+      });
+    });
+  }
+
+  /* ===========================
+     Fun Fact - rotates daily
+     =========================== */
+  const FUN_FACTS = [
+    "The Bible is the best-selling book of all time.",
+    "Psalm 119 is the longest chapter in the Bible.",
+    "The shortest verse is John 11:35 — 'Jesus wept.'",
+    "The ancient city of Jerusalem is mentioned hundreds of times in scripture.",
+    "The Bible was written by around 40 authors over 1600 years."
+  ];
+  function setFunFact(){
+    const today = new Date().toDateString();
+    const stored = JSON.parse(localStorage.getItem('it_funfact') || 'null');
+    if(!stored || stored.date !== today){
+      const f = FUN_FACTS[Math.floor(Math.random()*FUN_FACTS.length)];
+      localStorage.setItem('it_funfact', JSON.stringify({date:today,fact:f}));
+      $('funFact').innerText = f;
+    } else $('funFact').innerText = stored.fact;
+  }
+
+  /* ===========================
+     Leaders
+     =========================== */
+  function renderLeaders(){
+    const leaders = [
+      { office:"Zachary's Office", name:"Zachary Gikonyo", role:"Chairperson", phone:"+254742892647" },
+      { office:"Dalson's Office", name:"Dalson Maina", role:"Vice Chairperson", phone:"+254714003648" },
+      { office:"Ian's Office", name:"Ian Gathagu", role:"Secretary", phone:"+254718357417" },
+      { office:"Lydia's Office", name:"Lydia Wamuyu", role:"Vice Secretary", phone:"+254110867929" },
+      { office:"Winnie's Office", name:"Winnie Maundu", role:"Treasurer", phone:"+254713285534" }
+    ];
+    const grid = $('leadersGrid'); grid.innerHTML = '';
+    leaders.forEach(ld=>{
+      const node = el('div',{},`<div style="font-weight:800">${ld.office}</div><div class="muted-small">${ld.name} — ${ld.role}</div><div style="margin-top:8px"><a href="https://wa.me/${ld.phone.replace(/\\D/g,'')}" target="_blank" class="chip">WhatsApp</a> <a href="tel:${ld.phone.replace(/\\D/g,'')}" class="chip">Call</a><div class="muted-small">${ld.phone}</div></div>`);
+      grid.appendChild(node);
+    });
+    }/* ===========================
+     Events & Countdowns
+     =========================== */
+  const EVENTS = [
+    { id:'youth_rally', title:'Youth Rally — PCEA Chieni Church', start:'2025-11-16T09:00:00' },
+    { id:'presbytery', title:'Presbytery Youth Convention', start:'2025-12-02T09:00:00' },
+    { id:'christmas', title:'Christmas Day', start:'2025-12-25T00:00:00' },
+    { id:'newyear', title:"New Year's Day", start:'2026-01-01T00:00:00' }
+  ];
+  function renderEvents(){
+    const grid = $('eventsGrid'); grid.innerHTML = '';
+    const now = new Date();
+    const mapped = EVENTS.map(e=>({ ...e, startDate: new Date(e.start), diff: new Date(e.start) - now })).sort((a,b)=>a.diff - b.diff);
+    mapped.forEach(ev=>{
+      const wrap = el('div',{},{});
+      wrap.style.marginTop='10px';
+      wrap.innerHTML = `<div style="font-weight:800">${ev.title}</div><div class="muted-small">${ev.startDate.toDateString()}</div><div id="cd-${ev.id}" style="font-family:monospace;color:var(--accent);margin-top:6px"></div>`;
+      grid.appendChild(wrap);
+    });
+    setInterval(()=>{
+      const now = new Date();
+      EVENTS.forEach(ev=>{
+        const elCd = $('cd-'+ev.id);
+        if(!elCd) return;
+        const diff = new Date(ev.start) - now;
+        if(diff<=0){ elCd.innerText = 'Happening or passed'; return; }
+        const d = Math.floor(diff/(24*3600*1000));
+        const h = Math.floor((diff%(24*3600*1000))/(3600*1000));
+        const m = Math.floor((diff%(3600*1000))/(60000));
+        const s = Math.floor((diff%60000)/1000);
+        elCd.innerText = `${d}d ${h}h ${m}m ${s}s`;
+      });
+    },1000);
+  }
+
+  /* ===========================
+     Bible reader (loads /bible/books.json or /bible/<book>.txt)
+     Fallback: small sample built-in text
+     =========================== */
+  const SAMPLE_BIBLE = {
+    "Genesis":[{"verse":"1","text":"In the beginning God created the heaven and the earth."},{"verse":"2","text":"And the earth was without form, and void..."}],
+    "Exodus":[{"verse":"1","text":"Now these are the names of the children of Israel, which came into Egypt..."}]
+  };
+  let bibleParsed = {};
+  async function initBible(){
+    const bookSelect = $('bookSelect');
+    const BOOKS = ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
+    BOOKS.forEach(b=>{ const o=document.createElement('option'); o.value=b; o.textContent=b; bookSelect.appendChild(o); });
+    bookSelect.addEventListener('change', async ()=>{ await loadBook(bookSelect.value); populateChapters(bookSelect.value); $('chapterSelect').value='1'; renderChapter(bookSelect.value,'1'); });
+    // attempt to fetch /bible/books.json (must be uploaded to repo) else fallback to sample
+    try{
+      const res = await fetch('/bible/books.json');
+      if(res.ok){
+        bibleParsed = await res.json(); // expects { "Genesis": [ {verse,text}, ... ], ...}
+      } else {
+        bibleParsed = SAMPLE_BIBLE;
+      }
+    }catch(e){ bibleParsed = SAMPLE_BIBLE; }
+    populateChapters(Object.keys(bibleParsed)[0] || 'Genesis');
+    // set initial
+    $('bookSelect').value = Object.keys(bibleParsed)[0] || 'Genesis';
+    populateChapters($('bookSelect').value);
+    renderChapter($('bookSelect').value, $('chapterSelect').value || '1');
+    // search
+    $('verseSearch').addEventListener('input', ()=>{ const q = $('verseSearch').value.trim().toLowerCase(); if(!q){ renderChapter($('bookSelect').value, $('chapterSelect').value); return; } searchVerses(q); });
+  }
+  function populateChapters(book){
+    const chSel = $('chapterSelect'); chSel.innerHTML = '';
+    const verses = bibleParsed[book] || [];
+    // naive: treat every 50 verses as a chapter if no separate chapters
+    if(Array.isArray(verses) && verses.length){
+      // find max verse index as numeric chapters unknown; use 1 chapter fallback
+      const chapters = { '1': verses };
+      for(const c in chapters){ const o=document.createElement('option'); o.value=c; o.textContent='Chapter '+c; chSel.appendChild(o); }
+    } else {
+      const o=document.createElement('option'); o.value='1'; o.textContent='Chapter 1'; chSel.appendChild(o);
+    }
+  }
+  function renderChapter(book, chapter){
+    const cont = $('versesContainer'); cont.innerHTML = '';
+    const verses = bibleParsed[book] || [];
+    if(!verses.length){ cont.innerText = 'Book not available. Upload /bible/books.json or /bible/'+book+'.txt'; return; }
+    $('bookTitle').innerText = book;
+    $('chapterTitle').innerText = 'Chapter '+chapter;
+    verses.forEach(v=>{ const d=document.createElement('div'); d.className='verse'; d.innerHTML = `<span class="num">${v.verse}.</span> ${escapeHtml(v.text)}`; cont.appendChild(d); });
+  }
+  function searchVerses(q){
+    const cont = $('versesContainer'); cont.innerHTML = '';
+    for(const book in bibleParsed){
+      const verses = bibleParsed[book];
+      verses.forEach(v => { if(v.text.toLowerCase().includes(q) || (v.verse && v.verse.includes(q)) ){ const d=document.createElement('div'); d.className='verse'; d.innerHTML=`<strong>${book} ${v.verse}</strong> — ${escapeHtml(v.text)}`; cont.appendChild(d); } });
+    }
+  }
+
+  /* ===========================
+     CHAT: Firestore-backed messages
+     Data model (simple):
+       conversations collection: doc { id, type:'dm'|'group', members:[], title, lastUpdated, lastMessage }
+       messages subcollection: { sender, text, ts, edited, deleted, mediaURL, type:'text'|'image'|'audio', seenBy: [] }
+     =========================== */
+
+  let currentUser = null;
+  let currentConvo = null;
+  let unsubMessages = null;
+  let typingTimeout = null;
+
+  // subscribe conversations (conversations where current user is member)
+  async function subscribeConversations(){
+    if(!auth.currentUser) return;
+    const q = query(collection(db,'conversations'), where('members','array-contains', auth.currentUser.uid), orderBy('lastUpdated','desc'));
+    const unsub = onSnapshot(q, snap => {
+      const list = $('convoList'); list.innerHTML = '';
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        const id = docSnap.id;
+        const item = el('div',{className:'convo-item'},`<div class="avatar">${(d.title||d.members[0]).slice(0,1)}</div><div style="flex:1"><div style="font-weight:800">${escapeHtml(d.title||'Direct')}</div><div class="muted-small">${escapeHtml(d.lastMessage||'')}</div></div>`);
+        item.addEventListener('click', ()=> openConversation(id,d));
+        list.appendChild(item);
+      });
+    }, err=> console.error(err));
+    return unsub;
+  }
+
+  // Create or open a direct message (dm)
+  async function openDM(otherUid){
+    if(!auth.currentUser) return alert('Sign in first');
+    const ids = [auth.currentUser.uid, otherUid].sort();
+    const convoId = ids.join('_');
+    const cRef = doc(db,'conversations',convoId);
+    const snap = await getDoc(cRef);
+    if(!snap.exists()){
+      await setDoc(cRef, { id:convoId, type:'dm', members:ids, createdBy:auth.currentUser.uid, createdAt:serverTimestamp(), lastUpdated:serverTimestamp(), lastMessage:'' });
+    }
+    openConversation(convoId, (await getDoc(cRef)).data());
+  }
+
+  // create group
+  async function createGroup(title, memberUids){
+    if(!auth.currentUser) return;
+    const cRef = await addDoc(collection(db,'conversations'), { type:'group', title, members:[auth.currentUser.uid, ...memberUids], createdBy:auth.currentUser.uid, createdAt:serverTimestamp(), lastUpdated:serverTimestamp(), lastMessage:'' });
+    openConversation(cRef.id, (await getDoc(cRef)).data());
+  }
+
+  // open conversation and subscribe messages
+  async function openConversation(convoId, convoData){
+    currentConvo = { id:convoId, ...convoData };
+    $('chatHeaderTitle').innerText = convoData.title || (convoData.type==='dm'?'Direct Message':'Group: ' + (convoData.title||'Group'));
+    $('chatHeaderSubtitle').innerText = `Members: ${convoData.members ? convoData.members.length : 0}`;
+    $('convInfo').innerText = `Conversation ID: ${convoId}`;
+    // unsubscribe old
+    if(unsubMessages) unsubMessages();
+    const msgsRef = collection(db,'conversations',convoId,'messages');
+    const q = query(msgsRef, orderBy('ts'));
+    unsubMessages = onSnapshot(q, snapshot => {
+      const win = $('chatWindow'); win.innerHTML = '';
+      snapshot.forEach(docSnap => {
+        const m = docSnap.data();
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'msg ' + (m.sender === auth.currentUser.uid ? 'me' : 'other');
+        const meta = `<div class="meta">${m.sender===auth.currentUser.uid?'You':m.sender} ${m.ts ? new Date(m.ts.seconds*1000).toLocaleString() : ''} ${m.edited? '(edited)':''}</div>`;
+        let content = '';
+        if(m.type === 'image' && m.mediaURL) content = `<div><img src="${m.mediaURL}" style="max-width:320px;border-radius:8px" /></div>`;
+        else if(m.type === 'audio' && m.mediaURL) content = `<div><audio controls src="${m.mediaURL}"></audio></div>`;
+        else content = `<div>${escapeHtml(m.text || '')}</div>`;
+        let ticks = '';
+        if(m.seenBy && m.seenBy.length){
+          const youSaw = m.seenBy.includes(auth.currentUser.uid);
+          ticks = `<div style="float:right;font-weight:800;color:${m.seenBy.includes(auth.currentUser.uid)?'#0b74ff':'#ddd'}">${m.seenBy.length>1?'✓✓':'✓'}</div>`;
+        }
+        msgDiv.innerHTML = meta + content + ticks;
+        // message actions for owner
+        if(m.sender === auth.currentUser.uid){
+          const controls = document.createElement('div');
+          controls.style.marginTop='6px';
+          const editBtn = document.createElement('button'); editBtn.className='inline-btn'; editBtn.textContent='Edit';
+          const delBtn = document.createElement('button'); delBtn.className='inline-btn'; delBtn.textContent='Delete';
+          editBtn.onclick = async ()=> {
+            const newText = prompt('Edit message', m.text||'');
+            if(newText!==null){
+              const msgRef = doc(db,'conversations',convoId,'messages',docSnap.id);
+              await updateDoc(msgRef, { text: newText, edited: true });
+            }
+          };
+          delBtn.onclick = async ()=> {
+            if(confirm('Delete message?')) {
+              const msgRef = doc(db,'conversations',convoId,'messages',docSnap.id);
+              await updateDoc(msgRef, { deleted: true, text: '' });
+            }
+          };
+          controls.appendChild(editBtn); controls.appendChild(delBtn);
+          msgDiv.appendChild(controls);
+        }
+        win.appendChild(msgDiv);
+        win.scrollTop = win.scrollHeight;
+        // mark seen by current user
+        if(!m.seenBy || !m.seenBy.includes(auth.currentUser.uid)){
+          const msgRef = doc(db,'conversations',convoId,'messages',docSnap.id);
+          try{ updateDoc(msgRef, { seenBy: arrayUnion(auth.currentUser.uid) }); } catch(e){ /* fail silently */ }
+        }
+      });
+    }, err=> console.error(err));
+  }
+
+  // send text message
+  $('sendBtn').addEventListener('click', async ()=>{
+    const text = $('msgInput').value.trim();
+    if(!text || !currentConvo) return;
+    const msgsRef = collection(db,'conversations',currentConvo.id,'messages');
+    await addDoc(msgsRef, { sender: auth.currentUser.uid, text, type:'text', ts: serverTimestamp(), edited:false, deleted:false, seenBy: [] });
+    // update convo meta
+    await updateDoc(doc(db,'conversations',currentConvo.id), { lastMessage: text, lastUpdated: serverTimestamp() });
+    $('msgInput').value = '';
+  });
+
+  // attach file (image/audio)
+  $('attachBtn').addEventListener('click', ()=> $('fileInput').click());
+  $('fileInput').addEventListener('change', async (e)=>{
+    const file = e.target.files[0];
+    if(!file || !currentConvo) return;
+    const path = `media/${currentConvo.id}/${Date.now()}_${file.name}`;
+    const sRef = storageRef(storage, path);
+    const up = await uploadBytes(sRef, file);
+    const url = await getDownloadURL(sRef);
+    const type = file.type.startsWith('image') ? 'image' : 'audio';
+    await addDoc(collection(db,'conversations',currentConvo.id,'messages'), { sender: auth.currentUser.uid, type, mediaURL: url, ts: serverTimestamp(), seenBy: [] });
+    await updateDoc(doc(db,'conversations',currentConvo.id), { lastMessage: `[${type}]`, lastUpdated: serverTimestamp() });
+  });// record voice note
+  let recorder = null, chunks = [];
+  $('recordBtn').addEventListener('click', async ()=>{
+    if(recorder && recorder.state === 'recording'){ recorder.stop(); return; }
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      recorder = new MediaRecorder(stream);
+      chunks=[];
+      recorder.ondataavailable = ev => { if(ev.data.size) chunks.push(ev.data); };
+      recorder.onstop = async ()=>{
+        const blob = new Blob(chunks,{type:'audio/webm'});
+        const file = new File([blob], `voice_${Date.now()}.webm`, { type:'audio/webm' });
+        const path = `media/${currentConvo.id}/${file.name}`;
+        const sRef = storageRef(storage, path);
+        await uploadBytes(sRef, file);
+        const url = await getDownloadURL(sRef);
+        await addDoc(collection(db,'conversations',currentConvo.id,'messages'), { sender: auth.currentUser.uid, type:'audio', mediaURL: url, ts: serverTimestamp(), seenBy: [] });
+      };
+      recorder.start();
+      setTimeout(()=>{ if(recorder && recorder.state==='recording') recorder.stop(); }, 12000); // auto stop after 12s
+    }catch(e){ alert('Microphone access denied or not available: '+e.message); }
+  });
+
+  // emojis
+  $('emojiBtn').addEventListener('click', ()=>{
+    const picker = el('div',{},'');
+    picker.style.position='absolute'; picker.style.bottom='80px'; picker.style.right='40%'; picker.style.background='#fff'; picker.style.color='#012'; picker.style.padding='8px'; picker.style.borderRadius='8px';
+    const emojis = ['😀','😁','😂','😍','👍','🙏','🎵','🎉','🔥','🙌','😇','🤲'];
+    emojis.forEach(em => {
+      const b = el('button',{},em); b.style.fontSize='20px'; b.style.margin='6px';
+      b.onclick = ()=>{ $('msgInput').value += em; document.body.removeChild(picker); };
+      picker.appendChild(b);
+    });
+    document.body.appendChild(picker);
+  });
+
+  // typing indicator (write to conversation typing doc)
+  $('msgInput').addEventListener('input', async ()=>{
+    if(!currentConvo) return;
+    const tRef = doc(db,'conversations',currentConvo.id,'typing',auth.currentUser.uid);
+    try{ await setDoc(tRef, { by: auth.currentUser.uid, ts: serverTimestamp() }); } catch(e){ /* */ }
+    if(typingTimeout) clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(async ()=> {
+      try{ await setDoc(tRef, { by: auth.currentUser.uid, ts: serverTimestamp(), idle:true }); } catch(e){}
+    }, 2000);
+  });
+
+  // subscribe typing indicators for current conversation
+  function subscribeTyping(convoId){
+    const typingRef = collection(db,'conversations',convoId,'typing');
+    onSnapshot(typingRef, snap=>{
+      const arr = [];
+      snap.forEach(docSnap=> { const d = docSnap.data(); if(d.by !== auth.currentUser.uid && !d.idle) arr.push(d.by); });
+      $('typingIndicator').innerText = arr.length ? `${arr.join(', ')} typing...` : '';
+    });
+  }
+
+  // subscribe conversations and typing when user signed in
+  async function subscribeConversations(){
+    if(!auth.currentUser) return;
+    // simple: list all conversations where user is member (this may be a lot in prod; paging recommended)
+    const q = query(collection(db,'conversations'), where('members','array-contains', auth.currentUser.uid), orderBy('lastUpdated','desc'));
+    const unsub = onSnapshot(q, snap => {
+      const list = $('convoList'); list.innerHTML = '';
+      snap.forEach(docSnap=>{
+        const d = docSnap.data();
+        const id = docSnap.id;
+        const item = el('div',{},`<div class="avatar">${(d.title||'').slice(0,1)}</div><div style="flex:1"><div style="font-weight:800">${escapeHtml(d.title || d.members.join(', '))}</div><div class="muted-small">${escapeHtml(d.lastMessage||'')}</div></div>`);
+        item.className = 'convo-item';
+        item.addEventListener('click', ()=> { openConversation(id,d); subscribeTyping(id); });
+        list.appendChild(item);
+      });
+    }, err=>console.error(err));
+    return unsub;
+  }
+
+  /* ===========================
+     Meeting: try to embed Google Meet, fallback to new tab
+     Note: Google Meet often blocks iframe embedding via X-Frame-Options.
+     If embed fails, open a new tab to meet.google.com/<meeting>
+     =========================== */
+  $('joinMeetBtn').addEventListener('click', ()=> openMeetModal());
+  $('closeMeet').addEventListener('click', ()=> { $('meetModal').style.display='none'; $('meetBody').innerHTML=''; });
+
+  function openMeetModal(){
+    const roomId = 'pcea-imperial-' + Date.now();
+    const meetURL = 'https://meet.google.com/' + generateMeetShort();
+    const iframe = document.createElement('iframe');
+    iframe.src = meetURL;
+    iframe.width = '100%'; iframe.height = '100%'; iframe.style.border='0';
+    const body = $('meetBody'); body.innerHTML = '';
+    body.appendChild(iframe);
+    $('meetModal').style.display = 'flex';
+    // test if load blocked (after short delay)
+    setTimeout(()=> {
+      try {
+        const blocked = iframe.contentWindow == null;
+        // if blocked or X-Frame headers prevent embedding, open fallback
+        // We cannot reliably detect X-Frame-Options, so offer fallback button
+        const notice = el('div',{},`If the meeting fails to load, click <a href="${meetURL}" target="_blank">Open in Google Meet</a>.`);
+        body.appendChild(notice);
+      }catch(e){
+        // fallback
+        window.open(meetURL,'_blank');
+      }
+    },1200);
+  }
+  function generateMeetShort(){ const chars='abcdefghijklmnopqrstuvwxyz'; let s=''; for(let i=0;i<10;i++) s+=chars[Math.floor(Math.random()*chars.length)]; return s; }
+
+  /* ===========================
+     UI helpers
+     =========================== */
+  function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ===========================
+     Open chat / bible from quick buttons
+     =========================== */
+  $('openBibleBtn').addEventListener('click', ()=> openBible());
+  $('openChatBtn').addEventListener('click', ()=> openChat());
+
+  function openBible(){
+    document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+    $('bibleSection').classList.remove('hidden');
+    initBible();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function openChat(){
+    document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+    $('chatSection').classList.remove('hidden');
+    // subscribe conversations
+    subscribeConversations();
+  }
+
+  /* ===========================
+     Initialization for pages
+     =========================== */
+  function initBible() { if(!window.bibleInited){ window.bibleInited=true; initBible(); } }
+  // Wait until auth ensures UI loaded
+
+  /* ===========================
+    Startup: attach basic handlers for nav & initial content
+     =========================== */
+  // register show register modal
+  $('btnShowRegister').addEventListener('click', ()=> { $('registerModal').classList.remove('hidden'); $('registerModal').style.display = 'flex'; });
+  // basic page state
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  // show home page area after login
+
+  // Pre-render events & leaders even before login (they appear after auth)
+  renderLeaders();
+  renderEvents();
+  setFunFact();
+
+  </script>
+</body>
+</html>
