@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IMPERIAL TECHUB</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAyMzY2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHRleHQgeD0iNCIgeT0iMjQiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmaWxsPSJ3aGl0ZSI+SVQ8L3RleHQ+PC9zdmc+" />
+<style>
+  :root{
+    --royal:#002366; --accent:#00b4ff; --muted: rgba(230,230,230,0.85);
+    --card: rgba(255,255,255,0.04); --glass: rgba(255,255,255,0.03);
+    --site-max:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+    background: linear-gradient(135deg,var(--royal), #003b99);
+    color:#fff; -webkit-font-smoothing:antialiased;
+  }
+  main{max-width:var(--site-max);margin:20px auto;padding:0 16px;}
+
+  /* Intro - EXACT 5 seconds */
+  #intro{
+    position:fixed; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center;
+    background:#001F4D; z-index:9999; pointer-events:none; animation:introFade 5s linear forwards;
+  }
+  @keyframes introFade{0%{opacity:1}95%{opacity:1}100%{opacity:0;visibility:hidden}}
+  #intro h1{font-size:clamp(2rem,6vw,4rem); color:#cfe9ff; font-weight:900; letter-spacing:2px; margin-bottom:12px;}
+  .pulse{width:18px;height:18px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 rgba(0,180,255,0.4);animation:pulse 1.5s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,180,255,.45)}60%{box-shadow:0 0 0 26px rgba(0,180,255,0)}100%{box-shadow:0 0 0 0 rgba(0,180,255,0)}}
+
+  #site{opacity:0;transition:opacity .35s ease-in-out}
+
+  /* Top nav */
+  .topbar{position:sticky;top:0;background:rgba(0,0,0,0.12);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);z-index:900}
+  .nav-inner{max-width:var(--site-max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#62d3ff);display:flex;align-items:center;justify-content:center;color:#012;font-weight:900}
+  .nav-links{display:flex;gap:8px;flex-wrap:wrap}
+  .nav-btn{background:transparent;border:0;color:#fff;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+  .nav-btn.active{color:var(--accent);background:rgba(255,255,255,0.03)}
+
+  /* Pages */
+  section.page{display:none;opacity:0;transform:translateY(6px);transition:opacity .32s,transform .32s}
+  section.page.active{display:block;opacity:1;transform:none}
+
+  .card{background:var(--card);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 26px rgba(0,0,0,0.35)}
+  .center{text-align:center}
+  h2{margin-bottom:8px}
+
+  /* Reading mode (full-width, large font) */
+  .reader {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding: 24px; border-radius:12px; margin-top:12px; color:#eaf6ff;
+  }
+  .reader .book-title{font-size:1.2rem;font-weight:900;margin-bottom:8px}
+  .reader .chapter-title{font-size:1rem;font-weight:800;color:var(--muted);margin-bottom:12px}
+  .reader .verse { margin:8px 0; font-size:1.05rem; line-height:1.6; color:#f7fbff; }
+  .verse .num { font-weight:800; color:var(--accent); margin-right:8px; }
+
+  /* controls */
+  .reader-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .select, .search { padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff }
+
+  /* modal */
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:10000}
+  .modal.show{display:flex}
+  .modal-content{width:95%;max-width:1000px;background:#fff;border-radius:10px;overflow:hidden;color:#012}
+  .modal-head{display:flex;justify-content:space-between;padding:10px 14px;background:var(--royal);color:#fff}
+  .modal-body{padding:0}
+  .modal-iframe{width:100%;height:640px;border:0;display:block}
+  .modal-close{background:#ff7676;border:0;color:#012;padding:8px 12px;border-radius:8px;cursor:pointer}
+
+  footer{margin-top:22px;text-align:center;color:rgba(255,255,255,0.95);padding-bottom:28px}
+  @media (max-width:760px){ .modal-iframe{height:420px} .reader .verse{font-size:1rem} }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" aria-hidden="true">
+  <h1>IMPERIAL TECHUB</h1>
+  <div class="pulse"></div>
+</div>
+
+<!-- SITE -->
+<div id="site" aria-hidden="true">
+  <header class="topbar">
+    <div class="nav-inner">
+      <div class="brand"><div class="logo">IT</div><div class="title">IMPERIAL TECHUB</div></div>
+      <nav class="nav-links" role="navigation" aria-label="Main">
+        <button class="nav-btn active" data-page="home">HOME</button>
+        <button class="nav-btn" data-page="events">EVENTS</button>
+        <button class="nav-btn" data-page="announcements">ANNOUNCEMENTS</button>
+        <button class="nav-btn" data-page="calendar">CALENDAR</button>
+        <button class="nav-btn" data-page="leaders">LEADERS</button>
+        <button class="nav-btn" data-page="hymnbook">HYMNBOOK</button>
+        <button class="nav-btn" data-page="membership">MEMBERSHIP</button>
+        <button class="nav-btn" data-page="video">VIDEO FELLOWSHIP</button>
+        <button class="nav-btn" data-page="bible">BIBLE</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="page active">
+      <div class="card center" style="max-width:900px;margin:18px auto">
+        <h2>💡 Fun Fact</h2>
+        <p id="funFact" style="font-size:1.05rem"></p>
+        <small style="color:var(--muted)">New fact daily</small>
+      </div>
+    </section>
+
+    <!-- EVENTS -->
+    <section id="events" class="page">
+      <div class="card">
+        <h2>📅 Upcoming Events</h2>
+        <div id="eventsGrid" style="margin-top:12px" class="events-grid"></div>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS -->
+    <section id="announcements" class="page">
+      <div class="card">
+        <h2>📣 Announcements</h2>
+        <div style="margin-top:12px">
+          <div class="card" style="margin-bottom:12px"><h3>PCEA NGORANO PARISH YOUTH RALLY</h3><p><strong>Sunday, 16th November 2025 — PCEA Chieni Church</strong></p><p>All youths are encouraged to attend for fellowship, worship, and spiritual growth.</p></div>
+          <div class="card"><h3>PRESBYTERY YOUTH CONVENTION</h3><p><strong>Tuesday, 2nd December – Saturday, 6th December 2025</strong></p><p>Charges: Ksh 1,500 per person (payable in instalments).</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section id="calendar" class="page">
+      <div class="card">
+        <h2>🗓 Calendar</h2>
+        <ul id="calendarList" style="margin-top:12px;color:var(--muted)"></ul>
+      </div>
+    </section>
+
+    <!-- LEADERS -->
+    <section id="leaders" class="page">
+      <div class="card">
+        <h2>👥 Leaders & Contacts</h2>
+        <div id="leadersGrid" style="margin-top:12px" class="leaders-grid"></div>
+      </div>
+    </section>
+
+    <!-- HYMNBOOK -->
+    <section id="hymnbook" class="page">
+      <div class="card">
+        <h2>🎵 Hymnbook</h2>
+        <div style="margin-top:12px" class="hymn-search">
+          <input id="hymnQuery" placeholder="Search hymn by title or any line..." class="select" />
+          <button id="clearHymn" class="select">Clear</button>
+        </div>
+        <div id="hymnList" class="hymn-list"></div>
+      </div>
+    </section>
+
+    <!-- MEMBERSHIP -->
+    <section id="membership" class="page">
+      <div class="card">
+        <h2>💛 Support & Membership</h2>
+        <p style="color:var(--muted)">Choose a tier to support youth activities. Payments via MiniPay.</p>
+        <div style="margin-top:12px" class="membership-grid">
+          <div class="membership-card"><h3>Gold</h3><p><strong>Ksh 300 / month</strong></p><button class="buy-btn" data-plan="Gold" data-amount="300">Buy Gold</button></div>
+          <div class="membership-card"><h3>Platinum</h3><p><strong>Ksh 500 / month</strong></p><button class="buy-btn" data-plan="Platinum" data-amount="500">Buy Platinum</button></div>
+          <div class="membership-card"><h3>Diamond</h3><p><strong>Ksh 1000 / month</strong></p><button class="buy-btn" data-plan="Diamond" data-amount="1000">Buy Diamond</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO FELLOWSHIP -->
+    <section id="video" class="page">
+      <div class="card">
+        <h2>🎥 Video Fellowship</h2>
+        <p style="color:var(--muted)">Click Join Meeting to open a fresh meeting in a modal. Rooms are unique per session.</p>
+        <div style="margin-top:12px"><button id="joinVideoBtn" class="buy-btn" style="background:var(--accent);color:#012">Join Meeting</button><button id="leaveVideoBtn" class="buy-btn" style="display:none;background:#ff7676;color:#012">Leave</button></div>
+      </div>
+    </section>
+
+    <!-- BIBLE (Reading Mode - Full Width, Large Font) -->
+    <section id="bible" class="page">
+      <div class="card">
+        <div class="reader-controls">
+          <select id="bookSelect" class="select"></select>
+          <select id="chapterSelect" class="select"></select>
+          <input id="verseSearch" class="search" placeholder="Search inside the selected book/chapter..." />
+          <button id="goPrev" class="select">Prev</button>
+          <button id="goNext" class="select">Next</button>
+        </div>
+
+        <div id="reader" class="reader">
+          <div class="book-title" id="bookTitle">Genesis</div>
+          <div class="chapter-title" id="chapterTitle">Chapter 1</div>
+          <div id="versesContainer"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    PROUDLY CREATED BY <strong>IAN GATHAGU</strong> — v1.3.5
+  </footer>
+</div>
+
+<!-- MODALS -->
+<div id="jitsiModal" class="modal" aria-hidden="true"><div class="modal-content"><div class="modal-head"><div>Youth Fellowship Meeting</div><div><button id="jitsiClose" class="modal-close">Leave</button></div></div><div class="modal-body" id="jitsiBody"></div></div></div>
+<div id="mpModal" class="modal" aria-hidden="true"><div class="modal-content"><div class="modal-head"><div>Complete Payment</div><div><button id="mpClose" class="modal-close">Close</button></div></div><div class="modal-body"><iframe id="mpIframe" src="" class="modal-iframe"></iframe></div></div></div>
+
+<script>
+/* ============ SITE BOOT (intro fix) ============ */
+(function(){
+  const intro = document.getElementById('intro');
+  const site = document.getElementById('site');
+
+  // Force-remove intro at exactly 5s
+  setTimeout(()=>{ if(intro && intro.style.display!=='none'){ intro.style.display='none'; site.style.opacity='1'; initSite(); } },5000);
+
+  // Also handle animationend for faster
+  intro.addEventListener('animationend', ()=>{ intro.style.display='none'; site.style.opacity='1'; initSite(); });
+})();
+
+/* ============ INIT ============ */
+function initSite(){
+  bindNav();
+  setFunFact();
+  initEvents();
+  renderCalendar();
+  renderLeaders();
+  loadHymns();
+  bindMembershipButtons();
+  preloadScript('https://meet.jit.si/external_api.js'); // prefetch
+}
+
+/* ============ NAV ============ */
+function bindNav(){
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      showPage(b.dataset.page);
+    });
+  });
+}
+function showPage(page){
+  document.querySelectorAll('section.page').forEach(s=> s.classList.toggle('active', s.id===page));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============ FUN FACT ============ */
+function setFunFact(){
+  const facts = [
+    "The Bible is the most translated book in the world.",
+    "Jesus wept. (John 11:35)",
+    "'Fear not' is written many times in scripture as encouragement.",
+    "Psalm 117 is the shortest chapter."
+  ];
+  const today = new Date().toDateString();
+  const saved = JSON.parse(localStorage.getItem('it_funFact') || 'null');
+  if(!saved || saved.date !== today){
+    const f = facts[Math.floor(Math.random()*facts.length)];
+    localStorage.setItem('it_funFact', JSON.stringify({date:today,fact:f}));
+    document.getElementById('funFact').innerText = f;
+  } else {
+    document.getElementById('funFact').innerText = saved.fact;
+  }
+}
+
+/* ============ EVENTS ============ */
+const EVENTS = [
+  { id:'youth-rally', title:'Youth Rally — PCEA Chieni Church', start:'2025-11-16T09:00:00', end:'2025-11-16T17:00:00', location:'PCEA Chieni Church' },
+  { id:'presbytery-convention', title:'Presbytery Youth Convention', start:'2025-12-02T09:00:00', end:'2025-12-06T18:00:00', location:'Presbytery Venue' },
+  { id:'christmas', title:'Christmas Day', start:'2025-12-25T00:00:00', end:'2025-12-25T23:59:59', location:'All Parishes' },
+  { id:'new-year', title:"New Year's Day", start:'2026-01-01T00:00:00', end:'2026-01-01T23:59:59', location:'All Parishes' }
+];
+let countdownInterval = null;
+function initEvents(){
+  EVENTS.forEach(e=>{ e.startDate=new Date(e.start); e.endDate=new Date(e.end); });
+  renderEvents();
+  if(countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(updateCountdowns,1000);
+  updateCountdowns();
+}
+function renderEvents(){
+  const grid = document.getElementById('eventsGrid'); grid.innerHTML='';
+  const now = new Date();
+  const mapped = EVENTS.map(e=>{
+    let diff;
+    if(now>e.endDate) diff = Infinity;
+    else if(now>=e.startDate && now<=e.endDate) diff = 0;
+    else diff = e.startDate - now;
+    return {...e,diff};
+  }).sort((a,b)=>a.diff-b.diff);
+  mapped.forEach(e=>{
+    const card = document.createElement('div'); card.className='card';
+    card.innerHTML = `<h3 style="margin:0">${e.title}</h3><div style="color:var(--muted);font-size:.95rem;margin-top:6px">${formatDateRange(e.startDate,e.endDate)}</div><div id="cd-${e.id}" style="margin-top:10px;font-family:ui-monospace,monospace;font-weight:900;color:var(--accent)">--d --h --m --s</div><div style="color:var(--muted);margin-top:8px">Location: ${e.location}</div>`;
+    grid.appendChild(card);
+  });
+}
+function updateCountdowns(){
+  const now = new Date();
+  EVENTS.forEach(e=>{
+    const el = document.getElementById('cd-'+e.id); if(!el) return;
+    if(now>e.endDate){ el.innerText='Event Passed'; el.style.color='rgba(255,255,255,0.6)'; return; }
+    if(now>=e.startDate && now<=e.endDate){ el.innerText='Now Happening!'; el.style.color='#ffdd57'; return; }
+    let diff = e.startDate - now;
+    const days=Math.floor(diff/(24*60*60*1000)); diff-=days*(24*60*60*1000);
+    const hours=Math.floor(diff/(60*60*1000)); diff-=hours*(60*60*1000);
+    const mins=Math.floor(diff/(60*1000)); diff-=mins*(60*1000);
+    const secs=Math.floor(diff/1000);
+    el.innerText = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
+  });
+}
+function formatDateRange(s,e){ const opts={year:'numeric',month:'short',day:'numeric'}; if(s.toDateString()===e.toDateString()) return s.toLocaleDateString(undefined,opts); return s.toLocaleDateString(undefined,opts)+' — '+e.toLocaleDateString(undefined,opts); }
+function pad(n){ return String(n).padStart(2,'0'); }
+
+/* ============ Calendar ============ */
+function renderCalendar(){
+  const ul = document.getElementById('calendarList'); ul.innerHTML='';
+  EVENTS.forEach(e=>{ const li=document.createElement('li'); li.innerHTML=`<strong style="color:#fff">${e.title}</strong> — <span style="color:var(--muted)">${e.startDate.toDateString()}</span>`; ul.appendChild(li); });
+}
+
+/* ============ Leaders ============ */
+function renderLeaders(){
+  const leaders = [
+    { office:"Zachary's Office", name:"Zachary Gikonyo", role:"Chairperson", phone:"+254742892647" },
+    { office:"Dalson's Office", name:"Dalson Maina", role:"Vice Chairperson", phone:"+254714003648" },
+    { office:"Ian's Office", name:"Ian Gathagu", role:"Secretary", phone:"+254718357417" },
+    { office:"Lydia's Office", name:"Lydia Wamuyu", role:"Vice Secretary", phone:"+254110867929" },
+    { office:"Winnie's Office", name:"Winnie Maundu", role:"Treasurer", phone:"+254713285534" }
+  ];
+  const grid=document.getElementById('leadersGrid'); grid.innerHTML='';
+  leaders.forEach(ld=>{
+    const el=document.createElement('div'); el.className='leader-card'; el.innerHTML=`<div style="font-weight:900">${ld.office}</div><div style="color:var(--muted)">${ld.name} — ${ld.role}</div><div style="margin-top:8px"><a class="wa-btn" href="https://wa.me/${ld.phone.replace(/\D/g,'')}" target="_blank">WhatsApp</a> <a class="call-btn" href="tel:${ld.phone.replace(/\D/g,'')}">Call</a> <span style="color:var(--muted);padding-left:8px">${ld.phone}</span></div>`; grid.appendChild(el);
+  });
+}
+
+/* ============ Hymnbook ============ */
+const HYMNS = [
+  { title: "Amazing Grace", lyrics: "Amazing grace! How sweet the sound\nThat saved a wretch like me." },
+  { title: "How Great Thou Art", lyrics: "O Lord my God, when I in awesome wonder..." },
+  { title: "To God Be the Glory", lyrics: "To God be the glory, great things He hath done." }
+];
+function loadHymns(){ renderHymnList(''); const q=document.getElementById('hymnQuery'); const c=document.getElementById('clearHymn'); if(q) q.addEventListener('input', ()=>renderHymnList(q.value)); if(c) c.addEventListener('click', ()=>{ q.value=''; renderHymnList(''); }); }
+function renderHymnList(filter){ const list=document.getElementById('hymnList'); list.innerHTML=''; const f=(filter||'').trim().toLowerCase(); const filtered=HYMNS.filter(h=>!f||h.title.toLowerCase().includes(f)||h.lyrics.toLowerCase().includes(f)); if(!filtered.length){ list.innerHTML='<div style="color:var(--muted);padding:8px">No hymns found.</div>'; return; } filtered.forEach(h=>{ const item=document.createElement('div'); item.className='hymn-item'; item.innerHTML=`<div style="font-weight:800">${h.title}</div><div class="hymn-lyrics">${escapeHtml(h.lyrics)}</div>`; item.addEventListener('click', ()=>{ document.querySelectorAll('.hymn-item .hymn-lyrics').forEach(x=>x.style.display='none'); const lyrics=item.querySelector('.hymn-lyrics'); lyrics.style.display = lyrics.style.display==='block' ? 'none' : 'block'; }); list.appendChild(item); }); }
+function escapeHtml(txt){ return txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+/* ============ Membership (MiniPay modal) ============ */
+function bindMembershipButtons(){
+  const MERCHANT = encodeURIComponent('+254718357417');
+  const BASE = 'https://checkout.minipay.co/checkout';
+  document.querySelectorAll('.buy-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const plan = btn.dataset.plan || btn.getAttribute('data-plan') || btn.textContent.trim();
+      const amount = btn.dataset.amount || btn.getAttribute('data-amount') || '100';
+      const ref = makeRef(plan, amount);
+      const params = new URLSearchParams({ merchant: MERCHANT, amount: amount, currency:'KES', reference: ref, description:`${plan} membership` });
+      const url = `${BASE}?${params.toString()}`;
+      document.getElementById('mpIframe').src = url;
+      document.getElementById('mpModal').classList.add('show');
+      setTimeout(()=>{ window.open(url,'_blank'); }, 3000); // fallback
+    });
+  });
+  document.getElementById('mpClose').addEventListener('click', ()=>{ document.getElementById('mpIframe').src=''; document.getElementById('mpModal').classList.remove('show'); });
+}
+function makeRef(p,a){ const n=new Date(); return `IT-${p}-${n.getFullYear()}${String(n.getMonth()+1).padStart(2,'0')}${String(n.getDate()).padStart(2,'0')}-${n.getHours()}${n.getMinutes()}${n.getSeconds()}-${Math.floor(Math.random()*9000)+1000}`; }
+
+/* ============ Jitsi modal (dynamic room) ============ */
+(function(){
+  const join = document.getElementById('joinVideoBtn'), leave=document.getElementById('leaveVideoBtn'), modal=document.getElementById('jitsiModal'), body=document.getElementById('jitsiBody'), close=document.getElementById('jitsiClose');
+  let api=null,scriptLoaded=false;
+  join.addEventListener('click', ()=>{
+    if(api) return;
+    loadJitsi(()=> {
+      const room = makeRoom();
+      const node = document.createElement('div'); node.id='jitsi-'+Date.now(); node.style.width='100%'; node.style.height='640px'; body.appendChild(node);
+      try {
+        api = new JitsiMeetExternalAPI('meet.jit.si',{ roomName: room, parentNode: node, width:'100%', height:640, configOverwrite:{prejoinPageEnabled:false}, interfaceConfigOverwrite:{TOOLBAR_BUTTONS:['microphone','camera','desktop','fullscreen','hangup','chat','participants-pane']} });
+        modal.classList.add('show'); join.style.display='none'; leave.style.display='inline-block';
+        api.addEventListener('videoConferenceLeft', cleanup);
+      } catch(e){ console.error(e); alert('Could not start meeting.'); node.remove(); api=null; }
+    });
+  });
+  leave.addEventListener('click', cleanup); close.addEventListener('click', cleanup);
+  function cleanup(){ try{ if(api) api.dispose(); }catch(e){} api=null; body.innerHTML=''; modal.classList.remove('show'); join.style.display='inline-block'; leave.style.display='none'; window.scrollTo({top:0,behavior:'smooth'}); }
+  function loadJitsi(cb){ if(scriptLoaded){ cb(); return; } const s=document.createElement('script'); s.src='https://meet.jit.si/external_api.js'; s.async=true; s.onload=()=>{ scriptLoaded=true; cb(); }; s.onerror=()=>{ alert('Unable to load video service'); }; document.head.appendChild(s); }
+  function makeRoom(){ const now=new Date(); const Y=now.getFullYear(),M=String(now.getMonth()+1).padStart(2,'0'),D=String(now.getDate()).padStart(2,'0'),h=String(now.getHours()).padStart(2,'0'),m=String(now.getMinutes()).padStart(2,'0'),s=String(now.getSeconds()).padStart(2,'0'); return `PCEA-Center-Youth-${Y}${M}${D}-${h}${m}${s}-${Math.floor(Math.random()*9000)+1000}`; }
+})();
+
+/* ============ Helpers ============ */
+function preloadScript(src){ const s=document.createElement('script'); s.src=src; s.async=true; s.onload=()=>console.log('preloaded',src); s.onerror=()=>console.log('failed preload',src); document.head.appendChild(s); }
+
+/* ============ BIBLE: KJV embedded (Option A) ============ */
+
+/*
+  IMPORTANT:
+  - The full KJV JSON should be pasted in the BIBLE_DATA object below in this exact shape:
+    BIBLE_DATA = { "Genesis": { "1": { "1":"In the beginning...", "2":"And the earth..." }, "2": {...} }, "Exodus": {...}, ..., "Revelation": {...} }
+
+  - For demo / testing I include Genesis 1 sample. Replace/extend BIBLE_DATA with the full KJV JSON to embed the whole Bible inside this single file.
+*/
+
+/* ===== SAMPLE (Genesis 1) - replace the whole BIBLE_DATA with full KJV JSON to embed all books ===== */
+const BIBLE_DATA = {
+  "Genesis": {
+    "1": {
+      "1": "In the beginning God created the heaven and the earth.",
+      "2": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "3": "And God said, Let there be light: and there was light.",
+      "4": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "5": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day."
+    }
+  }
+};
+
+/* =============================
+   BIBLE UI: populate book/chapter selects, render chapter
+   ============================= */
+function populateBooks(){
+  const bookSel = document.getElementById('bookSelect');
+  bookSel.innerHTML = '';
+  Object.keys(BIBLE_DATA).forEach(book=>{
+    const opt = document.createElement('option'); opt.value=book; opt.textContent=book; bookSel.appendChild(opt);
+  });
+}
+function populateChapters(book){
+  const chapSel = document.getElementById('chapterSelect'); chapSel.innerHTML='';
+  const chapters = Object.keys(BIBLE_DATA[book] || {});
+  chapters.forEach(ch=>{
+    const opt=document.createElement('option'); opt.value=ch; opt.textContent='Chapter '+ch; chapSel.appendChild(opt);
+  });
+}
+function renderChapter(book, chapter){
+  const verses = (BIBLE_DATA[book] && BIBLE_DATA[book][String(chapter)]) || {};
+  document.getElementById('bookTitle').innerText = book;
+  document.getElementById('chapterTitle').innerText = 'Chapter ' + chapter;
+  const cont = document.getElementById('versesContainer'); cont.innerHTML = '';
+  Object.keys(verses).forEach(v=>{
+    const d = document.createElement('div'); d.className='verse'; d.innerHTML = `<span class="num">${v}.</span> ${escapeHtml(verses[v])}`; cont.appendChild(d);
+  });
+  // scroll into view top
+  cont.scrollIntoView({behavior:'smooth'});
+}
+
+/* search inside current chapter */
+document.addEventListener('input', (e)=>{
+  if(e.target && e.target.id === 'verseSearch'){
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll('#versesContainer .verse').forEach(el=>{
+      el.style.display = (q === '' || el.innerText.toLowerCase().includes(q)) ? 'block' : 'none';
+    });
+  }
+});
+
+/* chapter navigation */
+document.addEventListener('click', (e)=>{
+  if(e.target && e.target.id === 'goPrev'){
+    const cs=document.getElementById('chapterSelect'); if(cs.selectedIndex>0){ cs.selectedIndex--; cs.dispatchEvent(new Event('change')); }
+  }
+  if(e.target && e.target.id === 'goNext'){
+    const cs=document.getElementById('chapterSelect'); if(cs.selectedIndex < cs.options.length-1){ cs.selectedIndex++; cs.dispatchEvent(new Event('change')); }
+  }
+});
+
+/* book/chapter selects binding */
+document.addEventListener('change', (e)=>{
+  if(e.target && e.target.id === 'bookSelect'){
+    populateChapters(e.target.value);
+    document.getElementById('chapterSelect').selectedIndex = 0;
+    document.getElementById('chapterSelect').dispatchEvent(new Event('change'));
+  }
+  if(e.target && e.target.id === 'chapterSelect'){
+    const book = document.getElementById('bookSelect').value;
+    renderChapter(book, e.target.value);
+  }
+});
+
+/* initialize bible UI with current data (sample) */
+function initBible(){
+  populateBooks();
+  const bookSel = document.getElementById('bookSelect');
+  if(bookSel.options.length>0){
+    bookSel.selectedIndex = 0;
+    populateChapters(bookSel.value);
+    const cs = document.getElementById('chapterSelect');
+    if(cs.options.length>0){ cs.selectedIndex = 0; renderChapter(bookSel.value, cs.value); }
+  } else {
+    document.getElementById('versesContainer').innerHTML = '<div style="color:var(--muted);padding:8px">Bible data not loaded.</div>';
+  }
+}
+
+/* ============ Utility ============ */
+function escapeHtml(txt){ return String(txt).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+/* ============ Init sequence calls after intro removal ============ */
+function initCalls(){ /* called by intro removal */ }
+window.initSite = initSite; // allow manual call if needed
+
+// IMPORTANT: call initBible after site init to populate selects
+setTimeout(()=>{ try{ initBible(); }catch(e){ console.warn('Bible init error',e); } }, 600);
+
+/* ============ End ============ */
+</script>
+</body>
+</html>
