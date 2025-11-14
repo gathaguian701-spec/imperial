@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>IMPERIAL TECHUB</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAyMzY2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHRleHQgeD0iNCIgeT0iMjQiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmaWxsPSJ3aGl0ZSI+SVQ8L3RleHQ+PC9zdmc+" />
+
+<style>
+  :root{
+    --royal:#002366; --accent:#00b4ff; --muted: rgba(230,230,230,0.85);
+    --card: rgba(255,255,255,0.04); --glass: rgba(255,255,255,0.03);
+    --site-max:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+    background: linear-gradient(135deg,var(--royal), #003b99);
+    color:#fff; -webkit-font-smoothing:antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  main{max-width:var(--site-max);margin:18px auto;padding:0 14px;}
+
+  /* Intro - 5s fade */
+  #intro{
+    position:fixed; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center;
+    background:#001F4D; z-index:9999; pointer-events:none; animation:introFade 5s linear forwards;
+  }
+  @keyframes introFade{0%{opacity:1}95%{opacity:1}100%{opacity:0;visibility:hidden}}
+  #intro h1{font-size:clamp(2rem,6vw,3.8rem); color:#cfe9ff; font-weight:900; letter-spacing:2px; margin-bottom:12px;}
+  .pulse{width:18px;height:18px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 rgba(0,180,255,0.4);animation:pulse 1.5s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,180,255,.45)}60%{box-shadow:0 0 0 26px rgba(0,180,255,0)}100%{box-shadow:0 0 0 0 rgba(0,180,255,0)}}
+
+  #site{opacity:0;transition:opacity .35s ease-in-out}
+
+  /* Top nav */
+  .topbar{position:sticky;top:0;background:rgba(0,0,0,0.12);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);z-index:900}
+  .nav-inner{max-width:var(--site-max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#62d3ff);display:flex;align-items:center;justify-content:center;color:#012;font-weight:900}
+  .nav-links{display:flex;gap:8px;flex-wrap:wrap}
+  .nav-btn{background:transparent;border:0;color:#fff;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+  .nav-btn.active{color:var(--accent);background:rgba(255,255,255,0.03)}
+
+  /* Pages - we have a login gate */
+  .app-grid{display:grid;grid-template-columns:280px 1fr 300px;gap:14px}
+  @media (max-width:1000px){ .app-grid{grid-template-columns:1fr; } .right-column{display:none} }
+
+  .card{background:var(--card);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 26px rgba(0,0,0,0.35)}
+  .center{text-align:center}
+  h2{margin-bottom:8px}
+
+  /* Conversations list */
+  .convo-list{max-height:70vh;overflow:auto}
+  .convo-item{display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;cursor:pointer}
+  .convo-item.active{background:linear-gradient(90deg,rgba(0,180,255,0.08),rgba(255,255,255,0.01))}
+  .avatar{width:44px;height:44px;border-radius:50%;background:#fff;color:#012;display:flex;align-items:center;justify-content:center;font-weight:900}
+
+  /* Chat window */
+  .chat-window{height:70vh;overflow:auto;padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02))}
+  .msg{margin:8px 0;max-width:78%;}
+  .msg.me{margin-left:auto;background:linear-gradient(90deg,var(--accent),#66d8ff);color:#012;padding:10px;border-radius:12px}
+  .msg.other{background:rgba(255,255,255,0.03);padding:10px;border-radius:12px}
+  .msg .meta{font-size:0.82rem;color:var(--muted);margin-bottom:6px}
+
+  /* Composer */
+  .composer{display:flex;gap:8px;align-items:center;margin-top:10px}
+  .composer input[type='text']{flex:1;padding:10px;border-radius:999px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+  .icon-btn{padding:8px;border-radius:8px;border:0;background:rgba(255,255,255,0.03);cursor:pointer}
+
+  /* Right column (conversation info) */
+  .right-column{position:sticky;top:80px;height:calc(100vh - 100px);overflow:auto}
+
+  /* Messaging UI smaller */
+  .small{font-size:0.92rem}
+  .muted{color:var(--muted)}
+
+  /* Bible & other pages */
+  .reader { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding: 18px; border-radius:10px; margin-top:8px; color:#eaf6ff; }
+  .reader .book-title{font-size:1.1rem;font-weight:900;margin-bottom:8px}
+  .verse { margin:8px 0; font-size:1rem; line-height:1.6; color:#f7fbff; }
+  .num { font-weight:800; color:var(--accent); margin-right:8px; }
+
+  /* Light theme */
+  body.light-theme { background: linear-gradient(135deg,#f7fbff,#eaf6ff); color:#002246 }
+  body.light-theme .card { background:#fff; color:#002246 }
+  body.light-theme .chat-window { background:#fff }
+
+  footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.95);padding-bottom:28px}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" aria-hidden="true"><h1>IMPERIAL TECHUB</h1><div class="pulse"></div></div>
+
+<!-- SITE -->
+<div id="site" aria-hidden="true">
+
+  <!-- TOP -->
+  <header class="topbar">
+    <div class="nav-inner">
+      <div class="brand"><div class="logo">IT</div><div class="title">IMPERIAL TECHUB</div></div>
+      <nav class="nav-links" role="navigation" aria-label="Main">
+        <button class="nav-btn active" data-page="home">HOME</button>
+        <button class="nav-btn" data-page="events">EVENTS</button>
+        <button class="nav-btn" data-page="announcements">ANNOUNCEMENTS</button>
+        <button class="nav-btn" data-page="calendar">CALENDAR</button>
+        <button class="nav-btn" data-page="leaders">LEADERS</button>
+        <button class="nav-btn" data-page="hymnbook">HYMNBOOK</button>
+        <button class="nav-btn" data-page="membership">MEMBERSHIP</button>
+        <button class="nav-btn" data-page="video">MEETING</button>
+        <button class="nav-btn" data-page="bible">BIBLE</button>
+        <button class="nav-btn" data-page="chat">CHAT</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- LOGIN GATE (since you chose A: login first) -->
+    <section id="auth" class="page">
+      <div style="max-width:920px;margin:60px auto" class="card center">
+        <h2>Welcome — Sign in to continue</h2>
+        <div style="display:flex;gap:18px;margin-top:18px;align-items:flex-start;flex-wrap:wrap">
+          <div style="flex:1;min-width:320px">
+            <h3 class="small">Sign in</h3>
+            <input id="signinEmail" placeholder="Email" class="small" style="width:100%;padding:10px;border-radius:8px;margin-top:8px" />
+            <input id="signinPassword" placeholder="Password" type="password" class="small" style="width:100%;padding:10px;border-radius:8px;margin-top:8px" />
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button id="btnSignIn" class="icon-btn">Sign In</button>
+              <button id="btnShowRegister" class="icon-btn">Create account</button>
+            </div>
+            <div id="signinMsg" class="muted small" style="margin-top:8px"></div>
+          </div>
+
+          <div style="flex:1;min-width:320px">
+            <h3 class="small">Why sign in?</h3>
+            <ul class="muted small" style="text-align:left;margin-top:8px">
+              <li>Access the Youth Chat and private messages</li>
+              <li>Read the full Bible and use Search</li>
+              <li>Manage your profile and join groups</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTER MODAL (hidden by default) -->
+    <div id="regModal" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;z-index:2000;background:rgba(0,0,0,0.6)">
+      <div style="background:#fff;color:#012;padding:18px;border-radius:10px;width:720px;max-width:96%;box-shadow:0 20px 60px rgba(0,0,0,0.6)">
+        <h3>Create Account</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <input id="regFullName" placeholder="Full name" />
+          <input id="regUsername" placeholder="Username" />
+          <input id="regEmail" placeholder="Email" />
+          <input id="regPhone" placeholder="Phone (+254...)" />
+          <input id="regChurch" placeholder="Church" />
+          <input id="regDistrict" placeholder="District" />
+          <label style="grid-column:1/3">Profile photo: <input id="regPhoto" type="file" accept="image/*" /></label>
+          <input id="regPassword" type="password" placeholder="Password" />
+          <input id="regPassword2" type="password" placeholder="Confirm password" />
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+          <button id="regCancel" class="icon-btn">Cancel</button>
+          <button id="regCreate" class="icon-btn">Create account</button>
+        </div>
+        <div id="regMsg" class="muted" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- The Main App Grid (hidden until signed in) -->
+    <div id="app" style="display:none">
+      <div class="app-grid">
+        <!-- LEFT: Conversations list -->
+        <aside>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:10px;justify-content:space-between">
+              <div style="display:flex;gap:10px;align-items:center">
+                <div id="myAvatar" class="avatar">IT</div>
+                <div>
+                  <div id="myDisplay" style="font-weight:900">You</div>
+                  <div id="myStatus" class="muted small">Offline</div>
+                </div>
+              </div>
+              <div>
+                <button id="btnNewChat" class="icon-btn">New</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <input id="convoSearch" placeholder="Search conversations..." style="width:100%;padding:8px;border-radius:8px" />
+            </div>
+
+            <div style="margin-top:12px" class="convo-list card" id="convoList"></div>
+          </div>
+        </aside>
+
+        <!-- CENTER: Chat -->
+        <section>
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div id="chatTitle" style="font-weight:900">No conversation selected</div>
+                <div id="chatSubtitle" class="muted small">Select a conversation to start</div>
+              </div>
+              <div>
+                <button id="btnInvite" class="icon-btn">Invite</button>
+                <button id="btnLeaveChat" class="icon-btn">Leave</button>
+              </div>
+            </div>
+
+            <div id="chatWindow" class="chat-window small" style="margin-top:12px"></div>
+
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+              <input id="fileInput" type="file" accept="image/*,audio/*" style="display:none" />
+              <button id="btnAttach" class="icon-btn">📎</button>
+              <button id="btnEmoji" class="icon-btn">😊</button>
+              <input id="msgText" type="text" placeholder="Type a message..." />
+              <button id="btnRecord" class="icon-btn">🎤</button>
+              <button id="btnSendMsg" class="icon-btn">Send</button>
+            </div>
+
+            <div id="typingIndicator" class="muted small" style="margin-top:6px"></div>
+          </div>
+        </section>
+
+        <!-- RIGHT: Conversation / user info -->
+        <aside class="right-column">
+          <div class="card">
+            <h3 class="small">Conversation Info</h3>
+            <div id="convInfo" class="muted small">No conversation selected</div>
+            <div style="margin-top:12px">
+              <button id="btnProfileEdit" class="icon-btn">Edit profile</button>
+              <button id="btnSignOut" class="icon-btn">Sign out</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h4 class="small">Quick Actions</h4>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+              <button id="btnOpenBible" class="icon-btn">Open Bible</button>
+              <button id="btnOpenEvents" class="icon-btn">Events</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- HOME, EVENTS, ANNOUNCEMENTS, CALENDAR, LEADERS, HYMNBOOK, MEMBERSHIP, VIDEO, BIBLE pages (kept but accessible via nav) -->
+    <section id="home" class="page" style="display:none">
+      <div class="card center" style="max-width:900px;margin:18px auto">
+        <h2>💡 Fun Fact</h2>
+        <p id="funFactHome" style="font-size:1.05rem"></p>
+        <small class="muted">New fact daily</small>
+      </div>
+    </section>
+
+    <section id="events" class="page" style="display:none">
+      <div class="card">
+        <h2>📅 Upcoming Events</h2>
+        <div id="eventsGrid" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <section id="announcements" class="page" style="display:none">
+      <div class="card">
+        <h2>📣 Announcements</h2>
+        <div style="margin-top:12px">
+          <div class="card" style="margin-bottom:12px"><h3>PCEA NGORANO PARISH YOUTH RALLY</h3><p><strong>Sunday, 16th November 2025 — PCEA Chieni Church</strong></p><p>All youths are encouraged to attend for fellowship, worship, and spiritual growth.</p></div>
+          <div class="card"><h3>PRESBYTERY YOUTH CONVENTION</h3><p><strong>Tuesday, 2nd December – Saturday, 6th December 2025</strong></p><p>Charges: Ksh 1,500 per person (payable in instalments).</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calendar" class="page" style="display:none">
+      <div class="card">
+        <h2>🗓 Calendar</h2>
+        <ul id="calendarList" style="margin-top:12px;color:var(--muted)"></ul>
+      </div>
+    </section>
+
+    <section id="leaders" class="page" style="display:none">
+      <div class="card">
+        <h2>👥 Leaders & Contacts</h2>
+        <div id="leadersGrid" class="leaders-grid" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <section id="hymnbook" class="page" style="display:none">
+      <div class="card">
+        <h2>🎵 Hymnbook</h2>
+        <div style="margin-top:12px" class="hymn-search">
+          <input id="hymnQuery2" placeholder="Search hymn by title or any line..." class="select" />
+          <button id="clearHymn2" class="select">Clear</button>
+        </div>
+        <div id="hymnList2" class="hymn-list"></div>
+      </div>
+    </section>
+
+    <section id="membership" class="page" style="display:none">
+      <div class="card">
+        <h2>💛 Support & Membership</h2>
+        <p class="muted">Choose a tier to support youth activities. Payments via MiniPay.</p>
+        <div style="margin-top:12px" class="membership-grid">
+          <div class="membership-card"><h3>Gold</h3><p><strong>Ksh 300 / month</strong></p><button class="buy-btn" data-plan="Gold" data-amount="300">Buy Gold</button></div>
+          <div class="membership-card"><h3>Platinum</h3><p><strong>Ksh 500 / month</strong></p><button class="buy-btn" data-plan="Platinum" data-amount="500">Buy Platinum</button></div>
+          <div class="membership-card"><h3>Diamond</h3><p><strong>Ksh 1000 / month</strong></p><button class="buy-btn" data-plan="Diamond" data-amount="1000">Buy Diamond</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="video" class="page" style="display:none">
+      <div class="card">
+        <h2>🎥 Video Fellowship</h2>
+        <p class="muted">Click Join Meeting to open a fresh meeting in a modal. Rooms are unique per session.</p>
+        <div style="margin-top:12px"><button id="joinVideoBtn2" class="buy-btn" style="background:var(--accent);color:#012">Join Meeting</button></div>
+      </div>
+    </section>
+
+    <section id="bible" class="page" style="display:none">
+      <div class="card">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <select id="bookSelect2" class="select"></select>
+          <select id="chapterSelect2" class="select"></select>
+          <button id="toggleTheme2" class="select" style="margin-left:auto">Toggle Light/Dark</button>
+        </div>
+        <div id="reader2" class="reader">
+          <div class="book-title" id="bookTitle2">Genesis</div>
+          <div class="chapter-title" id="chapterTitle2">Chapter 1</div>
+          <div id="versesContainer2"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>PROUDLY CREATED BY <strong>IAN GATHAGU</strong> — v1.3.5</footer>
+</div>
+
+<!-- Modals -->
+<div id="jitsiModal" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:2000">
+  <div style="width:95%;max-width:1000px;background:#fff;color:#012;border-radius:8px;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:10px;background:var(--royal);color:#fff"><div>Youth Fellowship Meeting</div><div><button id="jitsiClose2" style="background:#ff7676;border:0;padding:8px;border-radius:6px">Leave</button></div></div>
+    <div id="jitsiBody2" style="height:640px"></div>
+  </div>
+</div>
+
+<!-- Firebase libs (compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
+<script>
+/* =========================
+  Firebase config (from you)
+  ========================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyBNnNfTHE6h-hnTW6LAixiAJ7X--HMTMA0",
+  authDomain: "imperial-techub.firebaseapp.com",
+  projectId: "imperial-techub",
+  storageBucket: "imperial-techub.firebasestorage.app",
+  messagingSenderId: "361070773876",
+  appId: "1:361070773876:web:ce41754e58a058e827f321"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+/* =========================
+  Helpers & UI boot
+  ========================= */
+function $(id){ return document.getElementById(id); }
+function q(sel, root=document){ return root.querySelector(sel); }
+function on(el,ev,fn){ el.addEventListener(ev,fn); }
+function fmtDate(d){ return d ? new Date(d).toLocaleString() : ''; }
+
+(function boot(){
+  // Intro removal
+  setTimeout(()=>{ $('intro').style.display='none'; $('site').style.opacity='1'; showAuth(); }, 5000);
+  // Wire sign-in UI
+  on($('btnShowRegister'),'click', ()=> $('regModal').style.display='flex');
+  on($('regCancel'),'click', ()=> $('regModal').style.display='none');
+  on($('btnSignIn'),'click', signIn);
+  on($('regCreate'),'click', registerUser);
+  on($('btnSignOut'),'click', signOut);
+  on($('btnProfileEdit'),'click', openProfileEditor);
+  on($('btnNewChat'),'click', openNewChatDialog);
+  on($('btnAttach'),'click', ()=> $('fileInput').click());
+  on($('fileInput'),'change', handleFileAttach);
+  on($('btnSendMsg'),'click', sendMessageHandler);
+  on($('btnRecord'),'click', toggleRecording);
+  on($('btnEmoji'),'click', openEmojiPicker);
+  on($('btnOpenBible'),'click', ()=> navigateTo('bible'));
+  on($('btnOpenEvents'),'click', ()=> navigateTo('events'));
+  on($('joinVideoBtn2'),'click', startJitsi);
+  on($('jitsiClose2'),'click', ()=> $('jitsiModal').style.display='none');
+
+  // basic pages
+  setFunFactHome();
+  renderLeaders();
+  initEvents();
+  renderCalendar();
+
+  // Initialize Bible selects
+  initBibleReader();
+
+  // Keep nav buttons wired
+  document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', (e)=> {
+    const p = b.dataset.page;
+    // special: chat requires auth
+    if(p === 'chat') { if(!currentUser) { alert('Please signin'); return; } else { showApp(); openChatPage(); return; } }
+    navigateTo(p);
+  }));
+})();
+
+/* =========================
+  AUTH: Email+Password registration and signin
+  ========================= */
+let currentUser = null;
+async function registerUser(){
+  const name = $('regFullName').value.trim();
+  const username = $('regUsername').value.trim();
+  const email = $('regEmail').value.trim();
+  const phone = $('regPhone').value.trim();
+  const church = $('regChurch').value.trim();
+  const district = $('regDistrict').value.trim();
+  const pass = $('regPassword').value;
+  const pass2 = $('regPassword2').value;
+  if(!name || !username || !email || !phone || !pass){ $('regMsg').innerText = 'Please fill required fields'; return; }
+  if(pass !== pass2){ $('regMsg').innerText = 'Passwords do not match'; return; }
+  try{
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    const uid = cred.user.uid;
+    // upload profile photo if present
+    let photoURL = '';
+    const file = $('regPhoto').files[0];
+    if(file){
+      const ref = storage.ref().child(`profiles/${uid}/${file.name}`);
+      await ref.put(file);
+      photoURL = await ref.getDownloadURL();
+    }
+    // create user doc
+    await db.collection('users').doc(uid).set({
+      fullName: name,
+      username,
+      email,
+      phone,
+      church,
+      district,
+      photoURL,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+      online: true
+    });
+    $('regMsg').innerText = 'Account created. Signing in...';
+    $('regModal').style.display = 'none';
+    // automatically sign in handled by auth state change below
+  }catch(err){ $('regMsg').innerText = 'Error: ' + err.message; console.error(err); }
+}
+
+async function signIn(){
+  const email = $('signinEmail').value.trim();
+  const pw = $('signinPassword').value;
+  if(!email || !pw){ $('signinMsg').innerText = 'Enter email and password'; return; }
+  try{
+    await auth.signInWithEmailAndPassword(email, pw);
+    $('signinMsg').innerText = 'Signed in';
+  }catch(err){ $('signinMsg').innerText = 'Sign-in failed: ' + err.message; console.error(err); }
+}
+
+async function signOut(){
+  try{
+    if(currentUser && currentUser.uid) {
+      await db.collection('users').doc(currentUser.uid).set({ online:false, lastSeen: firebase.firestore.FieldValue.serverTimestamp() }, { merge:true });
+    }
+    await auth.signOut();
+    location.reload();
+  }catch(e){ console.error(e); }
+}
+
+/* Auth state listener */
+auth.onAuthStateChanged(async user => {
+  if(user){
+    currentUser = user;
+    // load or create user doc
+    const doc = await db.collection('users').doc(user.uid).get();
+    if(!doc.exists){
+      // new account needs profile details - if created via register flow this should be present
+      await db.collection('users').doc(user.uid).set({ createdAt: firebase.firestore.FieldValue.serverTimestamp(), lastSeen: firebase.firestore.FieldValue.serverTimestamp(), online:true }, { merge:true });
+    } else {
+      await db.collection('users').doc(user.uid).set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp(), online:true }, { merge:true });
+    }
+    // update UI
+    showApp();
+    startRealtimePresence();
+    // ensure crypto keys for E2E (DM & group) exist
+    await ensureCryptoKeys();
+    // load conversations
+    subscribeConversations();
+  } else {
+    // show auth page
+    showAuth();
+  }
+});
+
+/* Show auth page */
+function showAuth(){
+  document.querySelectorAll('section.page').forEach(s=> s.style.display='none');
+  $('auth').style.display='block';
+  $('app').style.display='none';
+  currentUser = null;
+}
+
+/* Show main app */
+function showApp(){
+  $('auth').style.display='none';
+  $('app').style.display='block';
+  // show home inside app by default
+  openChatPage();
+}
+
+/* Navigate helper */
+function navigateTo(page){
+  // hide all pages
+  document.querySelectorAll('section.page').forEach(s=> s.style.display='none');
+  if(page === 'home'){ $('home').style.display='block'; }
+  else if(page === 'events'){ $('events').style.display='block'; }
+  else if(page === 'announcements'){ $('announcements').style.display='block'; }
+  else if(page === 'calendar'){ $('calendar').style.display='block'; }
+  else if(page === 'leaders'){ $('leaders').style.display='block'; }
+  else if(page === 'hymnbook'){ $('hymnbook').style.display='block'; }
+  else if(page === 'membership'){ $('membership').style.display='block'; }
+  else if(page === 'video'){ $('video').style.display='block'; }
+  else if(page === 'bible'){ $('bible').style.display='block'; }
+  // set active nav
+  document.querySelectorAll('.nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.page===page));
+}
+
+/* =========================
+  Presence & typing indicator
+  ========================= */
+let presenceInterval = null;
+function startRealtimePresence(){
+  if(!currentUser) return;
+  presenceInterval = setInterval(()=> {db.collection('users').doc(currentUser.uid).set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp(), online:true }, { merge:true });
+  }, 20000);
+}
+
+/* =========================
+  Crypto: ECDH keys + group key handling for E2E
+  - Each user: persistent ECDH keypair stored encrypted in IndexedDB (sessionStorage fallback)
+  - For DMs: derive shared AES key from both users' long-term ECDH keys
+  - For groups: store group symmetric AES key encrypted per-member under groups/{groupId}/keys/{uid}
+  ========================= */
+const subtle = window.crypto.subtle;
+async function generateECDHKeyPair(){
+  return subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveKey","deriveBits"]);
+}
+async function exportPublicKeyRaw(publicKey){
+  const raw = await subtle.exportKey('raw', publicKey);
+  return arrayBufferToBase64(raw);
+}
+async function importPublicKeyRaw(b64){
+  const raw = base64ToArrayBuffer(b64);
+  return subtle.importKey('raw', raw, { name: "ECDH", namedCurve: "P-256" }, true, []);
+}
+async function deriveAESKeyFromECDH(privateKey, otherPublicKey){
+  const derivedBits = await subtle.deriveBits({ name: "ECDH", public: otherPublicKey }, privateKey, 256);
+  return subtle.importKey("raw", derivedBits, { name: "AES-GCM" }, false, ["encrypt","decrypt"]);
+}
+function ivNow(){ return window.crypto.getRandomValues(new Uint8Array(12)); }
+async function encryptAES(aesKey, plaintext){
+  const iv = ivNow();
+  const enc = new TextEncoder();
+  const ct = await subtle.encrypt({ name: "AES-GCM", iv }, aesKey, enc.encode(plaintext));
+  return { iv: arrayBufferToBase64(iv.buffer), ciphertext: arrayBufferToBase64(ct) };
+}
+async function decryptAES(aesKey, ivB64, ctB64){
+  try {
+    const iv = base64ToArrayBuffer(ivB64);
+    const ct = base64ToArrayBuffer(ctB64);
+    const pt = await subtle.decrypt({ name: "AES-GCM", iv: new Uint8Array(iv) }, aesKey, ct);
+    return new TextDecoder().decode(pt);
+  } catch(e){ console.warn('decryptAES failed', e); return null; }
+}
+function arrayBufferToBase64(buffer){
+  const bytes = new Uint8Array(buffer);
+  let bin=''; for(let i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function base64ToArrayBuffer(b64){
+  const bin = atob(b64); const len = bin.length; const bytes = new Uint8Array(len);
+  for(let i=0;i<len;i++) bytes[i]=bin.charCodeAt(i);
+  return bytes.buffer;
+}
+
+/* Persist user's private key (secure storage is complex; here we store encrypted in localStorage/sessionStorage as JWK) */
+async function ensureCryptoKeys(){
+  if(!currentUser) return;
+  const keyTag = 'it_keys_'+currentUser.uid;
+  let jwkStr = localStorage.getItem(keyTag) || sessionStorage.getItem(keyTag);
+  if(jwkStr){
+    try{
+      const jwk = JSON.parse(atob(jwkStr));
+      const priv = await subtle.importKey('jwk', jwk.privateKeyJwk, { name:'ECDH', namedCurve:'P-256' }, true, ['deriveKey','deriveBits']);
+      const pub = await subtle.importKey('raw', base64ToArrayBuffer(jwk.publicRaw), { name:'ECDH', namedCurve:'P-256' }, true, []);
+      window.myECDH = { privateKey: priv, publicKey: pub, publicRawB64: jwk.publicRaw };
+      return;
+    }catch(e){ console.warn('import stored keys failed',e); }
+  }
+  // generate new
+  const kp = await generateECDHKeyPair();
+  const rawPub = await subtle.exportKey('raw', kp.publicKey);
+  const pubB64 = arrayBufferToBase64(rawPub);
+  // export private as JWK and store locally
+  const privJwk = await subtle.exportKey('jwk', kp.privateKey);
+  const storeObj = { publicRaw: pubB64, privateKeyJwk: privJwk };
+  // store in localStorage for persistence
+  localStorage.setItem(keyTag, btoa(JSON.stringify(storeObj)));
+  window.myECDH = { privateKey: kp.privateKey, publicKey: kp.publicKey, publicRawB64: pubB64 };
+  // publish public key to user doc
+  await db.collection('users').doc(currentUser.uid).set({ publicKey: pubB64 }, { merge:true });
+}
+
+/* =========================
+ Conversation & Messaging data model
+ - conversations (collection): doc = convoId (for DM: sorted uids joined by _; for group: generated id)
+    { id, type: 'dm'|'group', members: [], title, lastMessage, lastUpdated, createdBy }
+    subcollection: messages -> { sender, ts, type:'text'|'image'|'audio', ciphertext, iv, mediaURL, edited, deleted, seenBy: [uids] }
+ - groups: group doc also stores createdAt, owner; group keys stored under groups/{groupId}/keys/{uid} => { encryptedKey, iv, senderPub (optional) }
+========================= */
+
+let currentConversationsUnsub = null;
+let currentConversation = null; // { id, type, members, title }
+async function subscribeConversations(){
+  if(!currentUser) return;
+  if(currentConversationsUnsub) currentConversationsUnsub();
+  const q = db.collection('conversations').where('members','array-contains', currentUser.uid).orderBy('lastUpdated','desc');
+  currentConversationsUnsub = q.onSnapshot(snap=>{
+    const list = $('convoList'); list.innerHTML = '';
+    snap.forEach(doc=>{
+      const d = doc.data();
+      const el = document.createElement('div');
+      el.className = 'convo-item';
+      el.dataset.id = doc.id;
+      el.innerHTML = `<div class="avatar">${(d.title||d.members[0]).slice(0,1)}</div><div style="flex:1"><div style="font-weight:800">${escapeHtml(d.title||d.displayName||doc.id)}</div><div class="muted small">${d.lastMessage || ''}</div></div><div class="muted small">${d.lastUpdated ? new Date(d.lastUpdated.toMillis()).toLocaleString() : ''}</div>`;
+      el.addEventListener('click', ()=> openConversation(doc.id, d));
+      list.appendChild(el);
+    });
+  });
+}
+
+/* Create DM (or get existing) between current user and otherUid */
+async function openDM(otherUid){
+  if(!currentUser) return alert('Not signed in');
+  const ids = [currentUser.uid, otherUid].sort();
+  const convoId = ids.join('_');
+  // ensure conversation doc exists
+  const docRef = db.collection('conversations').doc(convoId);
+  const doc = await docRef.get();
+  if(!doc.exists){
+    await docRef.set({ id: convoId, type:'dm', members: ids, createdBy: currentUser.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp(), lastUpdated: firebase.firestore.FieldValue.serverTimestamp(), lastMessage:'' });
+  }
+  openConversation(convoId, (await docRef.get()).data());
+}
+
+/* Create group conversation */
+async function createGroup(title, memberUids){
+  if(!currentUser) return;
+  const docRef = await db.collection('conversations').add({ type:'group', title, members: [currentUser.uid, ...memberUids], createdBy: currentUser.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp(), lastUpdated: firebase.firestore.FieldValue.serverTimestamp(), lastMessage:'' });
+  // Generate group symmetric key, encrypt per-member with ECDH (using their public keys)
+  const groupId = docRef.id;
+  const groupKeyRaw = crypto.getRandomValues(new Uint8Array(32)); // 256-bit key
+  const groupKeyB64 = arrayBufferToBase64(groupKeyRaw.buffer);
+  // For every member, fetch their publicKey from users doc and encrypt the groupKey with derived AES
+  for(const uid of [currentUser.uid, ...memberUids]){
+    const udoc = await db.collection('users').doc(uid).get();
+    if(!udoc.exists || !udoc.data().publicKey) continue;
+    const otherPub = await importPublicKeyRaw(udoc.data().publicKey);
+    const aesKey = await deriveAESKeyFromECDH(window.myECDH.privateKey, otherPub);
+    const enc = await encryptAES(aesKey, groupKeyB64);
+    await db.collection('groups').doc(groupId).collection('keys').doc(uid).set({ iv: enc.iv, encryptedKey: enc.ciphertext });
+  }
+  // store group meta in groups collection
+  await db.collection('groups').doc(groupId).set({ convoId: groupId, createdAt: firebase.firestore.FieldValue.serverTimestamp(), owner: currentUser.uid });
+  // create link conversation doc id -> groups doc id (we used same id)
+  await db.collection('conversations').doc(groupId).set({ id: groupId, type:'group', title, members: [currentUser.uid, ...memberUids], createdBy: currentUser.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp(), lastUpdated: firebase.firestore.FieldValue.serverTimestamp(), lastMessage:'' });
+  return groupId;
+}
+
+/* Open conversation UI and subscribe messages */
+let unsubMessages = null;
+async function openConversation(convoId, convoData){
+  currentConversation = { id: convoId, ...convoData };
+  $('chatTitle').innerText = convoData.title || (convoData.type==='dm' ? 'Direct message' : 'Group: '+convoData.title);
+  $('chatSubtitle').innerText = `Members: ${convoData.members ? convoData.members.length : 0}`;
+  // subscribe messages
+  if(unsubMessages) unsubMessages();
+  const msgsRef = db.collection('conversations').doc(convoId).collection('messages').orderBy('ts','asc');
+  unsubMessages = msgsRef.onSnapshot(async snap => {
+    const win = $('chatWindow'); win.innerHTML = '';
+    for(const doc of snap.docs){
+      const m = doc.data();
+      // render message: decrypt if needed
+      let text = '';
+      if(m.type === 'text'){
+        // decrypt depending on convo type
+        if(convoData.type === 'dm'){
+          // derive AES from our private key + other public key
+          const otherUid = convoData.members.find(u => u !== currentUser.uid);
+          const otherDoc = await db.collection('users').doc(otherUid).get();
+          const otherPubB64 = otherDoc.exists ? otherDoc.data().publicKey : null;
+          if(otherPubB64){
+            const otherPub = await importPublicKeyRaw(otherPubB64);
+            const aes = await deriveAESKeyFromECDH(window.myECDH.privateKey, otherPub);
+            const plain = await decryptAES(aes, m.iv, m.ciphertext);
+            text = plain || '[unable to decrypt]';
+          } else text = '[no public key]';
+        } else if(convoData.type === 'group'){
+          // decrypt group key for this user
+          try {
+            const keyDoc = await db.collection('groups').doc(convoId).collection('keys').doc(currentUser.uid).get();
+            if(!keyDoc.exists) text = '[no group key]';
+            else {
+              const encKey = keyDoc.data();
+              const otherPubB64 = (await db.collection('users').doc(convoData.createdBy).get()).data().publicKey;
+              // to decrypt encryptedKey we need to derive using our private key and the creator's public key (this is how we encrypted when created)
+              const creatorPub = await importPublicKeyRaw(otherPubB64);
+              const aesForKey = await deriveAESKeyFromECDH(window.myECDH.privateKey, creatorPub);
+              const groupKeyB64 = await decryptAES(aesForKey, encKey.iv, encKey.encryptedKey); // this should give base64 group key
+              if(!groupKeyB64) text='[group key decrypt failed]';
+              else {
+                // import group key raw
+                const groupKeyRaw = base64ToArrayBuffer(groupKeyB64);
+                const importedKey = await subtle.importKey('raw', groupKeyRaw, { name:'AES-GCM' }, false, ['encrypt','decrypt']);
+                const plain = await decryptAES(importedKey, m.iv, m.ciphertext);
+                text = plain || '[unable to decrypt]';
+              }
+            }
+          } catch(e){ console.warn(e); text='[group decrypt error]'; }
+        } else text = '[unknown convo type]';
+      } else if(m.type === 'image' || m.type === 'audio'){
+        text = m.mediaURL ? (`[media] ${m.mediaURL}`) : '[media - no url]';
+      }
+      appendMessage(m.sender, text, m.ts ? m.ts.toDate() : null, m);
+      // mark as seen by current user if not already
+      if(!m.seenBy || !m.seenBy.includes(currentUser.uid)){
+        db.collection('conversations').doc(convoId).collection('messages').doc(doc.id).update({ seenBy: firebase.firestore.FieldValue.arrayUnion(currentUser.uid) });
+      }
+    }
+  });
+
+  }/* Append message to chat window */
+function appendMessage(senderUid, text, ts, messageObj){
+  const win = $('chatWindow');
+  const div = document.createElement('div'); div.className = 'msg ' + (senderUid === currentUser.uid ? 'me' : 'other');
+  const meta = `<div class="meta">${senderUid === currentUser.uid ? 'You' : escapeHtml(senderUid)} ${ts ? '- '+fmtDate(ts) : ''} ${messageObj && messageObj.edited ? '(edited)' : ''}</div>`;
+  let content = '';
+  if(messageObj && messageObj.type === 'image' && messageObj.mediaURL){
+    content = `<div><img src="${messageObj.mediaURL}" style="max-width:320px;border-radius:8px" /></div>`;
+  } else if(messageObj && messageObj.type === 'audio' && messageObj.mediaURL){
+    content = `<div><audio controls src="${messageObj.mediaURL}"></audio></div>`;
+  } else {
+    content = `<div>${escapeHtml(text)}</div>`;
+  }
+  // seen ticks
+  let ticks = '';
+  if(messageObj && messageObj.seenBy && messageObj.seenBy.length > 0){
+    const youSaw = messageObj.seenBy.includes(currentUser.uid);
+    ticks = `<span style="float:right;font-weight:800;color:${messageObj.seenBy.includes(currentUser.uid)?'#0b74ff':'#999'}">${messageObj.seenBy.length>1 ? '✓✓' : '✓'}</span>`;
+  }
+  div.innerHTML = meta + content + ticks;
+  win.appendChild(div);
+  win.scrollTop = win.scrollHeight;
+}
+
+/* Send message handler (text/images/audio) */
+async function sendMessageHandler(){
+  const text = $('msgText').value.trim();
+  if(!currentConversation) return alert('Select a conversation first');
+  if(!text) return;
+  // prepare encrypted payload depending on convo type
+  if(currentConversation.type === 'dm'){
+    // get other uid
+    const otherUid = currentConversation.members.find(u => u !== currentUser.uid);
+    const otherDoc = await db.collection('users').doc(otherUid).get();
+    if(!otherDoc.exists || !otherDoc.data().publicKey) return alert('Recipient has no public key');
+    const otherPub = await importPublicKeyRaw(otherDoc.data().publicKey);
+    const aes = await deriveAESKeyFromECDH(window.myECDH.privateKey, otherPub);
+    const enc = await encryptAES(aes, text);
+    await db.collection('conversations').doc(currentConversation.id).collection('messages').add({
+      sender: currentUser.uid, type:'text', iv: enc.iv, ciphertext: enc.ciphertext, ts: firebase.firestore.FieldValue.serverTimestamp(), seenBy: []
+    });
+    // update convo meta
+    await db.collection('conversations').doc(currentConversation.id).update({ lastMessage: '[text]', lastUpdated: firebase.firestore.FieldValue.serverTimestamp() });
+    $('msgText').value = '';
+  } else if(currentConversation.type === 'group'){
+    // group message: fetch group key encrypted for this user
+    const keyDoc = await db.collection('groups').doc(currentConversation.id).collection('keys').doc(currentUser.uid).get();
+    if(!keyDoc.exists) return alert('No group key for you');
+    // decrypt group key using creator's public key
+    const groupKeyEntry = keyDoc.data();
+    const creatorPubB64 = (await db.collection('users').doc(currentConversation.createdBy).get()).data().publicKey;
+    const creatorPub = await importPublicKeyRaw(creatorPubB64);
+    const aesForKey = await deriveAESKeyFromECDH(window.myECDH.privateKey, creatorPub);
+    const groupKeyB64 = await decryptAES(aesForKey, groupKeyEntry.iv, groupKeyEntry.encryptedKey);
+    const groupKeyRaw = base64ToArrayBuffer(groupKeyB64);
+    const groupAesKey = await subtle.importKey('raw', groupKeyRaw, { name:'AES-GCM' }, false, ['encrypt','decrypt']);
+    const enc = await encryptAES(groupAesKey, text);
+    await db.collection('conversations').doc(currentConversation.id).collection('messages').add({
+      sender: currentUser.uid, type:'text', iv: enc.iv, ciphertext: enc.ciphertext, ts: firebase.firestore.FieldValue.serverTimestamp(), seenBy: []
+    });
+    await db.collection('conversations').doc(currentConversation.id).update({ lastMessage: '[text]', lastUpdated: firebase.firestore.FieldValue.serverTimestamp() });
+    $('msgText').value = '';
+  }
+}
+
+/* =========================
+  File attach (images + audio)
+  ========================= */
+async function handleFileAttach(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  if(!currentConversation) return alert('Select conversation');
+  const path = `media/${currentConversation.id}/${Date.now()}_${file.name}`;
+  const ref = storage.ref().child(path);
+  const uploadTask = ref.put(file);
+  uploadTask.on('state_changed', null, err => { alert('Upload failed: '+err.message); }, async ()=>{
+    const url = await ref.getDownloadURL();
+    // create message with mediaURL (still encrypt media URL for E2E: we will encrypt the url string same as text)
+    if(currentConversation.type === 'dm'){
+      const otherUid = currentConversation.members.find(u => u !== currentUser.uid);
+      const otherDoc = await db.collection('users').doc(otherUid).get();
+      const otherPub = await importPublicKeyRaw(otherDoc.data().publicKey);
+      const aes = await deriveAESKeyFromECDH(window.myECDH.privateKey, otherPub);
+      const enc = await encryptAES(aes, url);
+      await db.collection('conversations').doc(currentConversation.id).collection('messages').add({ sender: currentUser.uid, type:file.type.startsWith('image')?'image':'audio', iv: enc.iv, ciphertext: enc.ciphertext, mediaURL: url, ts: firebase.firestore.FieldValue.serverTimestamp(), seenBy: [] });
+    } else if(currentConversation.type === 'group'){
+      // encrypt url with group key
+      const keyDoc = await db.collection('groups').doc(currentConversation.id).collection('keys').doc(currentUser.uid).get();
+      const groupKeyB64 = await decryptAES(await deriveAESKeyFromECDH(window.myECDH.privateKey, await importPublicKeyRaw((await db.collection('users').doc(currentConversation.createdBy).get()).data().publicKey)), keyDoc.data().iv, keyDoc.data().encryptedKey);
+      const groupKey = await subtle.importKey('raw', base64ToArrayBuffer(groupKeyB64), { name:'AES-GCM' }, false, ['encrypt','decrypt']);
+      const enc = await encryptAES(groupKey, url);
+      await db.collection('conversations').doc(currentConversation.id).collection('messages').add({ sender: currentUser.uid, type:file.type.startsWith('image')?'image':'audio', iv: enc.iv, ciphertext: enc.ciphertext, mediaURL: url, ts: firebase.firestore.FieldValue.serverTimestamp(), seenBy: [] });
+    }
+  });
+}
+
+/* =========================
+  Voice recording (MediaRecorder)
+  ========================= */
+let mediaRecorder = null, recordedChunks = [];
+async function toggleRecording(){
+  if(mediaRecorder && mediaRecorder.state === 'recording'){
+    mediaRecorder.stop();
+    return;
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    recordedChunks = [];
+    mediaRecorder.ondataavailable = e => { if(e.data.size>0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = async ()=>{
+      const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+      // upload as file
+      const file = new File([blob], `voice_${Date.now()}.webm`, { type:'audio/webm' });
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      $('fileInput').files = dataTransfer.files;
+      await handleFileAttach({ target: $('fileInput') });
+    };
+    mediaRecorder.start();
+    $('chatStatus').innerText = 'Recording... click record to stop';
+  }catch(e){ alert('Microphone access denied or unsupported: '+e.message); }
+}
+
+/* =========================
+  Emoji picker (simple)
+  ========================= */
+function openEmojiPicker(){
+  const emojis = ['😀','😁','😂','😍','👍','🙏','🎵','🎉','🔥','🙌'];
+  const picker = document.createElement('div');
+  picker.style.position='absolute'; picker.style.bottom='80px'; picker.style.right='40%'; picker.style.background='#fff'; picker.style.color='#012'; picker.style.padding='8px'; picker.style.borderRadius='8px';
+  emojis.forEach(em=>{
+    const b = document.createElement('button'); b.textContent = em; b.style.fontSize='20px'; b.style.margin='6px'; b.addEventListener('click', ()=>{ $('msgText').value += em; picker.remove(); });
+    picker.appendChild(b);
+  });
+  document.body.appendChild(picker);
+}
+
+/* =========================
+  Conversations list helpers & UI actions
+  ========================= */
+function openNewChatDialog(){
+  const other = prompt('Enter UID of user to DM (or comma-separated UIDs for group):');
+  if(!other) return;
+  const ids = other.split(',').map(s=>s.trim()).filter(Boolean);
+  if(ids.length === 1){
+    openDM(ids[0]);
+  } else {
+    const title = prompt('Group title:') || 'Group';
+    createGroup(title, ids).then(groupId => openConversation(groupId, { id: groupId, type:'group', members: [currentUser.uid, ...ids], title }));
+  }
+}
+
+/* Append helpers */
+function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+/* =========================
+  Bible reader (simple) - needs /bible/*.txt files in repo
+  ========================= */
+const BOOKS = ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
+let bibleCache = {}, bibleParsed = {};
+function initBibleReader(){
+  const sel = $('bookSelect2');
+  BOOKS.forEach(b => { const o = document.createElement('option'); o.value=b; o.textContent=b; sel.appendChild(o); });
+  $('bookSelect2').addEventListener('change', async ()=>{ await loadBook($('bookSelect2').value); populateChapters2($('bookSelect2').value); $('chapterSelect2').selectedIndex=0; $('chapterSelect2').dispatchEvent(new Event('change')); });
+  $('chapterSelect2').addEventListener('change', ()=> renderChapter2($('bookSelect2').value, $('chapterSelect2').value));
+  $('toggleTheme2').addEventListener('click', ()=> { document.body.classList.toggle('light-theme'); });
+  // load genesis sample if exists
+  (async ()=>{ try{ await loadBook('Genesis'); populateChapters2('Genesis'); $('chapterSelect2').value='1'; renderChapter2('Genesis','1'); }catch(e){ console.warn('Genesis not loaded'); } })();
+}
+async function loadBook(book){
+  if(bibleCache[book]) return;
+  try{
+    const res = await fetch(`/bible/${book}.txt`);
+    if(!res.ok) throw new Error('book not found: ' + book);
+    const txt = await res.text();
+    bibleCache[book] = txt;
+    bibleParsed[book] = parseBookToChapters(txt);
+  }catch(e){ bibleParsed[book] = {}; console.warn(e); }
+}
+function parseBookToChapters(txt){
+  const lines = txt.replace(/\r\n/g,'\n').split('\n');
+  const chapterIdx = [];
+  for(let i=0;i<lines.length;i++) if(/^(CHAPTER|Chapter)\s+\d+/i.test(lines[i])) chapterIdx.push(i);
+  const chapters = {};
+  if(chapterIdx.length>0){
+    for(let i=0;i<chapterIdx.length;i++){
+      const start = chapterIdx[i];
+      const end = (i+1<chapterIdx.length)? chapterIdx[i+1] : lines.length;
+      const m = lines[start].match(/(\d+)/);
+      const chapNum = m ? m[1] : String(i+1);
+      const body = lines.slice(start+1,end).join('\n').trim();
+      chapters[chapNum] = splitVerses(body);
+    }
+    return chapters;
+  }
+  // fallback: detect verses
+  const full = lines.join('\n').trim();
+  const verses = splitVerses(full);
+  chapters['1'] = verses;
+  return chapters;
+}
+function splitVerses(text){
+  const regex = /(^|\n)\s*(\d+)[\).\:]?\s*/g;
+  const indices = []; let match;
+  while((match=regex.exec(text))!==null) indices.push({index: match.index + match[1].length, num: match[2]});
+  if(indices.length>0){
+    const out = [];
+    for(let i=0;i<indices.length;i++){
+      const start = indices[i].index; const num = indices[i].num; const end = (i+1<indices.length)? indices[i+1].index : text.length;
+      const verseText = text.slice(start + String(num).length, end).trim().replace(/^[\s\)\.:-]*/,'');
+      out.push({ verse: num, text: verseText });
+    }
+    return out;
+  }
+  // paragraphs
+  const paras = text.split(/\n\s*\n/).filter(Boolean);
+  return paras.map((p,i)=>({verse: String(i+1), text:p.trim()}));
+}
+function populateChapters2(book){
+  const chSel = $('chapterSelect2'); chSel.innerHTML = '';
+  const chs = Object.keys(bibleParsed[book] || {});
+  chs.forEach(c=> { const o=document.createElement('option'); o.value=c; o.textContent = 'Chapter '+c; chSel.appendChild(o); });
+}
+function renderChapter2(book, chapter){
+  const verses = (bibleParsed[book] && bibleParsed[book][chapter]) || [];
+  $('bookTitle2').innerText = book; $('chapterTitle2').innerText = 'Chapter ' + chapter;
+  const cont = $('versesContainer2'); cont.innerHTML = '';
+  verses.forEach(v=>{ const div = document.createElement('div'); div.className='verse'; div.innerHTML = `<span class="num">${v.verse}.</span> ${escapeHtml(v.text)}`; cont.appendChild(div); });
+}
+
+/* =========================
+  Events, Leaders, Hymns (light implementations)
+  ========================= */
+const EVENTS = [
+  { id:'youth-rally', title:'Youth Rally — PCEA Chieni Church', start:'2025-11-16T09:00:00', end:'2025-11-16T17:00:00', location:'PCEA Chieni Church' },
+  { id:'presbytery-convention', title:'Presbytery Youth Convention', start:'2025-12-02T09:00:00', end:'2025-12-06T18:00:00', location:'Presbytery Venue' },
+  { id:'christmas', title:'Christmas Day', start:'2025-12-25T00:00:00', end:'2025-12-25T23:59:59', location:'All Parishes' },
+  { id:'new-year', title:"New Year's Day", start:'2026-01-01T00:00:00', end:'2026-01-01T23:59:59', location:'All Parishes' }
+];
+let countdownInterval = null;
+function initEvents(){
+  EVENTS.forEach(e=>{ e.startDate=new Date(e.start); e.endDate=new Date(e.end); });
+  renderEvents();
+  if(countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(updateCountdowns,1000);
+}
+function renderEvents(){
+  const grid = $('eventsGrid'); grid.innerHTML='';
+  const now = new Date();
+  const mapped = EVENTS.map(e=>{
+    let diff;
+    if(now>e.endDate) diff = Infinity;
+    else if(now>=e.startDate && now<=e.endDate) diff = 0;
+    else diff = e.startDate - now;
+    return {...e,diff};
+  }).sort((a,b)=>a.diff-b.diff);
+  mapped.forEach(e=>{
+    const card = document.createElement('div'); card.className='card'; card.style.marginBottom='8px';
+    card.innerHTML = `<h3 style="margin:0">${e.title}</h3><div class="muted small">${formatDateRange(e.startDate,e.endDate)}</div><div id="cd-${e.id}" style="font-family:ui-monospace,monospace;font-weight:900;color:var(--accent)"></div><div class="muted small">Location: ${e.location}</div>`;
+    grid.appendChild(card);
+  });
+  updateCountdowns();
+}
+function updateCountdowns(){
+  const now = new Date();
+  EVENTS.forEach(e=>{
+    const el = $('cd-'+e.id); if(!el) return;
+    if(now>e.endDate){ el.innerText='Event Passed'; return; }
+    if(now>=e.startDate && now<=e.endDate){ el.innerText='Now Happening!'; return; }
+    let diff = e.startDate - now;
+    const days=Math.floor(diff/(24*60*60*1000)); diff-=days*(24*60*60*1000);
+    const hours=Math.floor(diff/(60*60*1000)); diff-=hours*(60*60*1000);
+    const mins=Math.floor(diff/(60*1000)); diff-=mins*(60*1000);
+    const secs=Math.floor(diff/1000);
+    el.innerText = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
+  });
+}
+function formatDateRange(s,e){ const opts={year:'numeric',month:'short',day:'numeric'}; if(s.toDateString()===e.toDateString()) return s.toLocaleDateString(undefined,opts); return s.toLocaleDateString(undefined,opts)+' — '+e.toLocaleDateString(undefined,opts); }
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function renderLeaders(){
+  const leaders = [
+    { office:"Zachary's Office", name:"Zachary Gikonyo", role:"Chairperson", phone:"+254742892647" },
+    { office:"Dalson's Office", name:"Dalson Maina", role:"Vice Chairperson", phone:"+254714003648" },
+    { office:"Ian's Office", name:"Ian Gathagu", role:"Secretary", phone:"+254718357417" },
+    { office:"Lydia's Office", name:"Lydia Wamuyu", role:"Vice Secretary", phone:"+254110867929" },
+    { office:"Winnie's Office", name:"Winnie Maundu", role:"Treasurer", phone:"+254713285534" }
+  ];
+  const grid = $('leadersGrid'); grid.innerHTML='';
+  leaders.forEach(ld=>{
+    const el = document.createElement('div'); el.className='card'; el.style.marginBottom='8px';
+    el.innerHTML = `<div style="font-weight:900">${ld.office}</div><div class="muted small">${ld.name} — ${ld.role}</div><div style="margin-top:8px"><a class="wa-btn" href="https://wa.me/${ld.phone.replace(/\D/g,'')}" target="_blank">WhatsApp</a> <a class="call-btn" href="tel:${ld.phone.replace(/\D/g,'')}">Call</a> <div class="muted small" style="padding-left:6px">${ld.phone}</div></div>`;
+    grid.appendChild(el);
+  });
+}
+
+/* Fun fact home */
+function setFunFactHome(){
+  const facts = ["The Bible is the most translated book in the world.","Jesus wept. (John 11:35)","'Fear not' is written many times in scripture as encouragement.","Psalm 117 is the shortest chapter."];
+  const today = new Date().toDateString();
+  const saved = JSON.parse(localStorage.getItem('it_funFact') || 'null');
+  if(!saved || saved.date !== today){ const f = facts[Math.floor(Math.random()*facts.length)]; localStorage.setItem('it_funFact', JSON.stringify({date:today,fact:f})); $('funFactHome').innerText = f; } else $('funFactHome').innerText = saved.fact;
+}
+
+/* =========================
+  Jitsi integration (meet.jit.si)
+  ========================= */
+let jitsiApi = null;
+function startJitsi(){
+  const modal = $('jitsiModal'); modal.style.display='flex';
+  const node = document.createElement('div'); node.style.height='640px'; $('jitsiBody2').innerHTML=''; $('jitsiBody2').appendChild(node);
+  const script = document.createElement('script'); script.src='https://meet.jit.si/external_api.js'; script.onload = ()=> {
+    const room = `PCEA-IMPERIAL-${Date.now()}`;
+    jitsiApi = new JitsiMeetExternalAPI('meet.jit.si', { roomName: room, parentNode: node, width:'100%', height:640 });
+  };
+  document.head.appendChild(script);
+}
+
+/* =========================
+  MiniPay membership: uses merchant phone +254718357417
+  ========================= */
+function bindMiniPayButtons(){
+  document.querySelectorAll('.buy-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const plan = btn.dataset.plan; const amount = btn.dataset.amount;
+      const ref = `IT-${plan}-${Date.now()}`;
+      const url = `https://checkout.minipay.co/checkout?merchant=${encodeURIComponent('+254718357417')}&amount=${encodeURIComponent(amount)}&currency=KES&reference=${encodeURIComponent(ref)}&description=${encodeURIComponent(plan+' membership')}`;
+      // open modal
+      $('mpModal')?.remove(); // remove any
+      const modal = document.createElement('div'); modal.id='mpModal'; modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:9999';
+      modal.innerHTML = `<div style="width:90%;max-width:800px;background:#fff;padding:12px;border-radius:8px"><div style="display:flex;justify-content:space-between"><div>Complete Payment</div><button id="closemp">Close</button></div><iframe src="${url}" style="width:100%;height:600px;border:0;margin-top:8px"></iframe></div>`;
+      document.body.appendChild(modal);
+      document.getElementById('closemp').addEventListener('click', ()=> modal.remove());
+    });
+  });
+}
+bindMiniPayButtons();
+
+/* =========================
+  Utility functions
+  ========================= */
+function escapeHtmlSimple(s){ return String(s||''). replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function openChatPage(){
+  // hide all nav pages
+  document.querySelectorAll('section.page').forEach(s => s.style.display='none');
+  // show app view
+  $('auth').style.display='none';
+  $('app').style.display='block';
+  // navigate nav
+  document.querySelectorAll('.nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.page==='chat'));
+}
+
+/* =========================
+  End of file
+  ========================= */
+</script>
+</body>
+</html>
+  
