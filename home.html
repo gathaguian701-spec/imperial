@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IMPERIAL TECHUB — Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="topbar" class="topbar hidden">
+    <div class="brand">IMPERIAL TECHUB</div>
+    <nav class="nav">
+      <a href="home.html">Home</a>
+      <a href="chat.html">Chat</a>
+      <a href="bible.html">Bible</a>
+      <a id="btnSignOut" href="#">Sign out</a>
+    </nav>
+  </div>
+
+  <main id="app" class="maxw hidden">
+    <section class="card">
+      <h2>Home — News Feed</h2>
+      <div class="post-card">
+        <textarea id="postText" placeholder="Share something with the youth..."></textarea>
+        <input id="postImage" type="file" accept="image/*">
+        <div class="row-end">
+          <button id="btnCreatePost" class="btn-blue">Post</button>
+        </div>
+      </div>
+
+      <div id="feed" class="feed"></div>
+    </section>
+  </main>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app_home.js"></script>
+</body>
+  </html>
