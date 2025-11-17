@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IMPERIAL TECHUB — Bible</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="topbar" class="topbar hidden">
+    <div class="brand">IMPERIAL TECHUB</div>
+    <nav class="nav">
+      <a href="home.html">Home</a>
+      <a href="chat.html">Chat</a>
+      <a href="bible.html">Bible</a>
+      <a id="btnSignOut3" href="#">Sign out</a>
+    </nav>
+  </div>
+
+  <main class="maxw hidden" id="bibleApp">
+    <section class="card">
+      <h2>Bible Reader</h2>
+      <p class="muted">Upload a JSON called <code>books.json</code> into your repo's <code>public/</code> or use the provided sample. Search box below will search loaded verses.</p>
+      <div class="grid-2">
+        <select id="bookSelect"></select>
+        <input id="bibleSearch" placeholder="Search verses/phrases">
+      </div>
+      <div id="versesContainer"></div>
+    </section>
+  </main>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app_bible.js"></script>
+</body>
+</html>
