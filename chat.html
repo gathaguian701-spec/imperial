@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IMPERIAL TECHUB — Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="topbar" class="topbar hidden">
+    <div class="brand">IMPERIAL TECHUB</div>
+    <nav class="nav">
+      <a href="home.html">Home</a>
+      <a href="chat.html">Chat</a>
+      <a href="bible.html">Bible</a>
+      <a id="btnSignOut2" href="#">Sign out</a>
+    </nav>
+  </div>
+
+  <main id="appChat" class="maxw hidden">
+    <section class="card">
+      <div class="flex-between">
+        <h2>Chats</h2>
+        <div>
+          <button id="btnCreateGroup" class="btn-green">Create Group</button>
+        </div>
+      </div>
+
+      <div class="whatsapp">
+        <div>
+          <input id="convoSearch" placeholder="Search chats..." class="full">
+          <div id="convoList" class="convo-list card"></div>
+        </div>
+
+        <div class="messages-column">
+          <div id="messagesWindow" class="card messages"></div>
+          <div class="composer">
+            <input id="messageInput" placeholder="Type a message" class="full">
+            <input id="fileUpload" type="file" accept="image/*,audio/*" style="display:none">
+            <button id="attachBtn" class="chip">📎</button>
+            <button id="sendMsgBtn" class="btn-green">Send</button>
+          </div>
+          <div id="typingIndicator" class="muted"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app_chat.js"></script>
+</body>
+    </html>
