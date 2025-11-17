@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IMPERIAL TECHUB — Sign in</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Intro (5s) -->
+  <div id="intro" class="intro">
+    <h1>IMPERIAL TECHUB</h1>
+    <div class="glow"></div>
+  </div>
+
+  <main id="authMain" class="card center hidden">
+    <h2>Sign in to IMPERIAL TECHUB</h2>
+
+    <div class="auth-row">
+      <input id="email" placeholder="Email" type="email">
+      <input id="password" placeholder="Password" type="password">
+    </div>
+
+    <div class="auth-row">
+      <button id="btnSignIn">Sign In</button>
+      <button id="btnGoogle" class="btn-white">Sign in with Google</button>
+      <button id="btnOpenRegister" class="btn-blue">Create account</button>
+    </div>
+
+    <div id="signinMsg" class="muted"></div>
+
+    <small class="muted">Why sign in? Access Home, Chat, Bible & Meetings.</small>
+  </main>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>Create account</h3>
+      <div class="grid-2">
+        <input id="regFullName" placeholder="Full name">
+        <input id="regUsername" placeholder="Username">
+        <input id="regEmail" placeholder="Email">
+        <input id="regPhone" placeholder="Phone (+254...)">
+        <input id="regChurch" placeholder="Church">
+        <input id="regDistrict" placeholder="District">
+      </div>
+      <label>Profile photo: <input id="regPhoto" type="file" accept="image/*"></label>
+      <div class="grid-2">
+        <input id="regPassword" type="password" placeholder="Password">
+        <input id="regPassword2" type="password" placeholder="Confirm password">
+      </div>
+      <div class="row-end">
+        <button id="btnCancelRegister" class="btn-ghost">Cancel</button>
+        <button id="btnCreateAccount" class="btn-blue">Create account</button>
+      </div>
+      <div id="regMsg" class="muted"></div>
+    </div>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+                                      </html>
